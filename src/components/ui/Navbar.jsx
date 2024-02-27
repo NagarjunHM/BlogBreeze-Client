@@ -10,7 +10,7 @@ const Navbar = () => {
         <Link to="/">BlogBreeze</Link>
       </div>
       {location.pathname === "/" ? (
-        <Link to="/logger">
+        <Link to="/signin">
           <Button variant="secondary">Get Started</Button>
         </Link>
       ) : (
