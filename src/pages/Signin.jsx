@@ -83,7 +83,7 @@ const Signin = () => {
 
   return (
     <div className="absolute top-0 flex flex-col items-center justify-center size-full">
-      <Card className="w-[400px] border-none shadow=none m-5">
+      <Card className="w-[400px] border-none shadow-none m-5">
         <CardHeader className="mb-10">
           <CardTitle className="text-5xl text-center">Welcome Back.</CardTitle>
         </CardHeader>
