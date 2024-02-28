@@ -8,14 +8,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
+import useStore from "@/store/useStore";
 
 const Signin = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
+
+  const { userLogin, error, loading } = useStore();
 
   //   handle form input data
   const handleInput = (e) => {
@@ -65,17 +70,18 @@ const Signin = () => {
         newErrors.password.push("atleast 1 special character");
     }
 
-    console.log(newErrors);
     setErrors(newErrors);
     return isValid;
   };
 
   //   function to handle form submission
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     if (validateForm()) {
       setSubmitted(true);
+      // using method defined in useStore
+      userLogin(formData.email, formData.password);
     } else {
       setSubmitted(false);
     }
@@ -83,7 +89,26 @@ const Signin = () => {
 
   return (
     <div className="absolute top-0 flex flex-col items-center justify-center size-full">
-      <Card className="w-[400px] border-none shadow-none m-5">
+      {/* conditionally rendering the error */}
+      <div
+        id="infinite-progress"
+        class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"
+      >
+        <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-16 w-16"></div>
+      </div>
+
+      {error ? (
+        <div>
+          <Alert variant="destructive">
+            <ExclamationTriangleIcon className="w-4 h-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        </div>
+      ) : (
+        <></>
+      )}
+      <Card className="w-[400px] m-5">
         <CardHeader className="mb-10">
           <CardTitle className="text-5xl text-center">Welcome Back.</CardTitle>
         </CardHeader>
@@ -116,7 +141,7 @@ const Signin = () => {
                   value={formData.password}
                 />
               </div>
-              {errors.password ? (
+              {errors.password?.length ? (
                 <div className="text-sm text-red-400">
                   {errors.password.map((password, index) => (
                     <li key={index}>{password}</li>
