@@ -1,21 +1,27 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import { loginUserAPI } from "@/api_layers/userApi";
 
-const useStore = create((set, get) => ({
-  isAuthenticated: false,
-  token: "",
+const useStore = create(
+  persist(
+    (set) => ({
+      isAuthenticated: false,
+      token: "",
 
-  loginUser: async (email, password) => {
-    try {
-      const res = await loginUserAPI(email, password);
+      loginUser: async (email, password) => {
+        try {
+          const res = await loginUserAPI(email, password);
 
-      if (res.status === 200) {
-        set({ isAuthenticated: true, token: res.data, error: "" });
-      }
-    } catch (err) {
-      throw err;
-    }
-  },
-}));
+          if (res.status === 200) {
+            set({ isAuthenticated: true, token: res.data, error: "" });
+          }
+        } catch (err) {
+          throw err;
+        }
+      },
+    }),
+    { name: "user" }
+  )
+);
 
 export default useStore;

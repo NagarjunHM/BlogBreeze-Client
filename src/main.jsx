@@ -7,6 +7,8 @@ import Layout from "./pages/Layout.jsx";
 import Landing from "./pages/Landing";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import PublicRoute from "./routes/PublicRoute";
 
 const router = createBrowserRouter([
   {
@@ -16,11 +18,27 @@ const router = createBrowserRouter([
       { index: true, element: <Landing /> },
       {
         path: "/signin",
-        element: <Signin />,
+        element: (
+          <PublicRoute>
+            <Signin />
+          </PublicRoute>
+        ),
       },
       {
         path: "/signup",
-        element: <Signup />,
+        element: (
+          <PublicRoute>
+            <Signup />
+          </PublicRoute>
+        ),
+      },
+      {
+        path: "/home",
+        element: (
+          <ProtectedRoute>
+            <Landing />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

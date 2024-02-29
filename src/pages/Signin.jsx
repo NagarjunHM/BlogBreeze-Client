@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 import useStore from "@/store/useStore";
+import { useNavigate } from "react-router-dom";
 
 const Signin = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -23,6 +24,7 @@ const Signin = () => {
   const { loginUser } = useStore();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   //   handle form input data
   const handleInput = (e) => {
@@ -89,6 +91,7 @@ const Signin = () => {
       try {
         await loginUser(formData.email, formData.password);
         setError(null);
+        navigate("/home");
       } catch (err) {
         setError(err.response?.data || err.message);
       } finally {
@@ -112,7 +115,7 @@ const Signin = () => {
       ) : (
         <></>
       )}
-      <Card className="w-[400px] m-5">
+      <Card className="w-[400px] m-5 border-none">
         <CardHeader className="mb-10">
           <CardTitle className="text-5xl text-center">Welcome Back.</CardTitle>
         </CardHeader>
