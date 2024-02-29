@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import {
   Card,
   CardContent,
@@ -18,9 +19,10 @@ import useStore from "@/store/useStore";
 const Signin = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false);
 
-  const { userLogin, error, loading } = useStore();
+  const { loginUser } = useStore();
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   //   handle form input data
   const handleInput = (e) => {
@@ -43,31 +45,35 @@ const Signin = () => {
     }
 
     if (formData.password === "") {
-      newErrors.password = [];
-      newErrors.password.push("password is required");
+      newErrors.password = ["password is required"];
       isValid = false;
     } else if (formData.password.length > 15) {
-      newErrors.password = [];
-      newErrors.password.push("password is too long");
+      newErrors.password = ["password is too long"];
       isValid = false;
     } else if (formData.password.length < 8) {
-      newErrors.password = [];
-      newErrors.password.push("password is short");
+      newErrors.password = ["password is short"];
       isValid = false;
     } else {
       newErrors.password = [];
       let regex1 = /[a-z]/;
       if (!regex1.test(formData.password))
         newErrors.password.push("atleast 1 lower case character");
+
       let regex2 = /[A-Z]/;
       if (!regex2.test(formData.password))
         newErrors.password.push("atleast 1 upper case character");
-      let regex3 = /[\d]/;
+
+      let regex3 = /\d/;
       if (!regex3.test(formData.password))
         newErrors.password.push("atleast 1 digit");
+
       let regex4 = /[!@#$%^&*.?]/;
       if (!regex4.test(formData.password))
         newErrors.password.push("atleast 1 special character");
+
+      if (newErrors.password.length === 0) {
+        isValid = true;
+      }
     }
 
     setErrors(newErrors);
@@ -79,23 +85,21 @@ const Signin = () => {
     e.preventDefault();
 
     if (validateForm()) {
-      setSubmitted(true);
-      // using method defined in useStore
-      userLogin(formData.email, formData.password);
-    } else {
-      setSubmitted(false);
+      setLoading(true);
+      try {
+        await loginUser(formData.email, formData.password);
+        setError(null);
+      } catch (err) {
+        setError(err.response?.data || err.message);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   return (
     <div className="absolute top-0 flex flex-col items-center justify-center size-full">
       {/* conditionally rendering the error */}
-      <div
-        id="infinite-progress"
-        class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"
-      >
-        <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-16 w-16"></div>
-      </div>
 
       {error ? (
         <div>
@@ -155,16 +159,29 @@ const Signin = () => {
 
           <CardFooter className="flex flex-col items-start gap-4">
             <div>
-              <Button type="submit">Sign in</Button>
+              {loading ? (
+                <Button disabled>
+                  <ReloadIcon className="w-4 h-4 mr-2 animate-spin" />
+                  Please wait
+                </Button>
+              ) : (
+                <Button type="submit">Sign in</Button>
+              )}
             </div>
 
             <div className="">
               <span className="mr-2">No account?</span>
-              <Link to="/signup">
-                <span className="text-xl text-green-400 cursor-pointer hover:border-b hover:border-green-400 ">
+              {loading ? (
+                <span className="text-xl cursor-pointer text-mute-foreground">
                   Create One
                 </span>
-              </Link>
+              ) : (
+                <Link to="/signup">
+                  <span className="text-xl text-green-400 cursor-pointer hover:border-b hover:border-green-400 ">
+                    Create One
+                  </span>
+                </Link>
+              )}
             </div>
           </CardFooter>
         </form>

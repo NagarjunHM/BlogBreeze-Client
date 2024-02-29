@@ -9,8 +9,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
+import { registerUserAPI } from "@/api_layers/userApi";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -20,7 +25,10 @@ const Signup = () => {
     repassword: "",
   });
   const [errors, setErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false);
+
+  const navigate = useNavigate();
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // function to handle input
   const handleInput = (e) => {
@@ -36,8 +44,10 @@ const Signup = () => {
     // name
     if (formData.name === "") {
       newErrors.name = "name is required";
+      isValid = false;
     } else if (formData.name.length < 4) {
-      newErrors.name = "atleast 3 character long";
+      newErrors.name = "at least 3 characters long";
+      isValid = false;
     }
 
     // email
@@ -51,37 +61,40 @@ const Signup = () => {
 
     // password
     if (formData.password === "") {
-      newErrors.password = [];
-      newErrors.password.push("password is required");
+      newErrors.password = ["password is required"];
       isValid = false;
     } else if (formData.password.length > 15) {
-      newErrors.password = [];
-      newErrors.password.push("password is too long");
+      newErrors.password = ["password is too long"];
       isValid = false;
     } else if (formData.password.length < 8) {
-      newErrors.password = [];
-      newErrors.password.push("password is short");
+      newErrors.password = ["password is short"];
       isValid = false;
     } else {
       newErrors.password = [];
       let regex1 = /[a-z]/;
       if (!regex1.test(formData.password))
-        newErrors.password.push("atleast 1 lower case character");
+        newErrors.password.push("at least 1 lowercase character");
+
       let regex2 = /[A-Z]/;
       if (!regex2.test(formData.password))
-        newErrors.password.push("atleast 1 upper case character");
-      let regex3 = /[\d]/;
+        newErrors.password.push("at least 1 uppercase character");
+
+      let regex3 = /\d/;
       if (!regex3.test(formData.password))
-        newErrors.password.push("atleast 1 digit");
+        newErrors.password.push("at least 1 digit");
+
       let regex4 = /[!@#$%^&*.?]/;
       if (!regex4.test(formData.password))
-        newErrors.password.push("atleast 1 special character");
+        newErrors.password.push("at least 1 special character");
     }
 
+    // repassword
     if (formData.repassword === "") {
       newErrors.repassword = "repassword is required";
+      isValid = false;
     } else if (formData.repassword !== formData.password) {
-      newErrors.repassword = "password does not match";
+      newErrors.repassword = "passwords do not match";
+      isValid = false;
     }
 
     console.log(newErrors);
@@ -90,18 +103,44 @@ const Signup = () => {
   };
 
   // function to handle form submission
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     if (validateForm()) {
-      setSubmitted(true);
-    } else {
-      setSubmitted(false);
+      setLoading(true);
+      try {
+        const res = await registerUserAPI(
+          formData.name,
+          formData.email,
+          formData.password
+        );
+        setError(null);
+        if (res.status === 201) {
+          navigate("/signin");
+        }
+      } catch (err) {
+        setError(err.response.data, err.response.status);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   return (
     <div className="absolute top-0 flex flex-col items-center justify-center size-full">
+      {/* conditionally rendering the error */}
+
+      {false ? (
+        <div>
+          <Alert variant="destructive">
+            <ExclamationTriangleIcon className="w-4 h-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        </div>
+      ) : (
+        <></>
+      )}
       <Card className="min-w-[400px] border-none shadow-none m-5">
         <CardHeader className="mb-10">
           <CardTitle className="text-4xl text-center sm:text-5xl">
@@ -183,16 +222,29 @@ const Signup = () => {
 
           <CardFooter className="flex flex-col items-start gap-4">
             <div>
-              <Button>Sign up</Button>
+              {loading ? (
+                <Button disabled>
+                  <ReloadIcon className="w-4 h-4 mr-2 animate-spin" />
+                  Please wait
+                </Button>
+              ) : (
+                <Button type="submit">Sign up</Button>
+              )}
             </div>
 
             <div className="">
               <span className="mr-2">Already have an account?</span>
-              <Link to="/signin">
-                <span className="text-xl text-green-400 cursor-pointer hover:border-b hover:border-green-400 ">
+              {loading ? (
+                <span className="text-xl cursor-pointer text-mute-foreground">
                   Sign in
                 </span>
-              </Link>
+              ) : (
+                <Link to="/signin">
+                  <span className="text-xl text-green-400 cursor-pointer hover:border-b hover:border-green-400 ">
+                    Sign in
+                  </span>
+                </Link>
+              )}
             </div>
           </CardFooter>
         </form>
