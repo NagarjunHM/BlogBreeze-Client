@@ -28,3 +28,17 @@ export const loginUserAPI = async (email, password) => {
     throw err;
   }
 };
+
+// to logout a user
+export const logoutUserAPI = async () => {
+  try {
+    const res = await instance({
+      url: "/user/logout",
+      method: "Post",
+    });
+
+    console.log(res);
+  } catch (err) {
+    throw err;
+  }
+};

@@ -19,6 +19,10 @@ const useStore = create(
           throw err;
         }
       },
+
+      resetValues: () => {
+        set({ isAuthenticated: false, token: "" });
+      },
     }),
     { name: "user" }
   )

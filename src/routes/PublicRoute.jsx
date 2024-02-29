@@ -18,7 +18,7 @@ const PublicRoute = ({ children }) => {
     checkAuthentication();
   }, [isAuthenticated, navigate]);
 
-  return <>{loading ? null : children}</>;
+  return loading ? null : <>{children}</>;
 };
 
 export default PublicRoute;
