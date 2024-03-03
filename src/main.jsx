@@ -9,13 +9,21 @@ import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoute";
+import WritePage from "./pages/WritePage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
-      { index: true, element: <Landing /> },
+      {
+        index: true,
+        element: (
+          <PublicRoute>
+            <Landing />
+          </PublicRoute>
+        ),
+      },
       {
         path: "/signin",
         element: (
@@ -37,6 +45,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Landing />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/write",
+        element: (
+          <ProtectedRoute>
+            <WritePage />
           </ProtectedRoute>
         ),
       },

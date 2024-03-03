@@ -7,6 +7,12 @@ const useStore = create(
     (set) => ({
       isAuthenticated: false,
       token: "",
+      newBlog: {
+        title: "",
+        picture: "", // This is where the file input value will be stored
+        description: "",
+        code: "",
+      },
 
       loginUser: async (email, password) => {
         try {
@@ -20,8 +26,16 @@ const useStore = create(
         }
       },
 
+      setNewBlog: (name, value) => {
+        set((state) => ({
+          ...state,
+          newBlog: { ...state.newBlog, [name]: value },
+        }));
+      },
+
+      // to reset all values
       resetValues: () => {
-        set({ isAuthenticated: false, token: "" });
+        set({ isAuthenticated: false, token: "", newBlog: {} });
       },
     }),
     { name: "user" }
