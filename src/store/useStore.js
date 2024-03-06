@@ -1,29 +1,21 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { loginUserAPI } from "@/api_layers/userApi";
 
 const useStore = create(
   persist(
     (set) => ({
       isAuthenticated: false,
       token: "",
+      email: "",
       newBlog: {
         title: "",
-        picture: "", // This is where the file input value will be stored
+        picture: "",
         description: "",
-        code: "",
+        content: "",
       },
 
-      loginUser: async (email, password) => {
-        try {
-          const res = await loginUserAPI(email, password);
-
-          if (res.status === 200) {
-            set({ isAuthenticated: true, token: res.data, error: "" });
-          }
-        } catch (err) {
-          throw err;
-        }
+      loginUser: (isAuthenticated, token, email) => {
+        set({ isAuthenticated, token, email });
       },
 
       setNewBlog: (name, value) => {
@@ -35,7 +27,29 @@ const useStore = create(
 
       // to reset all values
       resetValues: () => {
-        set({ isAuthenticated: false, token: "", newBlog: {} });
+        set({
+          isAuthenticated: false,
+          token: "",
+          newBlog: {
+            title: "",
+            picture: "",
+            description: "",
+            content: "",
+          },
+          email: "",
+        });
+      },
+
+      // to reset newBlog
+      resetNewBlog: () => {
+        set({
+          newBlog: {
+            title: "",
+            picture: "",
+            description: "",
+            content: "",
+          },
+        });
       },
     }),
     { name: "user" }

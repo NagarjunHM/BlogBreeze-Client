@@ -12,12 +12,13 @@ import { Input } from "@/components/ui/input";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
-import { registerUserAPI } from "@/api_layers/userApi";
+import configureAxios from "@/hooks/configureAxios";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const instance = configureAxios();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -97,7 +98,7 @@ const Signup = () => {
       isValid = false;
     }
 
-    console.log(newErrors);
+    if (newErrors.password.length > 0) isValid = false;
     setErrors(newErrors);
     return isValid;
   };
@@ -109,11 +110,11 @@ const Signup = () => {
     if (validateForm()) {
       setLoading(true);
       try {
-        const res = await registerUserAPI(
-          formData.name,
-          formData.email,
-          formData.password
-        );
+        const res = await instance.post("/user/register", {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        });
         setError(null);
         if (res.status === 201) {
           navigate("/signin");

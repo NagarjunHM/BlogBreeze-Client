@@ -42,8 +42,8 @@ const Editor = () => {
       theme="snow"
       modules={modules}
       formats={formats}
-      value={newBlog.code}
-      onChange={(value) => setNewBlog("code", value)}
+      value={newBlog.content}
+      onChange={(value) => setNewBlog("content", value)}
       ref={quillRef}
       className=" size-full"
     />

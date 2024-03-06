@@ -10,6 +10,7 @@ import Signup from "./pages/Signup";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoute";
 import WritePage from "./pages/WritePage";
+import MyBlogs from "./pages/MyBlogs";
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <WritePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/profile",
+        element: (
+          <ProtectedRoute>
+            <MyBlogs />
           </ProtectedRoute>
         ),
       },

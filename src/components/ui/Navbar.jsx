@@ -20,17 +20,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { logoutUserAPI } from "@/api_layers/userApi";
 import { useNavigate } from "react-router-dom";
+import configureAxios from "@/hooks/configureAxios";
 
 const Navbar = () => {
+  const instance = configureAxios();
   const { isAuthenticated, resetValues } = useStore();
   const navigate = useNavigate();
 
   // function to logout the user
   const logoutUser = async () => {
     try {
-      await logoutUserAPI();
+      await instance.post("/user/logout");
       resetValues();
       navigate("/signin");
     } catch (err) {
@@ -74,11 +75,13 @@ const Navbar = () => {
                       Write
                     </DropdownMenuItem>
                   </Link>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem className="text-lg text-muted-foreground">
-                    <User className="w-5 h-5 mr-3" />
-                    Profile
-                  </DropdownMenuItem>
+                  <Link to="/profile">
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="text-lg text-muted-foreground">
+                      <User className="w-5 h-5 mr-3" />
+                      Profile
+                    </DropdownMenuItem>
+                  </Link>
                   <DropdownMenuItem className="text-lg text-muted-foreground">
                     <Library className="w-4 h-4 mr-3" />
                     Library

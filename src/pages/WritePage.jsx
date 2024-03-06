@@ -6,12 +6,16 @@ import Editor from "@/components/ui/Editor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useStore from "@/store/useStore";
+// import { createNewBlogApi } from "@/api_layers/blogApi";
+import configureAxios from "@/hooks/configureAxios";
+import InfiniteProgressBar from "@/components/ui/InfiniteProgressBar";
 
 const WritePage = () => {
-  // const [newBlog, setNewBlog] = useState({});
-  const { newBlog, setNewBlog } = useStore();
+  const instance = configureAxios();
+  const [loading, setLoading] = useState(false);
+
+  const { newBlog, setNewBlog, token, resetNewBlog } = useStore();
   const [errors, setErrors] = useState({});
-  const [validForm, setValidForm] = useState(true);
 
   // onchange function
   const handleInput = (e) => {
@@ -40,10 +44,6 @@ const WritePage = () => {
       errors.title = "Blog title cannot be empty";
     }
 
-    if (!newBlog.code || newBlog.code.trim() === "") {
-      errors.code = "Blog content cannot be empty";
-    }
-
     setErrors(errors);
 
     // Return true if there are no errors, indicating the form is valid
@@ -51,72 +51,89 @@ const WritePage = () => {
   };
 
   // function to handle blog submission
-  const handleBlogSubmit = (e) => {
+  const handleBlogSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) {
+
+    if (validateForm()) {
+      setLoading(true);
+      try {
+        const response = await instance.post("/blog/newBlog", newBlog, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        console.log(response.status);
+        resetNewBlog();
+        setErrors("");
+      } catch (err) {
+        console.log(err.response?.data || err.message);
+      } finally {
+        setLoading(false);
+      }
     }
-    console.log(newBlog);
   };
 
   return (
-    <div className="m-2 md:m-10">
-      <form>
-        <div className="m-5 grid gap-1.5">
-          <Label htmlFor="title">Blog title</Label>
-          <Textarea
-            placeholder="Title for your blog."
-            id="title"
-            className="w-full"
-            name="title"
-            value={newBlog.title}
-            onChange={handleInput}
-          />
-          {errors.title ? (
-            <li className="text-sm text-destructive">{errors.title}</li>
-          ) : (
-            <></>
-          )}
-        </div>
+    <>
+      {loading ? <InfiniteProgressBar /> : <></>}
+      <div className="m-2 md:m-10">
+        <form onSubmit={handleBlogSubmit}>
+          <div className="m-5 grid gap-1.5">
+            <Label htmlFor="title">Blog title</Label>
+            <Textarea
+              placeholder="Title for your blog."
+              id="title"
+              className="w-full"
+              name="title"
+              value={newBlog.title}
+              onChange={handleInput}
+            />
+            {errors.title ? (
+              <li className="text-sm text-destructive">{errors.title}</li>
+            ) : (
+              <></>
+            )}
+          </div>
 
-        <div className="m-5 grid w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="picture">Cover picture</Label>
-          <Input
-            id="picture"
-            name="picture"
-            type="file"
-            // value={newBlog.picture}
-            onChange={handleInput}
-          />
-        </div>
+          <div className="m-5 grid w-full max-w-sm items-center gap-1.5">
+            <Label htmlFor="picture">Cover picture</Label>
+            <Input
+              id="picture"
+              name="picture"
+              type="file"
+              onChange={handleInput}
+            />
+          </div>
 
-        <div className="m-5 grid gap-1.5">
-          <Label htmlFor="description">description</Label>
-          <Textarea
-            placeholder="Description of your blog."
-            id="description"
-            name="description"
-            className="w-full"
-            value={newBlog.description}
-            onChange={handleInput}
-          />
-        </div>
+          <div className="m-5 grid gap-1.5">
+            <Label htmlFor="description">description</Label>
+            <Textarea
+              placeholder="Description of your blog."
+              id="description"
+              name="description"
+              className="w-full"
+              value={newBlog.description}
+              onChange={handleInput}
+            />
+          </div>
 
-        <div className="relative m-5 ">
-          <Editor className="w-full" />
-          {errors.code ? (
-            <li className="text-sm text-destructive">{errors.code}</li>
-          ) : (
-            <></>
-          )}
-        </div>
+          <div className="relative m-5 ">
+            <Editor className="w-full" />
+            {errors.content ? (
+              <li className="text-sm text-destructive">{errors.content}</li>
+            ) : (
+              <></>
+            )}
+          </div>
 
-        <div className="m-5">
-          <Button type="submit" onClick={handleBlogSubmit}>
-            Save
-          </Button>
-        </div>
-      </form>
-    </div>
+          <div className="m-5">
+            <Button type="submit">Save</Button>
+          </div>
+        </form>
+      </div>
+    </>
   );
 };
 

@@ -15,12 +15,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 import useStore from "@/store/useStore";
+import configureAxios from "@/hooks/configureAxios";
 import { useNavigate } from "react-router-dom";
 
 const Signin = () => {
+  const instance = configureAxios();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
-
   const { loginUser } = useStore();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -73,8 +74,8 @@ const Signin = () => {
       if (!regex4.test(formData.password))
         newErrors.password.push("atleast 1 special character");
 
-      if (newErrors.password.length === 0) {
-        isValid = true;
+      if (newErrors.password.length > 0) {
+        isValid = false;
       }
     }
 
@@ -82,16 +83,38 @@ const Signin = () => {
     return isValid;
   };
 
-  //   function to handle form submission
+  // function to handle form submission
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+
+    // if (validateForm()) {
+    //   // Check if there are any errors after validation
+
+    //   setLoading(true);
+    //   try {
+    //     await loginUser(formData.email, formData.password);
+    //     setError(null);
+    //     navigate("/home");
+    //   } catch (err) {
+    //     setError(err.response?.data || err.message);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // }
 
     if (validateForm()) {
       setLoading(true);
       try {
-        await loginUser(formData.email, formData.password);
-        setError(null);
-        navigate("/home");
+        const res = await instance.post("/user/login", {
+          email: formData.email,
+          password: formData.password,
+        });
+
+        if (res.status === 200) {
+          loginUser(true, res.data.token, res.data.email);
+          setError(null);
+          navigate("/home");
+        }
       } catch (err) {
         setError(err.response?.data || err.message);
       } finally {
