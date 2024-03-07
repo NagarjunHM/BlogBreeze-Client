@@ -64,9 +64,10 @@ const WritePage = () => {
           },
         });
 
-        console.log(response.status);
-        resetNewBlog();
-        setErrors("");
+        if (response?.status === 201) {
+          resetNewBlog();
+          setErrors("");
+        }
       } catch (err) {
         console.log(err.response?.data || err.message);
       } finally {

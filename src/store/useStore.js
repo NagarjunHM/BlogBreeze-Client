@@ -25,6 +25,10 @@ const useStore = create(
         }));
       },
 
+      setToken: (token) => {
+        set({ token });
+      },
+
       // to reset all values
       resetValues: () => {
         set({

@@ -87,21 +87,6 @@ const Signin = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    // if (validateForm()) {
-    //   // Check if there are any errors after validation
-
-    //   setLoading(true);
-    //   try {
-    //     await loginUser(formData.email, formData.password);
-    //     setError(null);
-    //     navigate("/home");
-    //   } catch (err) {
-    //     setError(err.response?.data || err.message);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // }
-
     if (validateForm()) {
       setLoading(true);
       try {
