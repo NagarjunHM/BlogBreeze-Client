@@ -11,6 +11,8 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoute";
 import WritePage from "./pages/WritePage";
 import MyBlogs from "./pages/MyBlogs";
+import Stories from "./pages/Stories";
+import LoaderPage from "./pages/LoaderPage";
 
 const router = createBrowserRouter([
   {
@@ -64,6 +66,18 @@ const router = createBrowserRouter([
             <MyBlogs />
           </ProtectedRoute>
         ),
+      },
+      {
+        path: "/stories",
+        element: (
+          <ProtectedRoute>
+            <Stories />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/loader",
+        element: <LoaderPage />,
       },
     ],
   },

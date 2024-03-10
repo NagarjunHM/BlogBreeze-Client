@@ -96,7 +96,7 @@ const Signin = () => {
         });
 
         if (res.status === 200) {
-          loginUser(true, res.data.token, res.data.email);
+          loginUser(true, res.data.token, res.data.email, res.data.id);
           setError(null);
           navigate("/home");
         }
@@ -109,7 +109,7 @@ const Signin = () => {
   };
 
   return (
-    <div className="absolute top-0 flex flex-col items-center justify-center size-full">
+    <div className="flex flex-col items-center content-center">
       {/* conditionally rendering the error */}
 
       {error ? (
@@ -121,9 +121,9 @@ const Signin = () => {
           </Alert>
         </div>
       ) : (
-        <></>
+        <div className="h-4"></div>
       )}
-      <Card className="w-[400px] m-5 border-none">
+      <Card className="w-[400px] m-5 border-none shadow-none">
         <CardHeader className="mb-10">
           <CardTitle className="text-5xl text-center">Welcome Back.</CardTitle>
         </CardHeader>

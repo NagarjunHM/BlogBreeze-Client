@@ -7,6 +7,7 @@ const useStore = create(
       isAuthenticated: false,
       token: "",
       email: "",
+      id: "",
       newBlog: {
         title: "",
         picture: "",
@@ -14,8 +15,8 @@ const useStore = create(
         content: "",
       },
 
-      loginUser: (isAuthenticated, token, email) => {
-        set({ isAuthenticated, token, email });
+      loginUser: (isAuthenticated, token, email, id) => {
+        set({ isAuthenticated, token, email, id });
       },
 
       setNewBlog: (name, value) => {
@@ -34,6 +35,7 @@ const useStore = create(
         set({
           isAuthenticated: false,
           token: "",
+          id: "",
           newBlog: {
             title: "",
             picture: "",

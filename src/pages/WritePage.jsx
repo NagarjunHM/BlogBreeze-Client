@@ -9,11 +9,12 @@ import useStore from "@/store/useStore";
 // import { createNewBlogApi } from "@/api_layers/blogApi";
 import configureAxios from "@/hooks/configureAxios";
 import InfiniteProgressBar from "@/components/ui/InfiniteProgressBar";
+import { useNavigate } from "react-router-dom";
 
 const WritePage = () => {
   const instance = configureAxios();
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
   const { newBlog, setNewBlog, token, resetNewBlog } = useStore();
   const [errors, setErrors] = useState({});
 
@@ -67,6 +68,7 @@ const WritePage = () => {
         if (response?.status === 201) {
           resetNewBlog();
           setErrors("");
+          navigate("/stories");
         }
       } catch (err) {
         console.log(err.response?.data || err.message);
@@ -79,9 +81,9 @@ const WritePage = () => {
   return (
     <>
       {loading ? <InfiniteProgressBar /> : <></>}
-      <div className="m-2 md:m-10">
-        <form onSubmit={handleBlogSubmit}>
-          <div className="m-5 grid gap-1.5">
+      <div>
+        <form onSubmit={handleBlogSubmit} className="flex flex-col gap-5">
+          <div className="grid gap-1.5">
             <Label htmlFor="title">Blog title</Label>
             <Textarea
               placeholder="Title for your blog."
@@ -98,7 +100,7 @@ const WritePage = () => {
             )}
           </div>
 
-          <div className="m-5 grid w-full max-w-sm items-center gap-1.5">
+          <div className="grid w-full max-w-sm items-center gap-1.5">
             <Label htmlFor="picture">Cover picture</Label>
             <Input
               id="picture"
@@ -108,7 +110,7 @@ const WritePage = () => {
             />
           </div>
 
-          <div className="m-5 grid gap-1.5">
+          <div className="grid gap-1.5">
             <Label htmlFor="description">description</Label>
             <Textarea
               placeholder="Description of your blog."
@@ -120,7 +122,7 @@ const WritePage = () => {
             />
           </div>
 
-          <div className="relative m-5 ">
+          <div className="relative ">
             <Editor className="w-full" />
             {errors.content ? (
               <li className="text-sm text-destructive">{errors.content}</li>
