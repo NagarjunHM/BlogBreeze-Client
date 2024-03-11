@@ -89,7 +89,6 @@ const LoginPage = () => {
       }),
     onSuccess: (data) => {
       navigate("/", { replace: true });
-      console.log(data);
       toast({
         title: "Login successful",
         description: "Welcome " + data.data.name,
@@ -98,7 +97,7 @@ const LoginPage = () => {
     onError: (error) => {
       toast({
         variant: "destructive",
-        title: "Uh oh! Something went wrong.",
+        title: "Error",
         description: error.response?.data || error.message,
       });
     },
