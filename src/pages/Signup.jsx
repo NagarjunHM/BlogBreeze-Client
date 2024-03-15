@@ -11,11 +11,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import configureAxios from "@/hooks/configureAxios";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const instance = configureAxios();

@@ -29,51 +29,27 @@ const router = createBrowserRouter([
       },
       {
         path: "/signin",
-        element: (
-          <PublicRoute>
-            <Signin />
-          </PublicRoute>
-        ),
+        element: <Signin />,
       },
       {
         path: "/signup",
-        element: (
-          <PublicRoute>
-            <Signup />
-          </PublicRoute>
-        ),
+        element: <Signup />,
       },
       {
         path: "/home",
-        element: (
-          <ProtectedRoute>
-            <Landing />
-          </ProtectedRoute>
-        ),
+        element: <Landing />,
       },
       {
         path: "/write",
-        element: (
-          <ProtectedRoute>
-            <WritePage />
-          </ProtectedRoute>
-        ),
+        element: <WritePage />,
       },
       {
         path: "/profile",
-        element: (
-          <ProtectedRoute>
-            <MyBlogs />
-          </ProtectedRoute>
-        ),
+        element: <MyBlogs />,
       },
       {
         path: "/stories",
-        element: (
-          <ProtectedRoute>
-            <Stories />
-          </ProtectedRoute>
-        ),
+        element: <Stories />,
       },
       {
         path: "/loader",

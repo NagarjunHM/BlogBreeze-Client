@@ -18,7 +18,7 @@ const InfiniteProgressBar = () => {
 
       <div className="fixed top-[57px] left-0 w-full h-[1px] ">
         <div
-          className="h-full bg-green-400 shadow-2xl animate-progress shadow-white"
+          className="h-full bg-green-600 shadow-2xl animate-progress shadow-white"
           style={{ animation: "progress 2s linear infinite" }}
         ></div>
       </div>

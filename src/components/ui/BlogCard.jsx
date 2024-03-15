@@ -28,7 +28,9 @@ const BlogCard = ({ data }) => {
             </Avatar>
             <CardTitle className="text-sm">{data?.name}</CardTitle>
           </div>
-          <CardTitle className="text-xl">{data?.title}</CardTitle>
+          <CardTitle className="text-xl cursor-pointer">
+            <Link>{data?.title}</Link>
+          </CardTitle>
           <CardDescription className="hidden sm:flex ">
             {data?.description}
           </CardDescription>
