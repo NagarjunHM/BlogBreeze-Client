@@ -138,7 +138,7 @@ const registerPage = () => {
         <p className="text-3xl font-medium text-center md:text-5xl">
           Join BlogBreeze
         </p>
-        <Card className="max-w-[400px] sm:w-[400px] m-5 ">
+        <Card className="max-w-[400px] sm:w-[400px] m-5 border-black">
           <CardHeader>
             <CardTitle>Register</CardTitle>
           </CardHeader>
@@ -157,9 +157,7 @@ const registerPage = () => {
                   />
                 </div>
                 {formErrors.name ? (
-                  <li className="text-sm text-destructive">
-                    {formErrors.name}
-                  </li>
+                  <li className="text-sm text-red-600">{formErrors.name}</li>
                 ) : (
                   <></>
                 )}
@@ -176,9 +174,7 @@ const registerPage = () => {
                   />
                 </div>
                 {formErrors.email ? (
-                  <li className="text-sm text-destructive">
-                    {formErrors.email}
-                  </li>
+                  <li className="text-sm text-red-600">{formErrors.email}</li>
                 ) : (
                   <></>
                 )}
@@ -196,7 +192,7 @@ const registerPage = () => {
                   />
                 </div>
                 {formErrors.password ? (
-                  <div className="text-sm text-red-400">
+                  <div className="text-sm text-red-600">
                     {formErrors.password.map((password, index) => (
                       <li key={index}>{password}</li>
                     ))}
@@ -218,7 +214,7 @@ const registerPage = () => {
                   />
                 </div>
                 {formErrors.repassword ? (
-                  <li className="text-sm text-destructive">
+                  <li className="text-sm text-red-600">
                     {formErrors.repassword}
                   </li>
                 ) : (
@@ -226,7 +222,7 @@ const registerPage = () => {
                 )}
 
                 {error && (
-                  <div className="flex  gap-4 text-destructive space-y-1.5 items-end">
+                  <div className="flex  gap-4 text-red-600 space-y-1.5 items-end">
                     <AlertCircle />
                     <span className="underline">
                       {error.response?.data || error.message}
@@ -238,16 +234,21 @@ const registerPage = () => {
 
             <CardFooter className="flex flex-col items-start gap-4">
               <div>
-                <Button type="submit">Sign up</Button>
+                <Button type="submit" disabled={isPending}>
+                  Sign up
+                </Button>
               </div>
 
-              <div className="">
-                <span className="mr-2">Already have an account?</span>
-
+              <div>
+                <span>Already have an account?</span>
                 <Link to="/login">
-                  <span className="text-xl text-green-600 cursor-pointer hover:border-b hover:border-green-600">
+                  <Button
+                    variant="link"
+                    className="text-xl text-green-500"
+                    disabled={isPending}
+                  >
                     Sign in
-                  </span>
+                  </Button>
                 </Link>
               </div>
             </CardFooter>

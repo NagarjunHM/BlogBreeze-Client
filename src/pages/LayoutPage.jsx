@@ -5,7 +5,7 @@ import NavBar from "@/components/ui/NavBar";
 
 const LayoutPage = () => {
   return (
-    <div className="relative top-0 left-0">
+    <div className="size-full">
       <NavBar />
       <Toaster />
       <Outlet />

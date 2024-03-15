@@ -16,6 +16,7 @@ import { useMutation } from "@tanstack/react-query";
 import useAxios from "@/hooks/useAxios";
 import InfiniteProgressBar from "@/components/ui/InfiniteProgressBar";
 import { useToast } from "@/components/ui/use-toast";
+import { userSlice } from "@/store/userSlice";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -23,6 +24,7 @@ const LoginPage = () => {
   const instance = useAxios();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { loginUser } = userSlice();
 
   // handle input change
   const handleInput = (e) => {
@@ -87,11 +89,12 @@ const LoginPage = () => {
         email: data.email,
         password: data.password,
       }),
-    onSuccess: (data) => {
+    onSuccess: (res) => {
+      loginUser(true, res.data.token, res.data.email, res.data.id);
       navigate("/", { replace: true });
       toast({
         title: "Login successful",
-        description: "Welcome " + data.data.name,
+        description: "Welcome " + res.data.name,
       });
     },
     onError: (error) => {
@@ -119,7 +122,7 @@ const LoginPage = () => {
         <p className="text-3xl font-medium text-center md:text-5xl">
           Welcome Back
         </p>
-        <Card className="max-w-[400px] sm:w-[400px] m-5">
+        <Card className="max-w-[400px] sm:w-[400px] m-5 border-black">
           <CardHeader>
             <CardTitle>Log In</CardTitle>
           </CardHeader>
@@ -138,9 +141,7 @@ const LoginPage = () => {
                   />
                 </div>
                 {formErrors.email ? (
-                  <li className="text-sm text-destructive">
-                    {formErrors.email}
-                  </li>
+                  <li className="text-sm text-red-600">{formErrors.email}</li>
                 ) : (
                   <></>
                 )}
@@ -158,7 +159,7 @@ const LoginPage = () => {
                   />
                 </div>
                 {formErrors.password?.length ? (
-                  <div className="text-sm text-red-400">
+                  <div className="text-sm text-red-600">
                     {formErrors.password.map((password, index) => (
                       <li key={index}>{password}</li>
                     ))}
@@ -168,7 +169,7 @@ const LoginPage = () => {
                 )}
 
                 {error && (
-                  <div className="flex  gap-4 text-destructive space-y-1.5 items-end">
+                  <div className="flex  gap-4 text-red-600 space-y-1.5 items-end">
                     <AlertCircle />
                     <span className="underline">
                       {error.response?.data || error.message}
@@ -188,13 +189,17 @@ const LoginPage = () => {
                 </Button>
               </div>
 
-              <div className="">
-                <span className="mr-2">No account?</span>
+              <div>
+                <span>No account?</span>
 
                 <Link to="/register" disabled={isPending}>
-                  <span className="text-xl text-green-600 cursor-pointer hover:border-b hover:border-green-600">
-                    Create One
-                  </span>
+                  <Button
+                    variant="link"
+                    className="text-xl text-green-600"
+                    disabled={isPending}
+                  >
+                    Sign in
+                  </Button>
                 </Link>
               </div>
             </CardFooter>
