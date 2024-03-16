@@ -90,7 +90,14 @@ const LoginPage = () => {
         password: data.password,
       }),
     onSuccess: (res) => {
-      loginUser(true, res.data.token, res.data.email, res.data.id);
+      console.log(res);
+      loginUser(
+        true,
+        res.data.token,
+        res.data.email,
+        res.data.name,
+        res.data.id
+      );
       navigate("/", { replace: true });
       toast({
         title: "Login successful",

@@ -37,14 +37,36 @@ const router = createBrowserRouter([
       { path: "/users/:usersId", element: <UserProfilePage /> },
       {
         path: "/login",
-        element: <LoginPage />,
+        element: (
+          <PublicRoute>
+            <LoginPage />
+          </PublicRoute>
+        ),
       },
-      { path: "/register", element: <RegisterPage /> },
+      {
+        path: "/register",
+        element: (
+          <PublicRoute>
+            <RegisterPage />
+          </PublicRoute>
+        ),
+      },
       {
         path: "/create-blog",
-        element: <Create_Blog />,
+        element: (
+          <ProtectedRoute>
+            <Create_Blog />
+          </ProtectedRoute>
+        ),
       },
-      { path: "/edit-blog/:blogId", element: <Edit_Blog /> },
+      {
+        path: "/edit-blog/:blogId",
+        element: (
+          <ProtectedRoute>
+            <Edit_Blog />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
   { path: "/*", element: <PageNotFound /> },

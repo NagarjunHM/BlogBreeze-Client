@@ -29,7 +29,7 @@ const BlogCard = ({ data }) => {
       </div>
 
       {/* card body */}
-      <div class="flex-1">
+      <div className="flex-1">
         <img
           src={`http://localhost:5000/${picture}`}
           alt="cover image"

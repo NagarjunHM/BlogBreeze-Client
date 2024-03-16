@@ -134,9 +134,20 @@ const Create_Blog = () => {
             />
           </div>
 
+          {newBlog.picture && (
+            <img
+              src={URL.createObjectURL(newBlog.picture)}
+              alt="Cover"
+              className="w-44 aspect-auto"
+            />
+          )}
+
           <div className="relative ">
-            <Editor className="w-full" />
-            {/* <MarkDownEditor className="w-full " /> */}
+            <Editor
+              className="w-full"
+              newBlog={newBlog}
+              setNewBlog={setNewBlog}
+            />
           </div>
 
           <div className="ml-auto">

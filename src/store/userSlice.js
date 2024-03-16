@@ -17,8 +17,8 @@ export const userSlice = create(
       },
 
       // user auth
-      loginUser: (isAuthenticated, token, email, id) => {
-        set({ isAuthenticated, token, email, id });
+      loginUser: (isAuthenticated, token, email, name, id) => {
+        set({ isAuthenticated, token, email, name, id });
       },
 
       // to add blog data
@@ -27,6 +27,11 @@ export const userSlice = create(
           ...state,
           newBlog: { ...state.newBlog, [name]: value },
         }));
+      },
+
+      // set token
+      setToken: (token) => {
+        set({ token });
       },
 
       // to reset newBlog
@@ -38,6 +43,23 @@ export const userSlice = create(
             description: "",
             content: "",
           },
+        });
+      },
+
+      // reset all values
+      resetValues: () => {
+        set({
+          newBlog: {
+            title: "",
+            picture: "",
+            description: "",
+            content: "",
+          },
+          isAuthenticated: false,
+          name: "",
+          id: "",
+          email: "",
+          token: "",
         });
       },
     }),
