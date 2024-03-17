@@ -9,19 +9,14 @@ import { Separator } from "@/components/ui/separator";
 import BloagDetailSkeleton from "@/components/ui/BloagDetailSkeleton";
 import { useNavigate } from "react-router-dom";
 import { AlertCircle } from "lucide-react";
+import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  ThumbsUp,
-  MessageCircleMore,
-  Share2,
-  Bookmark,
-  Ellipsis,
-} from "lucide-react";
+import { MessageCircleMore, Share2, Bookmark, Ellipsis } from "lucide-react";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 import { userSlice } from "@/store/userSlice";
 import { useToast } from "@/components/ui/use-toast";
@@ -40,7 +35,6 @@ const BlogDetailPage = () => {
     queryKey: ["blogs", blogId],
     queryFn: async () => {
       const response = await instance.get(`/blogs/${blogId}`);
-      console.log(response);
       return response.data;
     },
   });
@@ -65,9 +59,45 @@ const BlogDetailPage = () => {
     },
   });
 
+  // mutation query for liking a blog
+  const likeBlog = useMutation({
+    mutationFn: () =>
+      instance.post(`/blogs/${blogId}/like`, {
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ["blogs", blogId],
+      });
+    },
+  });
+
+  // mutation query for liking a blog
+  const unLikeBlog = useMutation({
+    mutationFn: () =>
+      instance.delete(`/blogs/${blogId}/unlike`, {
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ["blogs", blogId],
+      });
+    },
+  });
+
   // handle blog delete function
   const handleDelete = () => {
     deleteBlog.mutate();
+  };
+
+  // handle like
+  const handleLike = () => {
+    likeBlog.mutate();
+  };
+
+  // handle unlike
+  const handleUnlike = () => {
+    unLikeBlog.mutate();
   };
 
   if (isLoading) return <BloagDetailSkeleton />;
@@ -169,13 +199,26 @@ const BlogDetailPage = () => {
                 <MessageCircleMore />
                 <span>{data.comments.length}</span>
               </button>
-              <button
-                type="button"
-                className="flex items-center p-1 space-x-1.5"
-              >
-                <ThumbsUp />
-                <span>{data.likes.length}</span>
-              </button>
+
+              {data.likes.some((like) => like.user === id) ? (
+                <button
+                  type="button"
+                  className="flex items-center p-1 space-x-1.5"
+                  onClick={handleUnlike}
+                >
+                  <IoMdHeart size="1.5em" />
+                  <span>{data.likes.length}</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="flex items-center p-1 space-x-1.5 "
+                  onClick={handleLike}
+                >
+                  <IoMdHeartEmpty size="1.5em" />{" "}
+                  <span>{data.likes.length}</span>
+                </button>
+              )}
             </div>
           </div>
           <Separator className="mb-5" />
