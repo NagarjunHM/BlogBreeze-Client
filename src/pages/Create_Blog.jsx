@@ -24,6 +24,9 @@ const Create_Blog = () => {
     const { name, type } = e.target;
     const value = type === "file" ? e.target.files[0] : e.target.value;
 
+    // Log the newBlog state to check if the file is captured correctly
+    console.log("New Blog State:", { ...newBlog, [name]: value });
+
     // Validate file type for the 'picture' input
     if (type === "file" && value) {
       const allowedImageTypes = [
@@ -89,7 +92,7 @@ const Create_Blog = () => {
       mutate();
     }
   };
-
+  console.log(newBlog);
   return (
     <div className="m-10">
       {isPending ? <InfiniteProgressBar /> : <></>}
@@ -134,12 +137,15 @@ const Create_Blog = () => {
             />
           </div>
 
-          {newBlog.picture && (
+          {newBlog.picture instanceof File && (
             <img
               src={URL.createObjectURL(newBlog.picture)}
               alt="Cover"
               className="w-44 aspect-auto"
             />
+          )}
+          {newBlog.picture && (
+            <span className="text-gray-500">{newBlog.picture.name}</span>
           )}
 
           <div className="relative ">
@@ -148,6 +154,7 @@ const Create_Blog = () => {
               newBlog={newBlog}
               setNewBlog={setNewBlog}
             />
+            {/* <MarkDownEditor className="w-full " /> */}
           </div>
 
           <div className="ml-auto">

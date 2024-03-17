@@ -61,7 +61,7 @@ const BlogDetailPage = () => {
       toast({
         title: "Blog deletion successful",
       });
-      navigate(-1);
+      navigate("/");
     },
   });
 

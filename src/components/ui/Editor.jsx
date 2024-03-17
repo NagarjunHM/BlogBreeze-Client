@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { userSlice } from "@/store/userSlice";
+// import { userSlice } from "@/store/userSlice";
 
 const Editor = ({ newBlog, setNewBlog }) => {
   // const { newBlog, setNewBlog } = userSlice();
@@ -16,6 +16,7 @@ const Editor = ({ newBlog, setNewBlog }) => {
     ],
   };
 
+  console.log(newBlog);
   const formats = [
     "header",
     "bold",
