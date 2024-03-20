@@ -22,6 +22,7 @@ import { userSlice } from "@/store/userSlice";
 import { useToast } from "@/components/ui/use-toast";
 import InfiniteProgressBar from "@/components/ui/InfiniteProgressBar";
 import { queryClient } from "../main";
+import Comment from "@/components/ui/Comment";
 
 const BlogDetailPage = () => {
   const instance = useAxios();
@@ -149,7 +150,6 @@ const BlogDetailPage = () => {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuItem
-                      className="px-3 py-2"
                       onClick={() => {
                         handleEdit();
                       }}
@@ -157,7 +157,6 @@ const BlogDetailPage = () => {
                       Edit
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      className="px-3 py-2"
                       onClick={() => {
                         handleDelete(blogId);
                       }}
@@ -196,7 +195,8 @@ const BlogDetailPage = () => {
                 type="button"
                 className="flex items-center p-1 space-x-1.5"
               >
-                <MessageCircleMore />
+                {/* comment component */}
+                <Comment blogId />
                 <span>{data.comments.length}</span>
               </button>
 

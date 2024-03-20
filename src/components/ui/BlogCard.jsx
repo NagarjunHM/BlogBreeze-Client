@@ -17,7 +17,7 @@ const BlogCard = ({ data }) => {
 
   console.log(data);
   return (
-    <div className="flex flex-col  p-4 space-y-3 overflow-hidden h-full self-stretch shadow border-2 border-black rounded-lg  w-[320px]">
+    <div className="flex flex-col  p-4 space-y-3 overflow-hidden h-full self-stretch shadow border border-black rounded-lg  w-[320px]">
       {/* card header */}
       <div className="flex space-x-4 ">
         <Avatar>
