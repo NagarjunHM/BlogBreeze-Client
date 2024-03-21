@@ -1,8 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { formatDate } from "@/lib/DateFormatter";
-import { MdDeleteOutline } from "react-icons/md";
-import { RxPencil1 } from "react-icons/rx";
 import { Ellipsis } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -17,8 +15,10 @@ import useAxios from "@/hooks/useAxios";
 import { useToast } from "./use-toast";
 import { queryClient } from "@/main";
 import InfiniteProgressBar from "./InfiniteProgressBar";
+import CommentEditInput from "./CommentEditInput";
 
 const CommentCard = ({ data }) => {
+  const [showEditInput, setShowEditInput] = useState(false);
   const date = formatDate(data.createdAt);
   const { id, token } = userSlice();
   const instance = useAxios();
@@ -51,6 +51,11 @@ const CommentCard = ({ data }) => {
     mutate(commentId);
   };
 
+  // function to handle edit
+  const handleEdit = () => {
+    setShowEditInput(true);
+  };
+
   return (
     <>
       {isPending && <InfiniteProgressBar />}
@@ -79,7 +84,7 @@ const CommentCard = ({ data }) => {
                 <DropdownMenuContent>
                   <DropdownMenuItem
                     onClick={() => {
-                      // handleEdit();
+                      handleEdit();
                     }}
                   >
                     Edit
@@ -96,7 +101,11 @@ const CommentCard = ({ data }) => {
             </div>
           )}
         </div>
-        <div className="text-sm">{data.content}</div>
+        {!showEditInput ? (
+          <div className="text-sm">{data.content}</div>
+        ) : (
+          <CommentEditInput input={data} setShowEditInput={setShowEditInput} />
+        )}
       </div>
     </>
   );

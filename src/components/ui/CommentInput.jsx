@@ -38,7 +38,7 @@ const CommentInput = () => {
     onSuccess: () => {
       setFormData("");
       toast({
-        title: "Comment added successful",
+        title: "Comment added",
       });
       queryClient.refetchQueries("comments", "blogs");
     },

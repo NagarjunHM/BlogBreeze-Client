@@ -4,13 +4,11 @@ import { Link } from "react-router-dom";
 import { formatDate } from "@/lib/DateFormatter";
 import { ThumbsUp, MessageCircleMore, Share2, Bookmark } from "lucide-react";
 import { userSlice } from "@/store/userSlice";
-import LoginDialog from "./LoginDialog";
+import { IoMdHeartEmpty } from "react-icons/io";
 
 const BlogCard = ({ data }) => {
   const { title, description, user, likes, comments, picture, createdAt, _id } =
     data;
-
-  const { isAuthenticated } = userSlice();
 
   // function to format date
   const date = formatDate(createdAt);
@@ -63,15 +61,16 @@ const BlogCard = ({ data }) => {
           </button>
         </div>
         <div className="flex space-x-2 text-sm">
-          <button type="button" className="flex items-center p-1 space-x-1.5">
+          <div type="button" className="flex items-center p-1 space-x-1.5">
             <MessageCircleMore className="w-5 h-5" />
             <span>{comments.length}</span>
-          </button>
+          </div>
 
-          <button type="button" className="flex items-center p-1 space-x-1.5">
-            <ThumbsUp className="w-5 h-5" />
+          <div type="button" className="flex items-center p-1 space-x-1.5">
+            {/* <ThumbsUp className="w-5 h-5" /> */}
+            <IoMdHeartEmpty size="1.5em" />
             <span>{likes.length}</span>
-          </button>
+          </div>
         </div>
       </div>
     </div>
