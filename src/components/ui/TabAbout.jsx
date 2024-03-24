@@ -39,7 +39,7 @@ const TabAbout = () => {
       <div className="text-2xl font-semibold">{user.data.name}</div>
       {/* Bio */}
       <div className="text-xl text-muted-foreground text-pretty">
-        {user.data?.description}
+        {user.data?.description || "No description"}
       </div>
       {/* followers and following */}
       <div className="flex gap-5">

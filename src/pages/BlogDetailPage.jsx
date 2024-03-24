@@ -36,7 +36,15 @@ const BlogDetailPage = () => {
     queryKey: ["blogs", blogId],
     queryFn: async () => {
       const response = await instance.get(`/blogs/${blogId}`);
-      console.log(response.data);
+      return response.data;
+    },
+  });
+
+  // fetching the following of the author
+  const following = useQuery({
+    queryKey: ["users", "following", id],
+    queryFn: async () => {
+      const response = await instance.get(`/users/${id}/following`);
       return response.data;
     },
   });
@@ -73,10 +81,6 @@ const BlogDetailPage = () => {
       ),
 
     onSuccess: () => {
-      queryClient.refetchQueries({
-        queryKey: ["blogs", blogId],
-      });
-
       toast({
         title: "blog liked",
       });
@@ -103,6 +107,12 @@ const BlogDetailPage = () => {
         return prev;
       });
     },
+
+    onSettled: () => {
+      queryClient.refetchQueries({
+        queryKey: ["blogs", blogId],
+      });
+    },
   });
 
   // mutation query for unliking a blog
@@ -112,20 +122,18 @@ const BlogDetailPage = () => {
         headers: { Authorization: `Bearer ${token}` },
       }),
     onSuccess: () => {
-      queryClient.refetchQueries({
-        queryKey: ["blogs", blogId],
-      });
-
       toast({
         title: "blog unliked",
       });
     },
+
     onError: () => {
       toast({
         variant: "destructive",
         title: error.response.data || error.message || "something went wrong",
       });
     },
+
     onMutate: () => {
       queryClient.setQueryData(["blogs", blogId], (prev) => {
         if (prev) {
@@ -135,6 +143,58 @@ const BlogDetailPage = () => {
           };
         }
         return prev;
+      });
+    },
+
+    onSettled: () => {
+      queryClient.refetchQueries({
+        queryKey: ["blogs", blogId],
+      });
+    },
+  });
+
+  // mutation function to follow
+  const followUser = useMutation({
+    mutationFn: () =>
+      instance.post(
+        `/users/${data.user._id}/follow`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      ),
+    onSuccess: () => {
+      queryClient.refetchQueries([{ queryKey: ["blogs", blogId] }]);
+
+      toast({
+        title: "user followed",
+      });
+    },
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: error.response.data || error.message || "something went wrong",
+      });
+    },
+  });
+
+  // mutation function to unfollow
+  const unFollowUser = useMutation({
+    mutationFn: () =>
+      instance.delete(`/users/${data.user._id}/unfollow`, {
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+    onSuccess: () => {
+      queryClient.refetchQueries([{ queryKey: ["blogs", blogId] }]);
+
+      toast({
+        title: "user unfollowed",
+      });
+    },
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: error.response.data || error.message || "something went wrong",
       });
     },
   });
@@ -152,6 +212,16 @@ const BlogDetailPage = () => {
   // handle unlike
   const handleUnlike = () => {
     if (isAuthenticated) unLikeBlog.mutate();
+  };
+
+  // handle follow user
+  const handleFollow = () => {
+    if (isAuthenticated) followUser.mutate();
+  };
+
+  // handle unfollow user
+  const handleUnfollow = () => {
+    if (isAuthenticated) unFollowUser.mutate();
   };
 
   if (isLoading) return <BloagDetailSkeleton />;
@@ -179,6 +249,7 @@ const BlogDetailPage = () => {
           <div className="mb-5 text-xl text-muted-foreground">
             {data.description}
           </div>
+
           {/* avatar */}
           <div className="flex flex-wrap items-center justify-between">
             <div className="flex mb-5 space-x-4">
@@ -187,12 +258,47 @@ const BlogDetailPage = () => {
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <div className="flex flex-col space-y-0.5">
-                <Link
-                  to={`/users/${data.user._id}`}
-                  className="text-sm font-semibold"
-                >
-                  {data.user.name}
-                </Link>
+                <div className="flex gap-5 ">
+                  <Link
+                    to={`/users/${data.user._id}`}
+                    className="text-sm font-semibold"
+                  >
+                    {data.user.name}
+                  </Link>
+
+                  {/* follow and unfollow link */}
+                  {/* {isAuthenticated && data?.user?._id !== id && (
+                    <>
+                      {followers?.data?.followers?.includes(id) ? (
+                        <div
+                          className="text-sm font-semibold text-green-600 cursor-pointer hover:underline"
+                          onClick={handleUnfollow}
+                        >
+                          Following
+                        </div>
+                      ) : (
+                        <div
+                          className="mr-3 text-sm font-semibold text-green-600 cursor-pointer hover:underline"
+                          onClick={handleFollow}
+                        >
+                          Follow
+                        </div>
+                      )}
+                    </>
+                  )} */}
+
+                  {isAuthenticated && data?.user?._id !== id && (
+                    <div className="text-sm font-semibold text-green-600 cursor-pointer hover:underline">
+                      {following?.data?.following.some(
+                        (following) => (following._id = data?.user._id)
+                      ) ? (
+                        <div onClick={handleUnfollow}>Following</div>
+                      ) : (
+                        <div onClick={handleFollow}>Follow</div>
+                      )}
+                    </div>
+                  )}
+                </div>
                 <span className="text-xs text-muted-foreground">{date}</span>
               </div>
             </div>
