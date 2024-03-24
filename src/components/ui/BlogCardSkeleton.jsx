@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 const BlogCardSkeleton = () => {
   return (
     <>
-      <div className="flex flex-col max-w-sm p-4 space-y-3 overflow-hidden rounded-lg shadow">
+      <div className="flex flex-col max-w-[320px] p-4 space-y-3 overflow-hidden rounded-lg shadow">
         {/* card header skeleton */}
         <div className="flex items-center space-x-4">
           <Skeleton className="w-12 h-12 rounded-full" />

@@ -67,7 +67,10 @@ const CommentCard = ({ data }) => {
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <div className="flex flex-col space-y-0.5">
-              <Link to="#" className="text-sm font-semibold">
+              <Link
+                to={`/user/${data.user._id}`}
+                className="text-sm font-semibold"
+              >
                 {data.user.name}
               </Link>
               <span className="text-xs text-muted-foreground">{date}</span>

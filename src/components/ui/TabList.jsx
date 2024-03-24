@@ -14,7 +14,7 @@ const TabList = () => {
     queryFn: async () => {
       const response = await instance.get(`/blogs/user/${usersId}`);
       console.log(response);
-      return response;
+      return response.data;
     },
   });
 
@@ -39,7 +39,7 @@ const TabList = () => {
 
   return (
     <div>
-      <BlogList data={data.data} />
+      <BlogList data={data} />
     </div>
   );
 };

@@ -29,7 +29,7 @@ const BlogDetailPage = () => {
   const { toast } = useToast();
   const { blogId } = useParams();
   const navigate = useNavigate();
-  const { id, token } = userSlice();
+  const { id, token, isAuthenticated } = userSlice();
 
   // fetching the blog details
   const { data, error, isLoading } = useQuery({
@@ -105,6 +105,7 @@ const BlogDetailPage = () => {
     },
   });
 
+  // mutation query for unliking a blog
   const unLikeBlog = useMutation({
     mutationFn: () =>
       instance.delete(`/blogs/${blogId}/unlike`, {
@@ -145,12 +146,12 @@ const BlogDetailPage = () => {
 
   // handle like
   const handleLike = () => {
-    likeBlog.mutate();
+    if (isAuthenticated) likeBlog.mutate();
   };
 
   // handle unlike
   const handleUnlike = () => {
-    unLikeBlog.mutate();
+    if (isAuthenticated) unLikeBlog.mutate();
   };
 
   if (isLoading) return <BloagDetailSkeleton />;

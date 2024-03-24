@@ -5,6 +5,7 @@ import { userSlice } from "@/store/userSlice";
 import { useQuery } from "@tanstack/react-query";
 import { AlertCircle } from "lucide-react";
 import CommentCard from "./CommentCard";
+import CommentCardSkeleton from "./CommentCardSkeleton";
 
 const CommentList = () => {
   const instance = useAxios();
@@ -19,7 +20,7 @@ const CommentList = () => {
     },
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <CommentCardSkeleton />;
 
   if (error)
     return (
@@ -28,8 +29,6 @@ const CommentList = () => {
         <span className="underline">{error.response || error.message}</span>
       </div>
     );
-
-  console.log(data);
 
   if (data.length === 0) {
     return <div className="text-muted-foreground"> No comments yet</div>;
