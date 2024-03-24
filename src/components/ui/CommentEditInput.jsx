@@ -37,7 +37,13 @@ const CommentEditInput = ({ input, setShowEditInput }) => {
       });
       queryClient.refetchQueries("comments", "blogs");
     },
-    onError: () => {},
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Errro",
+        descritpion: error.response?.data || error.message,
+      });
+    },
   });
 
   //   function to update the comment

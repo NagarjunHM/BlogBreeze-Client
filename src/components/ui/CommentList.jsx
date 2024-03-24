@@ -32,7 +32,7 @@ const CommentList = () => {
   console.log(data);
 
   if (data.length === 0) {
-    return <div> No comments yet</div>;
+    return <div className="text-muted-foreground"> No comments yet</div>;
   }
 
   return (

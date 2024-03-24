@@ -13,9 +13,8 @@ const BlogCard = ({ data }) => {
   // function to format date
   const date = formatDate(createdAt);
 
-  console.log(data);
   return (
-    <div className="flex flex-col  p-4 space-y-3 overflow-hidden h-full self-stretch shadow border border-black rounded-lg  w-[320px]">
+    <div className="flex flex-col  p-4 space-y-3 shadow-xl overflow-hidden h-full self-stretch  border border-black rounded-lg  w-[320px]">
       {/* card header */}
       <div className="flex space-x-4 ">
         <Avatar>
@@ -23,7 +22,10 @@ const BlogCard = ({ data }) => {
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
         <div className="flex flex-col space-y-0.5">
-          <Link to="#" className="text-sm font-semibold">
+          <Link
+            to={`/users/${data.user._id}`}
+            className="text-sm font-semibold"
+          >
             {user.name}
           </Link>
           <span className="text-xs text-muted-foreground">{date}</span>

@@ -64,7 +64,8 @@ const CommentInput = () => {
   return (
     <div>
       {isPending && <InfiniteProgressBar />}
-      <div className="flex flex-col gap-4 py-4">
+      <div className="flex flex-col gap-5 ">
+        <div className="text-muted-foreground">What are your thoughts?</div>
         {formError ? (
           <li className="text-sm text-red-600">{formError}</li>
         ) : (

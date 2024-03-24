@@ -25,15 +25,14 @@ const Comment = () => {
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Comments</SheetTitle>
-          <SheetDescription>What are your thoughts</SheetDescription>
         </SheetHeader>
         {isAuthenticated && (
-          <div className="mt-2">
+          <div className="mt-5">
             <CommentInput />
           </div>
         )}
 
-        <div className="mt-2">
+        <div className="mt-5">
           <CommentList />
         </div>
         <SheetFooter></SheetFooter>

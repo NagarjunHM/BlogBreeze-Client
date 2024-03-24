@@ -32,10 +32,10 @@ const CommentCard = ({ data }) => {
         },
       }),
     onSuccess: () => {
-      queryClient.refetchQueries("comments", "blogs");
       toast({
         title: "Comment deleted successful",
       });
+      queryClient.refetchQueries("comments", "blogs");
     },
     onError: () => {
       toast({

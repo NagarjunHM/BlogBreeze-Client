@@ -5,7 +5,7 @@ import NavBar from "@/components/ui/NavBar";
 
 const LayoutPage = () => {
   return (
-    <div className="size-full">
+    <div className="size-full scroll-smooth">
       <NavBar />
       <Toaster />
       <Outlet />

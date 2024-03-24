@@ -36,6 +36,7 @@ const BlogDetailPage = () => {
     queryKey: ["blogs", blogId],
     queryFn: async () => {
       const response = await instance.get(`/blogs/${blogId}`);
+      console.log(response.data);
       return response.data;
     },
   });
@@ -63,17 +64,47 @@ const BlogDetailPage = () => {
   // mutation query for liking a blog
   const likeBlog = useMutation({
     mutationFn: () =>
-      instance.post(`/blogs/${blogId}/like`, {
-        headers: { Authorization: `Bearer ${token}` },
-      }),
+      instance.post(
+        `/blogs/${blogId}/like`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      ),
+
     onSuccess: () => {
       queryClient.refetchQueries({
         queryKey: ["blogs", blogId],
       });
+
+      toast({
+        title: "blog liked",
+      });
+    },
+
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: error.response.data || error.message || "something went wrong",
+      });
+    },
+
+    onMutate: async () => {
+      // Optimistically update the local cache
+      queryClient.setQueryData(["blogs", blogId], (prev) => {
+        if (prev) {
+          return {
+            ...prev,
+
+            // Simulate adding a like optimistically
+            likes: [...prev.likes, { _id: id }],
+          };
+        }
+        return prev;
+      });
     },
   });
 
-  // mutation query for liking a blog
   const unLikeBlog = useMutation({
     mutationFn: () =>
       instance.delete(`/blogs/${blogId}/unlike`, {
@@ -82,6 +113,27 @@ const BlogDetailPage = () => {
     onSuccess: () => {
       queryClient.refetchQueries({
         queryKey: ["blogs", blogId],
+      });
+
+      toast({
+        title: "blog unliked",
+      });
+    },
+    onError: () => {
+      toast({
+        variant: "destructive",
+        title: error.response.data || error.message || "something went wrong",
+      });
+    },
+    onMutate: () => {
+      queryClient.setQueryData(["blogs", blogId], (prev) => {
+        if (prev) {
+          return {
+            ...prev,
+            likes: prev.likes.filter((likeId) => likeId._id !== id),
+          };
+        }
+        return prev;
       });
     },
   });
@@ -118,7 +170,7 @@ const BlogDetailPage = () => {
     <>
       {deleteBlog.isPending && <InfiniteProgressBar />}
       <div className="flex justify-center mx-5 mt-10 mb-10 lg:mx-0">
-        <div className="w-[800px] overflow">
+        <div className="w-[800px] overflow-hidden">
           {/* blog title */}
           <div className="mb-5 text-5xl font-semibold">{data.title}</div>
 
@@ -134,7 +186,10 @@ const BlogDetailPage = () => {
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <div className="flex flex-col space-y-0.5">
-                <Link to="#" className="text-sm font-semibold">
+                <Link
+                  to={`/users/${data.user._id}`}
+                  className="text-sm font-semibold"
+                >
                   {data.user.name}
                 </Link>
                 <span className="text-xs text-muted-foreground">{date}</span>
@@ -200,7 +255,7 @@ const BlogDetailPage = () => {
                 <span>{data.comments.length}</span>
               </button>
 
-              {data.likes.some((like) => like.user === id) ? (
+              {data.likes.some((like) => like._id === id) ? (
                 <button
                   type="button"
                   className="flex items-center p-1 space-x-1.5"

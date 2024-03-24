@@ -11,7 +11,7 @@ const BlogList = ({ data }) => {
       </div>
     );
   return (
-    <div className="flex flex-wrap items-stretch h-[400px] gap-3">
+    <div className="flex flex-wrap items-stretch h-[400px] gap-5">
       {data.map((data) => (
         <div key={data._id}>
           <BlogCard data={data} />

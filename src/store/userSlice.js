@@ -5,7 +5,7 @@ export const userSlice = create(
   persist(
     (set, get) => ({
       isAuthenticated: false,
-      token: "hello",
+      token: "",
       email: "",
       id: "",
       name: "",

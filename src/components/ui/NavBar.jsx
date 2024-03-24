@@ -24,7 +24,7 @@ import useAxios from "@/hooks/useAxios";
 
 const Navbar = () => {
   const instance = useAxios();
-  const { isAuthenticated, resetValues } = userSlice();
+  const { isAuthenticated, resetValues, id } = userSlice();
   const navigate = useNavigate();
 
   // function to logout the user
@@ -41,7 +41,7 @@ const Navbar = () => {
   return (
     <>
       {isAuthenticated ? (
-        <div className="h-[57px]  flex items-center border-b border-black justify-between px-10 sticky top-0 backdrop-blur-xl z-10">
+        <div className="h-[57px]  flex items-center border-b shadow-lg border-black justify-between px-10 sticky top-0 backdrop-blur-xl z-10">
           <div className="text-3xl tracking-tight cursor-pointer">
             <Link to="/">BlogBreeze</Link>
           </div>
@@ -69,7 +69,7 @@ const Navbar = () => {
                       Write
                     </DropdownMenuItem>
                   </Link>
-                  <Link to="/">
+                  <Link to={`/users/${id}`}>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem className="text-lg text-muted-foreground">
                       <User className="w-5 h-5 mr-3" />
@@ -108,6 +108,9 @@ const Navbar = () => {
           <div className="text-3xl tracking-tight cursor-pointer">
             <Link to="/">BlogBreeze</Link>
           </div>
+          <Link to="/login">
+            <Button>Log in</Button>
+          </Link>
         </div>
       )}
     </>
