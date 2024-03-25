@@ -47,7 +47,8 @@ const Navbar = () => {
           </div>
 
           <div className="flex flex-row items-center gap-8">
-            <div>
+            <div className="flex items-center gap-3">
+              <div className="hidden text-sm sm:block">{name}</div>
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <Avatar>

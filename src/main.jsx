@@ -15,7 +15,6 @@ import PageNotFound from "./pages/PageNotFound";
 import Create_Blog from "./pages/Create_Blog";
 import ProtectedRoute from "../routes/ProtectedRoute";
 import PublicRoute from "../routes/PublicRoute";
-
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Edit_Blog from "./pages/Edit_Blog";
 
@@ -34,7 +33,10 @@ const router = createBrowserRouter([
         element: <BlogDetailPage />,
       },
       { path: "/tags/:tagId", element: <TagDetailPage /> },
-      { path: "/users/:usersId", element: <UserProfilePage /> },
+      {
+        path: "/users/:usersId",
+        element: <UserProfilePage />,
+      },
       {
         path: "/login",
         element: (

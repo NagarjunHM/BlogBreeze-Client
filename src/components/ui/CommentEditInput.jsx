@@ -14,6 +14,7 @@ const CommentEditInput = ({ input, setShowEditInput }) => {
   const { token } = userSlice();
   const { toast } = useToast();
 
+  console.log(input);
   const handleInput = (e) => {
     setFormData(e.target.value);
   };
@@ -35,8 +36,11 @@ const CommentEditInput = ({ input, setShowEditInput }) => {
       toast({
         title: "comment updated",
       });
-      queryClient.refetchQueries("comments", "blogs");
+      queryClient.refetchQueries({
+        queryKey: ["comments"],
+      });
     },
+
     onError: (error) => {
       toast({
         variant: "destructive",
@@ -52,9 +56,11 @@ const CommentEditInput = ({ input, setShowEditInput }) => {
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 mx-3">
       {isPending && <InfiniteProgressBar />}
+
       <Textarea name="content" value={formData} onChange={handleInput} />
+
       <div className="text-right">
         <Button onClick={handleUpdate}>Update</Button>
       </div>

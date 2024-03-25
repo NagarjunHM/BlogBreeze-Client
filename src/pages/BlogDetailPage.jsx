@@ -42,11 +42,12 @@ const BlogDetailPage = () => {
 
   // fetching the following of the author
   const following = useQuery({
-    queryKey: ["users", "following", id],
+    queryKey: ["following", id],
     queryFn: async () => {
       const response = await instance.get(`/users/${id}/following`);
       return response.data;
     },
+    enabled: !!id,
   });
 
   // handle blog Edit function
@@ -79,12 +80,6 @@ const BlogDetailPage = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       ),
-
-    onSuccess: () => {
-      toast({
-        title: "blog liked",
-      });
-    },
 
     onError: (error) => {
       toast({
@@ -121,11 +116,6 @@ const BlogDetailPage = () => {
       instance.delete(`/blogs/${blogId}/unlike`, {
         headers: { Authorization: `Bearer ${token}` },
       }),
-    onSuccess: () => {
-      toast({
-        title: "blog unliked",
-      });
-    },
 
     onError: () => {
       toast({
@@ -163,17 +153,29 @@ const BlogDetailPage = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       ),
-    onSuccess: () => {
-      queryClient.refetchQueries([{ queryKey: ["blogs", blogId] }]);
 
-      toast({
-        title: "user followed",
-      });
-    },
     onError: (error) => {
       toast({
         variant: "destructive",
         title: error.response.data || error.message || "something went wrong",
+      });
+    },
+    onMutate: () => {
+      // Optimistically update the local cache
+      queryClient.setQueryData(["following", id], (prev) => {
+        console.log(prev);
+        if (prev) {
+          return {
+            ...prev,
+            following: [...prev.following, { _id: data?.user?._id }],
+          };
+        }
+        return prev;
+      });
+    },
+    onSettled: () => {
+      queryClient.refetchQueries({
+        queryKey: ["blogs", blogId],
       });
     },
   });
@@ -184,17 +186,31 @@ const BlogDetailPage = () => {
       instance.delete(`/users/${data.user._id}/unfollow`, {
         headers: { Authorization: `Bearer ${token}` },
       }),
-    onSuccess: () => {
-      queryClient.refetchQueries([{ queryKey: ["blogs", blogId] }]);
 
-      toast({
-        title: "user unfollowed",
-      });
-    },
     onError: (error) => {
       toast({
         variant: "destructive",
         title: error.response.data || error.message || "something went wrong",
+      });
+    },
+    onMutate: () => {
+      // Optimistically update the local cache
+      queryClient.setQueryData(["following", id], (prev) => {
+        console.log(prev);
+        if (prev) {
+          return {
+            ...prev,
+            following: prev.following.filter(
+              (author) => author._id !== data?.user?._id
+            ),
+          };
+        }
+        return prev;
+      });
+    },
+    onSettled: () => {
+      queryClient.refetchQueries({
+        queryKey: ["blogs", blogId],
       });
     },
   });
@@ -255,7 +271,7 @@ const BlogDetailPage = () => {
             <div className="flex mb-5 space-x-4">
               <Avatar>
                 <AvatarImage src="" alt="@shadcn" />
-                <AvatarFallback>CN</AvatarFallback>
+                <AvatarFallback>{data.user.name.slice(0, 2)}</AvatarFallback>
               </Avatar>
               <div className="flex flex-col space-y-0.5">
                 <div className="flex gap-5 ">
@@ -267,30 +283,10 @@ const BlogDetailPage = () => {
                   </Link>
 
                   {/* follow and unfollow link */}
-                  {/* {isAuthenticated && data?.user?._id !== id && (
-                    <>
-                      {followers?.data?.followers?.includes(id) ? (
-                        <div
-                          className="text-sm font-semibold text-green-600 cursor-pointer hover:underline"
-                          onClick={handleUnfollow}
-                        >
-                          Following
-                        </div>
-                      ) : (
-                        <div
-                          className="mr-3 text-sm font-semibold text-green-600 cursor-pointer hover:underline"
-                          onClick={handleFollow}
-                        >
-                          Follow
-                        </div>
-                      )}
-                    </>
-                  )} */}
-
                   {isAuthenticated && data?.user?._id !== id && (
                     <div className="text-sm font-semibold text-green-600 cursor-pointer hover:underline">
                       {following?.data?.following.some(
-                        (following) => (following._id = data?.user._id)
+                        (following) => (following._id = data?.user?._id)
                       ) ? (
                         <div onClick={handleUnfollow}>Following</div>
                       ) : (

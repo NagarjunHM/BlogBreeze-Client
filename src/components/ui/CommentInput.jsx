@@ -35,13 +35,18 @@ const CommentInput = () => {
           },
         }
       ),
+
     onSuccess: () => {
-      setFormData("");
       toast({
         title: "Comment added",
       });
-      queryClient.refetchQueries("comments", "blogs");
+      queryClient.refetchQueries({
+        queryKey: ["comments"],
+      });
+      setFormData("");
+      setFormError("");
     },
+
     onError: (error) => {
       toast({
         variant: "destructive",

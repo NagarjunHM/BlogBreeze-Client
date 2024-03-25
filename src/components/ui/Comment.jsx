@@ -16,23 +16,23 @@ import { userSlice } from "@/store/userSlice";
 const Comment = () => {
   const { isAuthenticated } = userSlice();
   return (
-    <Sheet>
+    <Sheet variant="bottom">
       <SheetTrigger asChild>
         <div>
           <MessageCircleMore />
         </div>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="overflow-auto ">
         <SheetHeader>
           <SheetTitle>Comments</SheetTitle>
         </SheetHeader>
         {isAuthenticated && (
-          <div className="mt-5">
+          <div className="mt-5 mr-5">
             <CommentInput />
           </div>
         )}
 
-        <div className="mt-5">
+        <div className="mt-5 overflow-auto">
           <CommentList />
         </div>
         <SheetFooter></SheetFooter>

@@ -1,15 +1,17 @@
 import React from "react";
-import { Button } from "./button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import useAxios from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { Skeleton } from "./skeleton";
+import { Link } from "react-router-dom";
 import UserProfileSkeleton from "./UserProfileSkeleton";
+import { Button } from "./button";
+import { userSlice } from "@/store/userSlice";
 
 const TabAbout = () => {
   const instance = useAxios();
   const { usersId } = useParams();
+  const { isAuthenticated } = userSlice();
 
   // fetch all following
   const user = useQuery({
@@ -19,8 +21,6 @@ const TabAbout = () => {
       return response.data;
     },
   });
-
-  console.log(user.data);
 
   if (user.isLoading) return <UserProfileSkeleton />;
 
@@ -37,15 +37,24 @@ const TabAbout = () => {
       </div>
       {/* name */}
       <div className="text-2xl font-semibold">{user.data.name}</div>
+
       {/* Bio */}
-      <div className="text-xl text-muted-foreground text-pretty">
+      <div className=" text-muted-foreground text-pretty">
         {user.data?.description || "No description"}
       </div>
+
       {/* followers and following */}
-      <div className="flex gap-5">
-        <Button>Followers &nbsp; {user.data?.followers.length}</Button>
-        <Button>Following &nbsp; {user.data?.following.length}</Button>
+      <div className="flex gap-5 font-semibold text-green-600">
+        <div className="">{user.data?.followers.length}&nbsp;Followers</div>
+        <div className="">{user.data?.following.length}&nbsp;Following</div>
       </div>
+
+      {/* follow unfollow button */}
+      {isAuthenticated && (
+        <div>
+          <Button variant="outline">Follow&nbsp;</Button>
+        </div>
+      )}
     </div>
   );
 };

@@ -18,14 +18,6 @@ const TabList = () => {
     },
   });
 
-  // loading
-  if (isLoading)
-    return (
-      <div className="m-5">
-        <BlogCardSkeleton />
-      </div>
-    );
-
   // error
   if (error)
     return (
@@ -39,7 +31,8 @@ const TabList = () => {
 
   return (
     <div>
-      <BlogList data={data} />
+      <div className="mb-10 text-5xl font-semibold">Stories</div>
+      {isLoading ? <BlogCardSkeleton /> : <BlogList data={data} />}
     </div>
   );
 };

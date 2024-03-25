@@ -35,7 +35,9 @@ const CommentCard = ({ data }) => {
       toast({
         title: "Comment deleted successful",
       });
-      queryClient.refetchQueries("comments", "blogs");
+      queryClient.refetchQueries({
+        queryKey: ["comments"],
+      });
     },
     onError: () => {
       toast({
@@ -68,7 +70,7 @@ const CommentCard = ({ data }) => {
             </Avatar>
             <div className="flex flex-col space-y-0.5">
               <Link
-                to={`/user/${data.user._id}`}
+                to={`/users/${data.user._id}`}
                 className="text-sm font-semibold"
               >
                 {data.user.name}
