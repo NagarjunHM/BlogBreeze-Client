@@ -38,6 +38,9 @@ const CommentCard = ({ data }) => {
       queryClient.refetchQueries({
         queryKey: ["comments"],
       });
+      queryClient.refetchQueries({
+        queryKey: ["blogs"],
+      });
     },
     onError: () => {
       toast({
@@ -66,7 +69,7 @@ const CommentCard = ({ data }) => {
           <div className="flex mb-5 space-x-4">
             <Avatar>
               <AvatarImage src="" alt="@shadcn" />
-              <AvatarFallback>CN</AvatarFallback>
+              <AvatarFallback>{data.user.name.slice(0, 2)}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col space-y-0.5">
               <Link

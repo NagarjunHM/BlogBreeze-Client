@@ -43,6 +43,9 @@ const CommentInput = () => {
       queryClient.refetchQueries({
         queryKey: ["comments"],
       });
+      queryClient.refetchQueries({
+        queryKey: ["blogs"],
+      });
       setFormData("");
       setFormError("");
     },

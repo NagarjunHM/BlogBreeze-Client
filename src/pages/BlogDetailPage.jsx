@@ -240,7 +240,12 @@ const BlogDetailPage = () => {
     if (isAuthenticated) unFollowUser.mutate();
   };
 
-  if (isLoading) return <BloagDetailSkeleton />;
+  if (isLoading)
+    return (
+      <div>
+        <BloagDetailSkeleton />
+      </div>
+    );
 
   // error
   if (error)
@@ -286,7 +291,7 @@ const BlogDetailPage = () => {
                   {isAuthenticated && data?.user?._id !== id && (
                     <div className="text-sm font-semibold text-green-600 cursor-pointer hover:underline">
                       {following?.data?.following.some(
-                        (following) => (following._id = data?.user?._id)
+                        (following) => following._id == data?.user?._id
                       ) ? (
                         <div onClick={handleUnfollow}>Following</div>
                       ) : (

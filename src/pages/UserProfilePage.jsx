@@ -7,9 +7,9 @@ import UserFollowing from "../components/ui/UserFollowing";
 
 const UserProfilePage = () => {
   return (
-    <div className="flex gap-10 m-10">
+    <div className="flex flex-col gap-10 m-10 lg:flex-row">
       {/* user about */}
-      <div className="w-[300px] lg:block hidden">
+      <div className="w-[300px] ">
         <TabAbout />
       </div>
 

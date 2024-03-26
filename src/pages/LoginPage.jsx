@@ -205,7 +205,7 @@ const LoginPage = () => {
                     className="text-xl text-green-600"
                     disabled={isPending}
                   >
-                    Sign in
+                    Sign up
                   </Button>
                 </Link>
               </div>

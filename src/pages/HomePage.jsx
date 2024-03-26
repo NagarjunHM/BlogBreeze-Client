@@ -19,7 +19,7 @@ const HomePage = () => {
   // loading
   if (isLoading)
     return (
-      <div className="m-5">
+      <div className="m-10">
         <BlogCardSkeleton />
       </div>
     );

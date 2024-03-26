@@ -244,7 +244,7 @@ const registerPage = () => {
                 <Link to="/login">
                   <Button
                     variant="link"
-                    className="text-xl text-green-500"
+                    className="text-xl text-green-600"
                     disabled={isPending}
                   >
                     Sign in

@@ -16,10 +16,6 @@ const UserCard = ({ user }) => {
         </Link>
         <div className="text-sm text-muted-foreground">{user?.description}</div>
       </div>
-
-      <div className="text-sm font-semibold text-green-600 cursor-pointer hover:underline">
-        Follow
-      </div>
     </div>
   );
 };
