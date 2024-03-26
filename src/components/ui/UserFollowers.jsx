@@ -22,29 +22,29 @@ const UserFollowers = () => {
   });
 
   // fetch logged in user's followers
-  const currentUserFollowers = useQuery({
-    queryKey: ["followers", id],
+  const currentUserFollowing = useQuery({
+    queryKey: ["following", id],
     queryFn: async () => {
-      const response = await instance.get(`users/${id}/followers`);
+      const response = await instance.get(`users/${id}/following`);
       return response?.data;
     },
     enabled: isAuthenticated,
   });
 
   // error
-  if (profileFollowers.error || currentUserFollowers.error)
+  if (profileFollowers.error || currentUserFollowing.error)
     return (
       <div className="flex  gap-4 text-red-600 space-y-1.5 items-end m-5">
         <AlertCircle />
         <span className="underline">
           {profileFollowers?.error?.response ||
-            currentUserFollowers?.error?.message}
+            currentUserFollowing?.error?.message}
         </span>
       </div>
     );
 
   const isLoading =
-    profileFollowers.isLoading || currentUserFollowers.isLoading;
+    profileFollowers.isLoading || currentUserFollowing.isLoading;
 
   return (
     <div>
@@ -58,7 +58,7 @@ const UserFollowers = () => {
         <UserList
           profileUser={profileFollowers.data?.followers}
           currentUser={
-            isAuthenticated ? currentUserFollowers.data?.followers : []
+            isAuthenticated ? currentUserFollowing.data?.following : []
           }
         />
       )}

@@ -1,10 +1,102 @@
 import React from "react";
 import UserCard from "./UserCard";
 import { userSlice } from "@/store/userSlice";
+import { useMutation } from "@tanstack/react-query";
+import useAxios from "@/hooks/useAxios";
+import { useToast } from "./use-toast";
+import { useParams } from "react-router-dom";
+import { queryClient } from "@/main";
 
 const UserList = ({ profileUser, currentUser }) => {
-  // getting logged in user id
-  const { id } = userSlice();
+  const instance = useAxios();
+  const { toast } = useToast();
+  const { usersId } = useParams();
+  const { id, isAuthenticated, token, name } = userSlice();
+
+  console.log(profileUser, currentUser);
+
+  // mutation function to follow user
+  const followUser = useMutation({
+    mutationFn: (user) =>
+      instance.post(
+        `users/${user._id}/follow`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      ),
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: error.response.data || error.message || "something went wrong",
+      });
+    },
+    onMutate: (user) => {
+      queryClient.setQueryData(["following", id], (prev) => {
+        if (prev) {
+          return {
+            ...prev,
+            following: [...prev.following, { _id: user._id, name: user.name }],
+          };
+        }
+        return prev;
+      });
+    },
+    onSettled: () => {
+      queryClient.refetchQueries({
+        queryKey: ["followers"],
+      });
+      queryClient.refetchQueries({
+        queryKey: ["following"],
+      });
+    },
+  });
+
+  // mutation function to unfollow user
+  const unFollowUser = useMutation({
+    mutationFn: (user) =>
+      instance.delete(`users/${user._id}/unfollow`, {
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: error.response.data || error.message || "something went wrong",
+      });
+    },
+    onMutate: (user) => {
+      // Optimistically update the local cache
+      queryClient.setQueryData(["following", id], (prev) => {
+        if (prev) {
+          return {
+            ...prev,
+            following: prev.following.filter(
+              (author) => author._id !== user._id
+            ),
+          };
+        }
+        return prev;
+      });
+    },
+    onSettled: () => {
+      queryClient.refetchQueries({
+        queryKey: ["followers"],
+      });
+      queryClient.refetchQueries({
+        queryKey: ["following"],
+      });
+    },
+  });
+
+  // function to handle user unfollow
+  const handleUnfollow = (user) => {
+    followUser.mutate(user);
+  };
+
+  // function to handle user follow
+  const handleFollow = (user) => {
+    unFollowUser.mutate(user);
+  };
 
   const isFollowing = (userId) => {
     return currentUser.some((user) => user._id === userId);
@@ -18,16 +110,22 @@ const UserList = ({ profileUser, currentUser }) => {
 
     if (isUserFollowed) {
       return (
-        <div className="text-sm font-bold text-green-600 cursor-pointer hover:underline">
+        <div
+          className="text-sm font-bold text-green-600 cursor-pointer hover:underline"
+          onClick={() => handleFollow(user)}
+        >
           Following
         </div>
-      ); // Render 'Following' button if user is followed
+      );
     } else {
       return (
-        <div className="text-sm font-bold text-green-600 cursor-pointer hover:underline">
+        <div
+          className="text-sm font-bold text-green-600 cursor-pointer hover:underline"
+          onClick={() => handleUnfollow(user)}
+        >
           Follow
         </div>
-      ); // Render 'Follow' button if user is not followed
+      );
     }
   };
 
@@ -39,11 +137,11 @@ const UserList = ({ profileUser, currentUser }) => {
     );
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5 ">
       {profileUser.map((user, index) => (
-        <div key={index} className="flex gap-5">
+        <div key={index} className="flex items-center gap-5">
           <UserCard user={user} />
-          {/* {renderFollowButton(user)} */}
+          {renderFollowButton(user)}
         </div>
       ))}
     </div>
