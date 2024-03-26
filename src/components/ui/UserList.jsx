@@ -90,12 +90,12 @@ const UserList = ({ profileUser, currentUser }) => {
 
   // function to handle user unfollow
   const handleUnfollow = (user) => {
-    followUser.mutate(user);
+    if (isAuthenticated) followUser.mutate(user);
   };
 
   // function to handle user follow
   const handleFollow = (user) => {
-    unFollowUser.mutate(user);
+    if (isAuthenticated) unFollowUser.mutate(user);
   };
 
   const isFollowing = (userId) => {
