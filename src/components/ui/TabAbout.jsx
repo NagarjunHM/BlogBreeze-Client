@@ -7,6 +7,8 @@ import UserProfileSkeleton from "./UserProfileSkeleton";
 import { userSlice } from "@/store/userSlice";
 import { queryClient } from "@/main";
 import { useToast } from "./use-toast";
+import EditUserDetails from "./EditUserDetails";
+import { Button } from "./button";
 
 const TabAbout = () => {
   const instance = useAxios();
@@ -125,7 +127,7 @@ const TabAbout = () => {
     return <UserProfileSkeleton />;
 
   return (
-    <div className="flex flex-col gap-5 max-w-[800px]">
+    <div className="flex flex-col gap-5 ">
       {/* avatar */}
       <div>
         <Avatar className="w-40 h-40">
@@ -136,10 +138,12 @@ const TabAbout = () => {
         </Avatar>
       </div>
       {/* name */}
-      <div className="flex items-end gap-3">
+      <div className="flex items-baseline gap-3">
         <div className="text-2xl font-semibold">{user.data.name}</div>
 
         {/* follow unfollow button */}
+        {isAuthenticated && user.data._id === id && <EditUserDetails />}
+
         {isAuthenticated &&
           user.data._id !== id &&
           (userFollowers?.data?.followers?.some(
@@ -160,10 +164,9 @@ const TabAbout = () => {
             </div>
           ))}
       </div>
-      {/* Bio */}
-      <div className=" text-muted-foreground text-pretty">
-        {user.data?.description || "No description"}
-      </div>
+
+      {/* about */}
+      <div className="text-muted-foreground">{user?.data?.about || <></>}</div>
 
       {/* followers and following */}
       <div className="flex gap-5 font-semibold ">

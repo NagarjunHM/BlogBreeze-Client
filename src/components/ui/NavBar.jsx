@@ -24,7 +24,8 @@ import useAxios from "@/hooks/useAxios";
 
 const Navbar = () => {
   const instance = useAxios();
-  const { isAuthenticated, resetValues, id, name } = userSlice();
+  const { isAuthenticated, resetValues, id, name, profilePicture } =
+    userSlice();
   const navigate = useNavigate();
 
   // function to logout the user
@@ -53,7 +54,7 @@ const Navbar = () => {
                 <DropdownMenuTrigger>
                   <Avatar>
                     <AvatarImage
-                      // src="https://github.com/shadcn.png"
+                      src={`http://localhost:5000/${profilePicture}`}
                       alt="@shadcn"
                     />
                     <AvatarFallback>{name.slice(0, 2)}</AvatarFallback>

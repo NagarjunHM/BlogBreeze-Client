@@ -96,7 +96,8 @@ const LoginPage = () => {
         res.data.token,
         res.data.email,
         res.data.name,
-        res.data.id
+        res.data.id,
+        res?.data?.profilePicture
       );
       navigate("/", { replace: true });
       toast({

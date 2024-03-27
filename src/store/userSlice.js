@@ -9,6 +9,7 @@ export const userSlice = create(
       email: "",
       id: "",
       name: "",
+      profilePicture: "",
       newBlog: {
         title: "",
         picture: "",
@@ -17,8 +18,8 @@ export const userSlice = create(
       },
 
       // user auth
-      loginUser: (isAuthenticated, token, email, name, id) => {
-        set({ isAuthenticated, token, email, name, id });
+      loginUser: (isAuthenticated, token, email, name, id, profilePicture) => {
+        set({ isAuthenticated, token, email, name, id, profilePicture });
       },
 
       // to add blog data
@@ -60,6 +61,7 @@ export const userSlice = create(
           id: "",
           email: "",
           token: "",
+          profilePicture: "",
         });
       },
     }),
