@@ -1,14 +1,7 @@
 import React from "react";
 import { Button } from "./button";
 import { Link } from "react-router-dom";
-import {
-  User,
-  Library,
-  FileText,
-  Settings,
-  LogOut,
-  SquarePen,
-} from "lucide-react";
+import { Library, FileText, Settings, LogOut, SquarePen } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -21,6 +14,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { userSlice } from "@/store/userSlice";
 import useAxios from "@/hooks/useAxios";
+import { CiUser } from "react-icons/ci";
+import { PiBooksThin } from "react-icons/pi";
 
 const Navbar = () => {
   const instance = useAxios();
@@ -42,7 +37,7 @@ const Navbar = () => {
   return (
     <>
       {isAuthenticated ? (
-        <div className="h-[57px]  flex items-center border-b shadow-lg border-black justify-between px-10 sticky top-0 backdrop-blur-xl z-10">
+        <div className="h-[57px]  flex items-center border-b shadow justify-between px-10 sticky top-0 backdrop-blur-xl z-10">
           <div className="text-3xl tracking-tight cursor-pointer">
             <Link to="/">BlogBreeze</Link>
           </div>
@@ -60,41 +55,45 @@ const Navbar = () => {
                     <AvatarFallback>{name.slice(0, 2)}</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
-                  {/* <DropdownMenuLabel>
-                    <p className="text-lg">My Account</p>
-                  </DropdownMenuLabel> */}
-                  {/* <DropdownMenuSeparator /> */}
+                <DropdownMenuContent className=" w-60">
                   <Link to="/create-blog">
-                    <DropdownMenuItem className="text-lg text-muted-foreground">
-                      <SquarePen className="w-5 h-5 mr-3" />
-                      Write
+                    <DropdownMenuItem className="flex items-baseline text-xl">
+                      <SquarePen className="w-4 h-4 mr-3" />
+                      Write blog
                     </DropdownMenuItem>
                   </Link>
+
+                  <Link to="/create-tag">
+                    <DropdownMenuItem className="flex items-baseline text-xl">
+                      <SquarePen className="w-4 h-4 mr-3" />
+                      Create tag
+                    </DropdownMenuItem>
+                  </Link>
+
+                  <DropdownMenuSeparator />
                   <Link to={`/users/${id}`}>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem className="text-lg text-muted-foreground">
-                      <User className="w-5 h-5 mr-3" />
+                    <DropdownMenuItem className="flex items-center text-xl">
+                      <CiUser className="mr-3 " />
                       Profile
                     </DropdownMenuItem>
                   </Link>
-                  <DropdownMenuItem className="text-lg text-muted-foreground">
-                    <Library className="w-4 h-4 mr-3" />
+                  <DropdownMenuItem className="flex items-baseline text-xl">
+                    <PiBooksThin className="mr-3" />
                     Library
                   </DropdownMenuItem>
                   <Link to="/stories">
-                    <DropdownMenuItem className="text-lg text-muted-foreground">
+                    <DropdownMenuItem className="flex items-baseline text-xl">
                       <FileText className="w-4 h-4 mr-3" />
                       Stories
                     </DropdownMenuItem>
                   </Link>
-                  <DropdownMenuItem className="text-lg text-muted-foreground">
+                  <DropdownMenuItem className="flex items-baseline text-xl">
                     <Settings className="w-4 h-4 mr-3" />
                     Settings
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    className="text-lg text-muted-foreground"
+                    className="flex items-baseline text-xl"
                     onClick={logoutUser}
                   >
                     <LogOut className="w-4 h-4 mr-3" />

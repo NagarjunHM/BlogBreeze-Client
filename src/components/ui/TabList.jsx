@@ -31,7 +31,7 @@ const TabList = () => {
 
   return (
     <div>
-      <div className="mb-10 text-5xl font-semibold">Stories</div>
+      <div className="mb-10 text-3xl font-semibold">Stories</div>
       {isLoading ? <BlogCardSkeleton /> : <BlogList data={data} />}
     </div>
   );

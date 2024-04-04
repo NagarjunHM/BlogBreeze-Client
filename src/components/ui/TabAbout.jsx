@@ -142,7 +142,7 @@ const TabAbout = () => {
         <div className="text-2xl font-semibold">{user.data.name}</div>
 
         {/* follow unfollow button */}
-        {isAuthenticated && user.data._id === id && <EditUserDetails />}
+        {/* {isAuthenticated && user.data._id === id && <EditUserDetails />} */}
 
         {isAuthenticated &&
           user.data._id !== id &&
@@ -166,7 +166,9 @@ const TabAbout = () => {
       </div>
 
       {/* about */}
-      <div className="text-muted-foreground">{user?.data?.about || <></>}</div>
+      {user?.data?.about && (
+        <div className="text-muted-foreground">{user.data.about || <></>}</div>
+      )}
 
       {/* followers and following */}
       <div className="flex gap-5 font-semibold ">

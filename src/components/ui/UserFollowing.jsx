@@ -45,7 +45,7 @@ const UserFollowing = () => {
 
   return (
     <div>
-      <div className="flex items-center gap-3 mb-10 text-5xl font-semibold">
+      <div className="flex items-center gap-3 mb-10 text-3xl font-semibold">
         <div>Following</div>
         <div>{profileFollowing.data?.following?.length}</div>
       </div>

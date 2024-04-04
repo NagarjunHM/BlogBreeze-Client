@@ -11,6 +11,8 @@ import { useParams } from "react-router-dom";
 import { userSlice } from "@/store/userSlice";
 import { AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import AsyncCreatableSelect from "react-select/async-creatable";
+import axios from "axios";
 
 const Edit_Blog = () => {
   const [formError, setFormError] = useState({});
@@ -25,7 +27,9 @@ const Edit_Blog = () => {
     picture: "",
     description: "",
     content: "",
+    tag: "",
   });
+  let cancelToken;
 
   // Fetch the blog data
   const { data, error, isLoading, isSuccess } = useQuery({
@@ -54,6 +58,7 @@ const Edit_Blog = () => {
         picture: data.picture || "",
         description: data.description || "",
         content: data.content || "",
+        tag: { value: data.tag._id, label: data.tag.name } || "",
       }));
     }
   }, [data, isSuccess]);
@@ -64,6 +69,14 @@ const Edit_Blog = () => {
     setBlogData((prevData) => ({
       ...prevData,
       [name]: type === "file" ? e.target.files[0] : value,
+    }));
+  };
+
+  // onChange function for tag
+  const handleTagChange = (newValue) => {
+    setBlogData((prev) => ({
+      ...prev,
+      tag: newValue,
     }));
   };
 
@@ -78,6 +91,66 @@ const Edit_Blog = () => {
     setFormError(errors);
 
     return Object.keys(errors).length === 0;
+  };
+
+  // onchange search function
+  const promiseOptions = async (inputValue) => {
+    if (cancelToken) {
+      cancelToken.cancel("Previous request cancelled");
+    }
+    // Create a new cancel token for the current request
+    cancelToken = axios.CancelToken.source();
+
+    if (!inputValue.trim()) {
+      return [];
+    }
+    try {
+      const response = await instance.get(`/tags?tag=${inputValue}`, {
+        cancelToken: cancelToken.token,
+      });
+      return response.data.map((tag) => ({
+        value: tag._id,
+        label: tag.name,
+      }));
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        console.log("Request cancelled", error.message);
+      } else {
+        console.log("Error", error.message);
+      }
+      return [];
+    }
+  };
+
+  // Mutation function to create a tag
+  const createTag = useMutation({
+    mutationFn: async (inputValue) => {
+      const response = await instance.post(
+        "/tags",
+        { name: inputValue },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    },
+    onSuccess: (data) => {
+      const newOption = { value: data._id, label: data.name };
+      setBlogData((prev) => ({
+        ...prev,
+        tag: newOption,
+      }));
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  // Function to handle tag creation
+  const handleCreateTag = (inputValue) => {
+    createTag.mutate(inputValue);
   };
 
   // Mutation function to update the blog
@@ -102,6 +175,7 @@ const Edit_Blog = () => {
         description: error.response?.data || error.message,
       });
     },
+    onSettled: () => {},
   });
 
   // Handle blog submission
@@ -114,6 +188,8 @@ const Edit_Blog = () => {
 
   if (isLoading) return <div>Loading...</div>;
 
+  console.log(blogData);
+
   return (
     <div className="m-10">
       {isPending ? <InfiniteProgressBar /> : null}
@@ -122,7 +198,7 @@ const Edit_Blog = () => {
           <div className="grid gap-1.5">
             <Label htmlFor="title">Blog title</Label>
             <Input
-              placeholder="Title for your blog."
+              placeholder="Title for your blog"
               id="title"
               className="w-full"
               name="title"
@@ -137,7 +213,7 @@ const Edit_Blog = () => {
           <div className="grid gap-1.5">
             <Label htmlFor="description">Description</Label>
             <Input
-              placeholder="Description of your blog."
+              placeholder="Description of your blog"
               id="description"
               name="description"
               className="w-full"
@@ -176,7 +252,43 @@ const Edit_Blog = () => {
             />
           )}
 
+          <div className="grid gap-1.5">
+            <Label htmlFor="description">Tag</Label>
+            <div className="max-w-sm">
+              <AsyncCreatableSelect
+                styles={{
+                  option: (defaultStyles, state) => ({
+                    ...defaultStyles,
+                    maxWidth: "382px",
+                    backgroundColor: state.isSelected ? "#F1F5F9" : "white",
+                    backgroundColor: state.isFocused ? "#F1F5F9" : "white",
+                  }),
+                  control: (baseStyles) => ({
+                    ...baseStyles,
+                    borderColor: "#E2E8F0",
+                    boxShadow: "none",
+                    maxWidth: "382px",
+                    fontSize: "0.875rem",
+                    "&:hover": {
+                      border: "1px solid #E2E8F0",
+                    },
+                    border: "1px solid #E2E8F0",
+                    borderRadius: "0.375rem",
+                  }),
+                }}
+                isClearable
+                loadOptions={promiseOptions}
+                onCreateOption={handleCreateTag}
+                onChange={handleTagChange}
+                value={blogData.tag}
+              />
+            </div>
+          </div>
+
           <div className="relative">
+            <div className="mb-1">
+              <Label htmlFor="editor">Blog content</Label>
+            </div>
             <EditEditor
               content={blogData.content}
               setContent={(value) =>

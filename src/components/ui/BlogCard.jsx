@@ -14,7 +14,7 @@ const BlogCard = ({ data }) => {
   const date = formatDate(createdAt);
 
   return (
-    <div className="flex flex-col  p-4 space-y-3 shadow-xl overflow-hidden h-full self-stretch  border border-black rounded-lg  w-[320px]">
+    <div className="flex flex-col  p-4 space-y-3 border shadow overflow-hidden h-full self-stretch   rounded-lg  w-[320px]">
       {/* card header */}
       <div className="flex space-x-4 ">
         <Avatar>
@@ -45,7 +45,7 @@ const BlogCard = ({ data }) => {
         >
           {title}
         </Link>
-        <p className="text-sm text-muted-foreground">{description}</p>
+        <p className="mt-2 text-sm text-muted-foreground">{description}</p>
       </div>
 
       {/* card footer */}

@@ -11,12 +11,15 @@ import InfiniteProgressBar from "@/components/ui/InfiniteProgressBar";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
+import AsyncCreatableSelect from "react-select/async-creatable";
+import axios from "axios";
 
 const Create_Blog = () => {
   const [formError, setFromError] = useState({});
   const instance = useAxios();
   const navigate = useNavigate();
   const { toast } = useToast();
+  let cancelToken;
   const { newBlog, setNewBlog, token, resetNewBlog } = userSlice();
 
   // onchange function
@@ -42,8 +45,41 @@ const Create_Blog = () => {
         return;
       }
     }
-
     setNewBlog(name, value);
+  };
+
+  // onChange function for tag
+  const handleTagChange = (newValue) => {
+    setNewBlog("tag", newValue);
+  };
+
+  // onchange search function
+  const promiseOptions = async (inputValue) => {
+    if (cancelToken) {
+      cancelToken.cancel("Previous request cancelled");
+    }
+    // Create a new cancel token for the current request
+    cancelToken = axios.CancelToken.source();
+
+    if (!inputValue.trim()) {
+      return [];
+    }
+    try {
+      const response = await instance.get(`/tags?tag=${inputValue}`, {
+        cancelToken: cancelToken.token,
+      });
+      return response.data.map((tag) => ({
+        value: tag._id,
+        label: tag.name,
+      }));
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        console.log("Request cancelled", error.message);
+      } else {
+        console.log("Error", error.message);
+      }
+      return [];
+    }
   };
 
   // function to validate the blog form
@@ -85,6 +121,29 @@ const Create_Blog = () => {
     },
   });
 
+  // Mutation function to create a tag
+  const createTag = useMutation({
+    mutationFn: async (inputValue) => {
+      const response = await instance.post(
+        "/tags",
+        { name: inputValue },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    },
+    onSuccess: (data) => {
+      const newOption = { value: data._id, label: data.name };
+      setNewBlog("tag", newOption);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
   // function to handle blog submission
   const handleBlogSubmit = async (e) => {
     e.preventDefault();
@@ -92,16 +151,22 @@ const Create_Blog = () => {
       mutate();
     }
   };
-  console.log(newBlog);
+
+  // Function to handle tag creation
+  const handleCreateTag = (inputValue) => {
+    createTag.mutate(inputValue);
+  };
+
   return (
     <div className="m-10">
       {isPending ? <InfiniteProgressBar /> : <></>}
       <div>
+        <div className="mb-10 text-5xl font-semibold">Write blog</div>
         <form onSubmit={handleBlogSubmit} className="flex flex-col gap-5">
           <div className="grid gap-1.5">
             <Label htmlFor="title">Blog title</Label>
             <Input
-              placeholder="Title for your blog."
+              placeholder="Title for your blog"
               id="title"
               className="w-full"
               name="title"
@@ -116,9 +181,9 @@ const Create_Blog = () => {
           </div>
 
           <div className="grid gap-1.5">
-            <Label htmlFor="description">description</Label>
+            <Label htmlFor="description">Description</Label>
             <Input
-              placeholder="Description of your blog."
+              placeholder="Description of your blog"
               id="description"
               name="description"
               className="w-full"
@@ -148,13 +213,49 @@ const Create_Blog = () => {
             <span className="text-gray-500">{newBlog.picture.name}</span>
           )}
 
+          <div className="grid gap-1.5">
+            <Label htmlFor="description">Tag</Label>
+            <div className="max-w-sm">
+              <AsyncCreatableSelect
+                styles={{
+                  option: (defaultStyles, state) => ({
+                    ...defaultStyles,
+                    maxWidth: "382px",
+                    backgroundColor: state.isSelected ? "#F1F5F9" : "white",
+                    backgroundColor: state.isFocused ? "#F1F5F9" : "white",
+                  }),
+                  control: (baseStyles) => ({
+                    ...baseStyles,
+                    borderColor: "#E2E8F0",
+                    boxShadow: "none",
+                    maxWidth: "382px",
+                    fontSize: "0.875rem",
+                    "&:hover": {
+                      border: "1px solid #E2E8F0",
+                    },
+                    border: "1px solid #E2E8F0",
+                    borderRadius: "0.375rem",
+                  }),
+                }}
+                isClearable
+                loadOptions={promiseOptions}
+                onCreateOption={handleCreateTag}
+                onChange={handleTagChange}
+                value={newBlog?.tag}
+                name="tag"
+              />
+            </div>
+          </div>
+
           <div className="relative ">
+            <div className="mb-1">
+              <Label htmlFor="editor">Blog content</Label>
+            </div>
             <Editor
               className="w-full"
               newBlog={newBlog}
               setNewBlog={setNewBlog}
             />
-            {/* <MarkDownEditor className="w-full " /> */}
           </div>
 
           <div className="ml-auto">

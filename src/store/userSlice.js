@@ -15,6 +15,7 @@ export const userSlice = create(
         picture: "",
         description: "",
         content: "",
+        tag: "",
       },
 
       // user auth

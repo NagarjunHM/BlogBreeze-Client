@@ -36,7 +36,7 @@ const HomePage = () => {
     );
 
   return (
-    <div className="m-10">
+    <div className="m-10 ">
       <BlogList data={data.data} />
     </div>
   );

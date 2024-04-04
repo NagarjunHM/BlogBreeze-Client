@@ -1,5 +1,6 @@
 import React from "react";
 import BlogCard from "./BlogCard";
+import BlogCardHorizontal from "./BlogCardHorizontal";
 
 const BlogList = ({ data }) => {
   if (data.length === 0)
@@ -9,7 +10,7 @@ const BlogList = ({ data }) => {
       </div>
     );
   return (
-    <div className="flex flex-wrap items-stretch h-[400px] gap-5">
+    <div className="flex flex-wrap  items-stretch h-[400px] gap-10">
       {data.map((data) => (
         <div key={data._id}>
           <BlogCard data={data} />
