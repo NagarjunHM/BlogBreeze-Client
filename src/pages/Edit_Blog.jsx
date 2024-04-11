@@ -260,8 +260,8 @@ const Edit_Blog = () => {
                   option: (defaultStyles, state) => ({
                     ...defaultStyles,
                     maxWidth: "382px",
-                    backgroundColor: state.isSelected ? "#F1F5F9" : "white",
-                    backgroundColor: state.isFocused ? "#F1F5F9" : "white",
+                    backgroundColor:
+                      state.isSelected || state.isFocused ? "#F1F5F9" : "white",
                   }),
                   control: (baseStyles) => ({
                     ...baseStyles,

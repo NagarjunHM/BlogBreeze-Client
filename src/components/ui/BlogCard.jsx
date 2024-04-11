@@ -5,10 +5,20 @@ import { formatDate } from "@/lib/DateFormatter";
 import { ThumbsUp, MessageCircleMore, Share2, Bookmark } from "lucide-react";
 import { userSlice } from "@/store/userSlice";
 import { IoMdHeartEmpty } from "react-icons/io";
+import { Badge } from "./badge";
 
 const BlogCard = ({ data }) => {
-  const { title, description, user, likes, comments, picture, createdAt, _id } =
-    data;
+  const {
+    title,
+    description,
+    user,
+    likes,
+    comments,
+    picture,
+    createdAt,
+    _id,
+    tag,
+  } = data;
 
   // function to format date
   const date = formatDate(createdAt);
@@ -46,6 +56,9 @@ const BlogCard = ({ data }) => {
           {title}
         </Link>
         <p className="mt-2 text-sm text-muted-foreground">{description}</p>
+      </div>
+      <div>
+        <Badge tagId={tag._id}>{tag.name}</Badge>
       </div>
 
       {/* card footer */}

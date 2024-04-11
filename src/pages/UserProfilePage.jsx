@@ -4,7 +4,6 @@ import TabAbout from "@/components/ui/TabAbout";
 import TabList from "@/components/ui/TabList";
 import UserFollowers from "../components/ui/UserFollowers";
 import UserFollowing from "../components/ui/UserFollowing";
-import { Separator } from "@/components/ui/separator";
 
 const UserProfilePage = () => {
   return (

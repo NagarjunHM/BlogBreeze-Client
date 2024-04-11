@@ -4,6 +4,8 @@ import useAxios from "@/hooks/useAxios";
 import BlogCardSkeleton from "@/components/ui/BlogCardSkeleton";
 import { AlertCircle } from "lucide-react";
 import BlogList from "@/components/ui/BlogList";
+import FeaturedTopic from "@/components/ui/FeaturedTopic";
+import FeaturedPeople from "@/components/ui/FeaturedPeople";
 
 const HomePage = () => {
   const instance = useAxios();
@@ -12,14 +14,16 @@ const HomePage = () => {
     queryFn: async () => {
       const response = await instance.get("/blogs");
       console.log(response);
-      return response;
+      return response.data;
     },
   });
 
   // loading
   if (isLoading)
     return (
-      <div className="m-10">
+      <div className="flex flex-wrap gap-5 m-10">
+        <BlogCardSkeleton />
+        <BlogCardSkeleton />
         <BlogCardSkeleton />
       </div>
     );
@@ -36,8 +40,14 @@ const HomePage = () => {
     );
 
   return (
-    <div className="m-10 ">
-      <BlogList data={data.data} />
+    <div className="flex items-start gap-5 m-10 justify-evenly">
+      <div className="flex-1 h-screen">
+        <BlogList data={data} />
+      </div>
+      <div className="sticky hidden flex-0 top-20 lg:block ">
+        <FeaturedTopic />
+        <FeaturedPeople />
+      </div>
     </div>
   );
 };

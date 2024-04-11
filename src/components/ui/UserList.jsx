@@ -10,10 +10,10 @@ import { queryClient } from "@/main";
 const UserList = ({ profileUser, currentUser }) => {
   const instance = useAxios();
   const { toast } = useToast();
-  const { usersId } = useParams();
+  // const { usersId } = useParams();
   const { id, isAuthenticated, token, name } = userSlice();
 
-  console.log(profileUser, currentUser);
+  console.log("profileUser" + profileUser, "currentUser" + currentUser);
 
   // mutation function to follow user
   const followUser = useMutation({
@@ -32,6 +32,9 @@ const UserList = ({ profileUser, currentUser }) => {
       });
     },
     onMutate: (user) => {
+      // Optimistically update the local cache
+      const previousUserData = queryClient.getQueryData(["users", id]);
+      const previousFollowing = queryClient.getQueryData(["following", id]);
       queryClient.setQueryData(["following", id], (prev) => {
         if (prev) {
           return {
@@ -41,14 +44,21 @@ const UserList = ({ profileUser, currentUser }) => {
         }
         return prev;
       });
+      queryClient.setQueryData(["users", id], (prev) => {
+        if (prev) {
+          return {
+            ...prev,
+            following: [...prev.following, user._id],
+          };
+        }
+        return prev;
+      });
+      return { previousFollowing, previousUserData };
     },
-    onSettled: () => {
-      queryClient.refetchQueries({
-        queryKey: ["followers"],
-      });
-      queryClient.refetchQueries({
-        queryKey: ["following"],
-      });
+    onSettled: async () => {
+      await queryClient.refetchQueries(["followers"]);
+      await queryClient.refetchQueries(["following"]);
+      await queryClient.refetchQueries(["users", id]);
     },
   });
 
@@ -66,6 +76,8 @@ const UserList = ({ profileUser, currentUser }) => {
     },
     onMutate: (user) => {
       // Optimistically update the local cache
+      const previousUserData = queryClient.getQueryData(["users", id]);
+      const previousFollowing = queryClient.getQueryData(["following", id]);
       queryClient.setQueryData(["following", id], (prev) => {
         if (prev) {
           return {
@@ -77,14 +89,22 @@ const UserList = ({ profileUser, currentUser }) => {
         }
         return prev;
       });
+      queryClient.setQueryData(["users", id], (prev) => {
+        if (prev) {
+          return {
+            ...prev,
+            following: prev.following.filter((author) => author !== user._id),
+          };
+        }
+        return prev;
+      });
+
+      return { previousFollowing, previousUserData };
     },
-    onSettled: () => {
-      queryClient.refetchQueries({
-        queryKey: ["followers"],
-      });
-      queryClient.refetchQueries({
-        queryKey: ["following"],
-      });
+    onSettled: async () => {
+      await queryClient.refetchQueries(["followers"]);
+      await queryClient.refetchQueries(["following"]);
+      await queryClient.refetchQueries(["users", id]);
     },
   });
 
@@ -99,7 +119,7 @@ const UserList = ({ profileUser, currentUser }) => {
   };
 
   const isFollowing = (userId) => {
-    return currentUser.some((user) => user._id === userId);
+    return currentUser.some((user) => user?._id || user === userId);
   };
 
   const renderFollowButton = (user) => {

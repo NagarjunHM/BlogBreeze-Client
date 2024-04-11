@@ -63,13 +63,6 @@ const Navbar = () => {
                     </DropdownMenuItem>
                   </Link>
 
-                  <Link to="/create-tag">
-                    <DropdownMenuItem className="flex items-baseline text-xl">
-                      <SquarePen className="w-4 h-4 mr-3" />
-                      Create tag
-                    </DropdownMenuItem>
-                  </Link>
-
                   <DropdownMenuSeparator />
                   <Link to={`/users/${id}`}>
                     <DropdownMenuItem className="flex items-center text-xl">

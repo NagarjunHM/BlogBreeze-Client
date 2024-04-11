@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import useAxios from "@/hooks/useAxios";
 import { useParams } from "react-router-dom";
@@ -25,6 +25,10 @@ import { queryClient } from "../main";
 import Comment from "@/components/ui/Comment";
 
 const BlogDetailPage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top when component mounts
+  }, []);
+
   const instance = useAxios();
   const { toast } = useToast();
   const { blogId } = useParams();

@@ -7,8 +7,7 @@ import UserProfileSkeleton from "./UserProfileSkeleton";
 import { userSlice } from "@/store/userSlice";
 import { queryClient } from "@/main";
 import { useToast } from "./use-toast";
-import EditUserDetails from "./EditUserDetails";
-import { Button } from "./button";
+// import EditUserDetails from "./EditUserDetails";
 
 const TabAbout = () => {
   const instance = useAxios();
@@ -30,7 +29,7 @@ const TabAbout = () => {
     queryKey: ["followers", usersId],
     queryFn: async () => {
       const response = await instance.get(`users/${usersId}/followers`);
-      return response?.data;
+      return response.data;
     },
   });
 
@@ -39,7 +38,7 @@ const TabAbout = () => {
     queryKey: ["following", usersId],
     queryFn: async () => {
       const response = await instance.get(`users/${usersId}/following`);
-      return response?.data;
+      return response.data;
     },
   });
 
@@ -127,9 +126,9 @@ const TabAbout = () => {
     return <UserProfileSkeleton />;
 
   return (
-    <div className="flex flex-col gap-5 ">
+    <div className="flex flex-col ">
       {/* avatar */}
-      <div>
+      <div className="mb-5">
         <Avatar className="w-40 h-40">
           <AvatarImage src="" alt="@shadcn" />
           <AvatarFallback className="text-7xl">
@@ -139,7 +138,7 @@ const TabAbout = () => {
       </div>
       {/* name */}
       <div className="flex items-baseline gap-3">
-        <div className="text-2xl font-semibold">{user.data.name}</div>
+        <div className="mb-3 text-2xl font-semibold">{user.data.name}</div>
 
         {/* follow unfollow button */}
         {/* {isAuthenticated && user.data._id === id && <EditUserDetails />} */}

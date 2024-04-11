@@ -18,6 +18,8 @@ import PublicRoute from "../routes/PublicRoute";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Edit_Blog from "./pages/Edit_Blog";
 import Create_Tag from "./pages/Create_Tag";
+import TestPage from "./pages/TestPage";
+import AllTopics from "./pages/AllTopics";
 
 export const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -77,6 +79,18 @@ const router = createBrowserRouter([
             <Create_Tag />
           </ProtectedRoute>
         ),
+      },
+      {
+        path: "/testpage",
+        element: <TestPage />,
+      },
+      {
+        path: "/tags",
+        element: <AllTopics />,
+      },
+      {
+        path: "/tagdetail/:tagId",
+        element: <TagDetailPage />,
       },
     ],
   },
