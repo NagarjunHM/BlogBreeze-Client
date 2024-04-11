@@ -8,9 +8,10 @@ const FeaturedTopic = () => {
   const instance = useAxios();
 
   const { data, error, isLoading } = useQuery({
-    queryKey: ["topic", 5],
+    queryKey: ["topic"],
     queryFn: async () => {
       const response = await instance.get("/tags");
+      console.log(response.data);
       return response.data;
     },
   });
@@ -18,8 +19,8 @@ const FeaturedTopic = () => {
   if (isLoading) return <div>...Loading</div>;
 
   return (
-    <div className=" h-[300px] w-[300px]">
-      <div className="mb-10 text-3xl font-semibold">Explore topic</div>
+    <div className="  w-[300px]">
+      <div className="mb-5 text-3xl font-semibold">Explore topic</div>
       <div className="flex flex-wrap gap-5 mb-5">
         {data.map((tag) => (
           <div key={tag._id}>

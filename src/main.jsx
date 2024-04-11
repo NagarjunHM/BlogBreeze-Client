@@ -20,6 +20,7 @@ import Edit_Blog from "./pages/Edit_Blog";
 import Create_Tag from "./pages/Create_Tag";
 import TestPage from "./pages/TestPage";
 import AllTopics from "./pages/AllTopics";
+import AllUsers from "./pages/AllUsers";
 
 export const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -87,6 +88,10 @@ const router = createBrowserRouter([
       {
         path: "/tags",
         element: <AllTopics />,
+      },
+      {
+        path: "/users",
+        element: <AllUsers />,
       },
       {
         path: "/tagdetail/:tagId",

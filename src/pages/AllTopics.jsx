@@ -9,7 +9,7 @@ const AllTopics = () => {
   const instance = useAxios();
 
   const { data, error, isLoading } = useQuery({
-    queryKey: ["topic", 5],
+    queryKey: ["users"],
     queryFn: async () => {
       const response = await instance.get("/tags");
       return response.data;
@@ -18,6 +18,7 @@ const AllTopics = () => {
 
   if (isLoading) return <div className="m-10">...Loading</div>;
 
+  if (error) return <div>{error}</div>;
   return (
     <div className="flex justify-center m-10">
       <div className="flex flex-col w-[800px] items-center">

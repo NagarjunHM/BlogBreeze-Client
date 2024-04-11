@@ -265,7 +265,7 @@ const BlogDetailPage = () => {
   return (
     <>
       {deleteBlog.isPending && <InfiniteProgressBar />}
-      <div className="flex justify-center mx-5 mt-10 mb-10 lg:mx-0">
+      <div className="flex justify-center mx-5 mt-10 mb-10lg:mx-0">
         <div className="w-[800px] overflow-hidden">
           {/* blog title */}
           <div className="mb-5 text-5xl font-semibold">{data.title}</div>

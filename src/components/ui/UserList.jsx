@@ -13,7 +13,7 @@ const UserList = ({ profileUser, currentUser }) => {
   // const { usersId } = useParams();
   const { id, isAuthenticated, token, name } = userSlice();
 
-  console.log("profileUser" + profileUser, "currentUser" + currentUser);
+  console.log("currentUser", currentUser);
 
   // mutation function to follow user
   const followUser = useMutation({
@@ -48,7 +48,7 @@ const UserList = ({ profileUser, currentUser }) => {
         if (prev) {
           return {
             ...prev,
-            following: [...prev.following, user._id],
+            following: [...prev.following, user],
           };
         }
         return prev;
@@ -93,7 +93,9 @@ const UserList = ({ profileUser, currentUser }) => {
         if (prev) {
           return {
             ...prev,
-            following: prev.following.filter((author) => author !== user._id),
+            following: prev.following.filter(
+              (author) => author._id !== user._id
+            ),
           };
         }
         return prev;
@@ -119,11 +121,11 @@ const UserList = ({ profileUser, currentUser }) => {
   };
 
   const isFollowing = (userId) => {
-    return currentUser.some((user) => user?._id || user === userId);
+    return currentUser.some((user) => user._id === userId);
   };
 
   const renderFollowButton = (user) => {
-    if (user._id === id) {
+    if (user?._id === id) {
       return <div className="text-sm font-bold ">You</div>;
     }
     const isUserFollowed = isFollowing(user._id);

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const UserCard = ({ user }) => {
   return (
-    <div className="flex items-center  gap-5 w-[500px]">
+    <div className="flex items-center w-full gap-5">
       <Avatar>
         <AvatarImage src="" alt="@shadcn" />
         <AvatarFallback>{user?.name?.slice(0, 2)}</AvatarFallback>

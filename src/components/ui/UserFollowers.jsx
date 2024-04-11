@@ -26,6 +26,7 @@ const UserFollowers = () => {
     queryKey: ["following", id],
     queryFn: async () => {
       const response = await instance.get(`users/${id}/following`);
+      console.log(response.data);
       return response?.data;
     },
     enabled: isAuthenticated,
@@ -58,7 +59,7 @@ const UserFollowers = () => {
         <UserList
           profileUser={profileFollowers.data?.followers}
           currentUser={
-            isAuthenticated ? currentUserFollowing.data?.following : []
+            isAuthenticated ? currentUserFollowing?.data?.following : []
           }
         />
       )}

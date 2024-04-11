@@ -44,8 +44,10 @@ const HomePage = () => {
       <div className="flex-1 h-screen">
         <BlogList data={data} />
       </div>
-      <div className="sticky hidden flex-0 top-20 lg:block ">
-        <FeaturedTopic />
+      <div className="sticky hidden gap-5 flex-0 top-20 lg:block ">
+        <div className="mb-10">
+          <FeaturedTopic />
+        </div>
         <FeaturedPeople />
       </div>
     </div>

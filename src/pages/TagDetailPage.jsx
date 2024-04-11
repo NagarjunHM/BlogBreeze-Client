@@ -32,7 +32,6 @@ const TagDetailPage = () => {
     queryKey: ["users", id],
     queryFn: async () => {
       const response = await instance.get(`/users/${id}`);
-      console.log(response.data);
       return response.data;
     },
     enabled: isAuthenticated,
@@ -179,10 +178,10 @@ const TagDetailPage = () => {
             </div>
 
             <div>
-              {userDetails?.data?.tagsFollowing?.some((tag) => tag == tagId) ? (
+              {userDetails?.data?.tagsFollowing?.includes(tagId) ? (
                 <div
                   onClick={handleUnfollowTag}
-                  className="font-semibold cursor-pointer text-muted-foreground hover:underline"
+                  className="font-semibold text-green-600 cursor-pointer hover:underline"
                 >
                   Following
                 </div>
@@ -215,12 +214,14 @@ const TagDetailPage = () => {
               <BlogList data={tagDetails?.data.blog} />
             </TabsContent>
             <TabsContent value="followers">
-              <UserList
-                profileUser={tagDetails?.data?.tag?.followers}
-                currentUser={
-                  isAuthenticated ? userDetails?.data?.following : []
-                }
-              />
+              <div className="w-[300px]">
+                <UserList
+                  profileUser={tagDetails?.data?.tag?.followers}
+                  currentUser={
+                    isAuthenticated ? userDetails?.data?.following : []
+                  }
+                />
+              </div>
             </TabsContent>
           </Tabs>
 

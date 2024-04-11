@@ -24,7 +24,7 @@ const BlogCard = ({ data }) => {
   const date = formatDate(createdAt);
 
   return (
-    <div className="flex flex-col  p-4 space-y-3 border shadow overflow-hidden h-full self-stretch   rounded-lg  w-[320px]">
+    <div className="flex flex-col  bg-white p-4 space-y-3 border shadow overflow-hidden h-full self-stretch   rounded-lg  w-[320px]">
       {/* card header */}
       <div className="flex space-x-4 ">
         <Avatar>

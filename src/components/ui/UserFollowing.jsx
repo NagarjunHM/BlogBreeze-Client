@@ -55,7 +55,7 @@ const UserFollowing = () => {
         <UserList
           profileUser={profileFollowing.data?.following}
           currentUser={
-            isAuthenticated ? currentUserFollowing.data?.following : []
+            isAuthenticated ? currentUserFollowing?.data?.following : []
           }
         />
       )}
