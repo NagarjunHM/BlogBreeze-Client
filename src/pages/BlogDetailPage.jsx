@@ -304,6 +304,7 @@ const BlogDetailPage = () => {
                     </div>
                   )}
                 </div>
+
                 <span className="text-xs text-muted-foreground">{date}</span>
               </div>
             </div>
@@ -345,14 +346,7 @@ const BlogDetailPage = () => {
                 type="button"
                 className="p-1 text-center"
               >
-                <Share2 />
-              </button>
-              <button
-                aria-label="Bookmark this post"
-                type="button"
-                className="p-2"
-              >
-                <Bookmark />
+                <Share2 size="1.2em" />
               </button>
             </div>
 
@@ -373,7 +367,7 @@ const BlogDetailPage = () => {
                   className="flex items-center p-1 space-x-1.5"
                   onClick={handleUnlike}
                 >
-                  <IoMdHeart size="1.5em" />
+                  <IoMdHeart size="1.2em" />
                   <span>{data.likes.length}</span>
                 </button>
               ) : (
@@ -382,7 +376,7 @@ const BlogDetailPage = () => {
                   className="flex items-center p-1 space-x-1.5 "
                   onClick={handleLike}
                 >
-                  <IoMdHeartEmpty size="1.5em" />{" "}
+                  <IoMdHeartEmpty size="1.2em" />
                   <span>{data.likes.length}</span>
                 </button>
               )}

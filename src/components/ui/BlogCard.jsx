@@ -2,8 +2,8 @@ import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Link } from "react-router-dom";
 import { formatDate } from "@/lib/DateFormatter";
-import { ThumbsUp, MessageCircleMore, Share2, Bookmark } from "lucide-react";
-import { userSlice } from "@/store/userSlice";
+import { MessageCircleMore, Share2, Bookmark } from "lucide-react";
+// import { userSlice } from "@/store/userSlice";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { Badge } from "./badge";
 

@@ -138,7 +138,7 @@ const TabAbout = () => {
       </div>
       {/* name */}
       <div className="flex items-baseline gap-3">
-        <div className="mb-3 text-2xl font-semibold">{user.data.name}</div>
+        <div className="mb-3 text-3xl font-semibold">{user.data.name}</div>
 
         {/* follow unfollow button */}
         {/* {isAuthenticated && user.data._id === id && <EditUserDetails />} */}

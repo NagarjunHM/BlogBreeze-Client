@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "@/hooks/useAxios";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 
 const AllTopics = () => {
   const instance = useAxios();
+  const [search, setSearch] = useState("");
 
   const { data, error, isLoading } = useQuery({
     queryKey: ["users"],
@@ -19,11 +20,19 @@ const AllTopics = () => {
   if (isLoading) return <div className="m-10">...Loading</div>;
 
   if (error) return <div>{error}</div>;
+
+  const filter = data.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase())
+  );
   return (
     <div className="flex justify-center m-10">
-      <div className="flex flex-col w-[800px] items-center">
+      <div className="flex flex-col w-[800px]">
         <div className="mb-10 text-5xl font-semibold text-center">
           Explore topic
+        </div>
+        <div className="mb-2 text-3xl">Refine recommendations</div>
+        <div className="mb-10 text-muted-foreground">
+          Adjust recommendations by updating what you’re following
         </div>
 
         <div className="w-full mb-10">
@@ -34,18 +43,32 @@ const AllTopics = () => {
               placeholder="Search tag"
               id="search"
               name="search"
-              // value={newBlog.description}
-              // onChange={handleInput}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
           </div>
         </div>
 
         <div className="flex flex-wrap gap-5 mb-10 ">
-          {data.map((tag) => (
-            <Badge className="px-5 py-2 text-md" tagId={tag._id} key={tag._id}>
-              {tag.name}
-            </Badge>
-          ))}
+          {search === ""
+            ? data.map((tag) => (
+                <Badge
+                  className="px-5 py-2 text-md"
+                  tagId={tag._id}
+                  key={tag._id}
+                >
+                  {tag.name}
+                </Badge>
+              ))
+            : filter.map((tag) => (
+                <Badge
+                  className="px-5 py-2 text-md"
+                  tagId={tag._id}
+                  key={tag._id}
+                >
+                  {tag.name}
+                </Badge>
+              ))}
         </div>
       </div>
     </div>

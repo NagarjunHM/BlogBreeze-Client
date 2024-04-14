@@ -9,15 +9,14 @@ const UserProfilePage = () => {
   return (
     <div className="m-10">
       <div className="my-10 text-5xl font-semibold">Profile</div>
-
-      <div className="flex flex-col gap-10 lg:flex-row">
+      <div className="flex flex-col lg:flex-row">
         {/* user about */}
-        <div className="w-[300px] ">
+        <div className="w-[300px] flex-0">
           <TabAbout />
         </div>
 
         {/* user tabs */}
-        <div>
+        <div className="flex-1 mt-10 lg:m-0">
           <Tabs defaultValue="stories" className="mb-10">
             <TabsList>
               <TabsTrigger value="stories">Stories</TabsTrigger>

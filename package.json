@@ -27,6 +27,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "codemirror": "^6.0.1",
+    "embla-carousel-react": "^8.0.2",
     "html-to-react": "^1.7.0",
     "lucide-react": "^0.354.0",
     "md-editor-react": "^0.2.1",

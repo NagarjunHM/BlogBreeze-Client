@@ -8,7 +8,9 @@ const LayoutPage = () => {
     <div className="size-full scroll-smooth">
       <NavBar />
       <Toaster />
-      <Outlet />
+      <div>
+        <Outlet />
+      </div>
     </div>
   );
 };

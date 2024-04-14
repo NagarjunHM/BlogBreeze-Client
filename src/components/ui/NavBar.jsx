@@ -3,6 +3,7 @@ import { Button } from "./button";
 import { Link } from "react-router-dom";
 import { Library, FileText, Settings, LogOut, SquarePen } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import SearchBar from "./SearchBar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,9 +38,14 @@ const Navbar = () => {
   return (
     <>
       {isAuthenticated ? (
-        <div className="h-[57px]  flex items-center border-b shadow justify-between px-10 sticky top-0 backdrop-blur-xl z-10">
-          <div className="text-3xl tracking-tight cursor-pointer">
-            <Link to="/">BlogBreeze</Link>
+        <div className="h-[57px]  items-center flex  backdrop-blur-lg w-screen shadow justify-between px-10 sticky top-0 z-10">
+          <div className="flex items-center gap-5">
+            <Link className="text-3xl tracking-wide cursor-pointer" to="/">
+              BlogBreeze
+            </Link>
+            <div className="cursor-text">
+              <SearchBar />
+            </div>
           </div>
 
           <div className="flex flex-row items-center gap-8">

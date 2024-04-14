@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "@/hooks/useAxios";
-import UserCard from "@/components/ui/UserCard";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { userSlice } from "@/store/userSlice";
@@ -10,13 +9,13 @@ import UserList from "@/components/ui/UserList";
 const AllUsers = () => {
   const instance = useAxios();
   const { id, isAuthenticated } = userSlice();
+  const [search, setSearch] = useState("");
 
   // fetching all users
   const allUsers = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const response = await instance.get("/users");
-      console.log(response.data);
       return response.data;
     },
   });
@@ -35,6 +34,10 @@ const AllUsers = () => {
     return <div className="m-10">...Loading</div>;
 
   if (allUsers.error || currentUserFollowing.error) return <div>{error}</div>;
+
+  const filter = allUsers.data.filter((user) =>
+    user.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="flex justify-center m-10">
@@ -55,25 +58,27 @@ const AllUsers = () => {
               placeholder="Search tag"
               id="search"
               name="search"
-              // value={newBlog.description}
-              // onChange={handleInput}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
           </div>
         </div>
 
-        {/* <div className="flex flex-col gap-5 mb-5">
-          {allUsers?.data?.map((user) => (
-            <div key={user._id}>
-              <UserCard user={user} />
-            </div>
-          ))}
-        </div> */}
-        <UserList
-          profileUser={allUsers.data}
-          currentUser={
-            isAuthenticated ? currentUserFollowing?.data?.following : []
-          }
-        />
+        {search === "" ? (
+          <UserList
+            profileUser={allUsers.data}
+            currentUser={
+              isAuthenticated ? currentUserFollowing?.data?.following : []
+            }
+          />
+        ) : (
+          <UserList
+            profileUser={filter || []}
+            currentUser={
+              isAuthenticated ? currentUserFollowing?.data?.following : []
+            }
+          />
+        )}
       </div>
     </div>
   );

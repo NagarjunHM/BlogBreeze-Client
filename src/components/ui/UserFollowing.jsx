@@ -52,12 +52,14 @@ const UserFollowing = () => {
       {isLoading ? (
         <UserCardSkeleton />
       ) : (
-        <UserList
-          profileUser={profileFollowing.data?.following}
-          currentUser={
-            isAuthenticated ? currentUserFollowing?.data?.following : []
-          }
-        />
+        <div className="w-[400px]">
+          <UserList
+            profileUser={profileFollowing.data?.following}
+            currentUser={
+              isAuthenticated ? currentUserFollowing?.data?.following : []
+            }
+          />
+        </div>
       )}
     </div>
   );

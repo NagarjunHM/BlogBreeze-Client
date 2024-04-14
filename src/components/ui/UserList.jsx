@@ -161,7 +161,10 @@ const UserList = ({ profileUser, currentUser }) => {
   return (
     <div className="flex flex-col gap-5 ">
       {profileUser.map((user, index) => (
-        <div key={index} className="flex items-center gap-5">
+        <div
+          key={index}
+          className="flex items-center justify-between max-w-[400px]"
+        >
           <UserCard user={user} />
           {renderFollowButton(user)}
         </div>

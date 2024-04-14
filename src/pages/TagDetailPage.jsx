@@ -62,7 +62,7 @@ const TagDetailPage = () => {
         if (prev) {
           return {
             ...prev,
-            tagsFollowing: [...prev.tagsFollowing, tagId],
+            tagsFollowing: [...prev.tagsFollowing, { _id: tagId }],
           };
         }
         return prev;
@@ -110,7 +110,9 @@ const TagDetailPage = () => {
         if (prev) {
           return {
             ...prev,
-            tagsFollowing: prev.tagsFollowing.filter((tag) => tag !== tagId),
+            tagsFollowing: prev.tagsFollowing.filter(
+              (tag) => tag._id !== tagId
+            ),
           };
         }
         return prev;
@@ -171,61 +173,71 @@ const TagDetailPage = () => {
       ) : (
         <div>
           <div className="mb-10 text-5xl font-semibold">Tag</div>
-          <div className="flex items-center gap-5 mb-3">
-            <div className="text-3xl font-semibold">
-              {tagDetails.data.tag.name[0].toUpperCase() +
-                tagDetails.data?.tag.name.slice(1)}
-            </div>
-
-            <div>
-              {userDetails?.data?.tagsFollowing?.includes(tagId) ? (
-                <div
-                  onClick={handleUnfollowTag}
-                  className="font-semibold text-green-600 cursor-pointer hover:underline"
-                >
-                  Following
+          <div className="flex flex-col lg:flex-row">
+            <div className="w-[300px] flex-0">
+              <div className="flex items-baseline gap-3 mb-3 ">
+                <div className="text-3xl font-semibold">
+                  {tagDetails.data.tag.name[0].toUpperCase() +
+                    tagDetails.data?.tag.name.slice(1)}
                 </div>
-              ) : (
-                <div
-                  onClick={handleFollowTag}
-                  className="font-semibold text-green-600 cursor-pointer hover:underline"
-                >
-                  Follow
-                </div>
-              )}
-            </div>
-          </div>
-          <div className="flex gap-5 mb-10">
-            <div className="font-semibold text-muted-foreground">
-              Followers&nbsp;{tagDetails?.data?.tag?.followers?.length}
-            </div>
-            <div className="font-semibold text-muted-foreground">
-              Stories&nbsp;{tagDetails?.data?.blog?.length}
-            </div>
-          </div>
 
-          {/* <BlogList data={tagDetails?.data.blog} /> */}
-          <Tabs defaultValue="stories" className="mb-10">
-            <TabsList>
-              <TabsTrigger value="stories">Stories</TabsTrigger>
-              <TabsTrigger value="followers">Followers</TabsTrigger>
-            </TabsList>
-            <TabsContent value="stories">
-              <BlogList data={tagDetails?.data.blog} />
-            </TabsContent>
-            <TabsContent value="followers">
-              <div className="w-[300px]">
-                <UserList
-                  profileUser={tagDetails?.data?.tag?.followers}
-                  currentUser={
-                    isAuthenticated ? userDetails?.data?.following : []
-                  }
-                />
+                <div>
+                  {userDetails?.data?.tagsFollowing?.find(
+                    (tag) => tag._id === tagId
+                  ) ? (
+                    <div
+                      onClick={handleUnfollowTag}
+                      className="font-semibold text-green-600 cursor-pointer hover:underline"
+                    >
+                      Following
+                    </div>
+                  ) : (
+                    <div
+                      onClick={handleFollowTag}
+                      className="font-semibold text-green-600 cursor-pointer hover:underline"
+                    >
+                      Follow
+                    </div>
+                  )}
+                </div>
               </div>
-            </TabsContent>
-          </Tabs>
+              <div className="flex gap-5 mb-10">
+                <div className="font-semibold text-muted-foreground">
+                  Stories&nbsp;{tagDetails?.data?.blog?.length}
+                </div>
+                <div className="font-semibold text-muted-foreground">
+                  Followers&nbsp;{tagDetails?.data?.tag?.followers?.length}
+                </div>
+              </div>
+            </div>
 
-          <div></div>
+            {/* <BlogList data={tagDetails?.data.blog} /> */}
+            <div className="flex-1">
+              <Tabs defaultValue="stories" className="mb-10">
+                <TabsList>
+                  <TabsTrigger value="stories">Stories</TabsTrigger>
+                  <TabsTrigger value="followers">Followers</TabsTrigger>
+                </TabsList>
+                <TabsContent value="stories">
+                  <div className="mb-10 text-3xl font-semibold">Stories</div>
+                  <BlogList data={tagDetails?.data.blog} />
+                </TabsContent>
+                <TabsContent value="followers">
+                  <div className="w-[400px]">
+                    <div className="mb-10 text-3xl font-semibold">
+                      Followers
+                    </div>
+                    <UserList
+                      profileUser={tagDetails?.data?.tag?.followers}
+                      currentUser={
+                        isAuthenticated ? userDetails?.data?.following : []
+                      }
+                    />
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </div>
+          </div>
         </div>
       )}
     </div>

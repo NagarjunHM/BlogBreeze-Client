@@ -49,19 +49,21 @@ const UserFollowers = () => {
 
   return (
     <div>
-      <div className="flex items-center gap-3 mb-10 text-3xl font-semibold">
+      <div className="flex gap-3 mb-10 text-3xl font-semibold ">
         <div>Followers</div>
         <div>{profileFollowers.data?.followers?.length}</div>
       </div>
       {isLoading ? (
         <UserCardSkeleton />
       ) : (
-        <UserList
-          profileUser={profileFollowers.data?.followers}
-          currentUser={
-            isAuthenticated ? currentUserFollowing?.data?.following : []
-          }
-        />
+        <div className="w-[400px]">
+          <UserList
+            profileUser={profileFollowers.data?.followers}
+            currentUser={
+              isAuthenticated ? currentUserFollowing?.data?.following : []
+            }
+          />
+        </div>
       )}
     </div>
   );

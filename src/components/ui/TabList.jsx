@@ -5,6 +5,7 @@ import BlogList from "./BlogList";
 import BlogCardSkeleton from "./BlogCardSkeleton";
 import { AlertCircle } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import BlogHorizontalCard from "./BlogHoriontalSkeleton";
 
 const TabList = () => {
   const instance = useAxios();
@@ -32,7 +33,7 @@ const TabList = () => {
   return (
     <div>
       <div className="mb-10 text-3xl font-semibold">Stories</div>
-      {isLoading ? <BlogCardSkeleton /> : <BlogList data={data} />}
+      {isLoading ? <BlogHorizontalCard /> : <BlogList data={data} />}
     </div>
   );
 };
