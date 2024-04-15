@@ -108,8 +108,16 @@ const Navbar = () => {
         </div>
       ) : (
         <div className="h-[57px]  flex items-center  justify-between  px-10 sticky top-0 bg-black/10 backdrop-blur-sm z-20">
-          <div className="text-3xl tracking-tight cursor-pointer">
-            <Link to="/">BlogBreeze</Link>
+          <div className="flex items-center gap-5">
+            <Link
+              className="text-3xl font-semibold tracking-wide cursor-pointer"
+              to="/"
+            >
+              BlogBreeze
+            </Link>
+            <div className="hidden cursor-text sm:block">
+              <SearchBar />
+            </div>
           </div>
           <Link to="/login">
             <Button>Log in</Button>
