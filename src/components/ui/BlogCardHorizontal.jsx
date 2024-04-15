@@ -23,7 +23,7 @@ const BlogCardHorizontal = ({ data }) => {
   const date = formatDate(createdAt);
 
   return (
-    <div className="rounded shadow ">
+    <div className="rounded bg-black/10">
       <div className="container grid grid-cols-1 mx-auto lg:grid-cols-12 ">
         {/* picture */}
         <div className="col-span-full lg:col-span-4 lg:order-1">

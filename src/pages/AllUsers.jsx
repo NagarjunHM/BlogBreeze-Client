@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { userSlice } from "@/store/userSlice";
 import UserList from "@/components/ui/UserList";
+import UserCardSkeleton from "@/components/ui/UserCardSkeleton";
 
 const AllUsers = () => {
   const instance = useAxios();
@@ -30,12 +31,9 @@ const AllUsers = () => {
     enabled: isAuthenticated,
   });
 
-  if (allUsers.isLoading || currentUserFollowing.isLoading)
-    return <div className="m-10">...Loading</div>;
-
   if (allUsers.error || currentUserFollowing.error) return <div>{error}</div>;
 
-  const filter = allUsers.data.filter((user) =>
+  const filter = allUsers?.data?.filter((user) =>
     user.name.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -49,7 +47,6 @@ const AllUsers = () => {
         <div className="mb-10 text-muted-foreground">
           Adjust recommendations by updating what you’re following
         </div>
-
         <div className="w-full mb-10">
           <div className="grid gap-1.5">
             <Label htmlFor="description">Search</Label>
@@ -63,8 +60,9 @@ const AllUsers = () => {
             />
           </div>
         </div>
-
-        {search === "" ? (
+        {allUsers.isLoading || currentUserFollowing.isLoading ? (
+          <UserCardSkeleton />
+        ) : search === "" ? (
           <UserList
             profileUser={allUsers.data}
             currentUser={

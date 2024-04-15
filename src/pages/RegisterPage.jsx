@@ -138,7 +138,7 @@ const registerPage = () => {
         <p className="text-3xl font-medium text-center md:text-5xl">
           Join BlogBreeze
         </p>
-        <Card className="max-w-[400px] sm:w-[400px] m-5 border-black">
+        <Card className="w-[400px] m-5 bg-black/10 backdrop-blur">
           <CardHeader>
             <CardTitle>Register</CardTitle>
           </CardHeader>

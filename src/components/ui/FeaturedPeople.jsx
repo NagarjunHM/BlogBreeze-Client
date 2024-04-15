@@ -16,12 +16,12 @@ const FeaturedPeople = () => {
     },
   });
 
-  if (isLoading) return <Skeleton className="w-full h-1/2" />;
+  if (isLoading) return <Skeleton className="w-full h-[300px]" />;
 
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="py-5 border">
+    <div className="py-5">
       <div className="mb-4 text-3xl font-semibold">Who to follow</div>
       <div className="flex flex-col max-w-full gap-4 overflow-x-auto">
         {data?.map((user) => (

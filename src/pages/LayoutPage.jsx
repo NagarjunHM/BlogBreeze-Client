@@ -5,10 +5,14 @@ import NavBar from "@/components/ui/NavBar";
 
 const LayoutPage = () => {
   return (
-    <div className="size-full scroll-smooth">
-      <NavBar />
-      <Toaster />
-      <div>
+    <div className="scroll-smooth">
+      <div className="main">
+        <div className="gradient"></div>
+      </div>
+
+      <div className="relative z-10">
+        <NavBar />
+        <Toaster />
         <Outlet />
       </div>
     </div>

@@ -4,6 +4,7 @@ import useAxios from "@/hooks/useAxios";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const AllTopics = () => {
   const instance = useAxios();
@@ -17,11 +18,9 @@ const AllTopics = () => {
     },
   });
 
-  if (isLoading) return <div className="m-10">...Loading</div>;
-
   if (error) return <div>{error}</div>;
 
-  const filter = data.filter((item) =>
+  const filter = data?.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
   );
   return (
@@ -50,25 +49,36 @@ const AllTopics = () => {
         </div>
 
         <div className="flex flex-wrap gap-5 mb-10 ">
-          {search === ""
-            ? data.map((tag) => (
-                <Badge
-                  className="px-5 py-2 text-md"
-                  tagId={tag._id}
-                  key={tag._id}
-                >
-                  {tag.name}
-                </Badge>
-              ))
-            : filter.map((tag) => (
-                <Badge
-                  className="px-5 py-2 text-md"
-                  tagId={tag._id}
-                  key={tag._id}
-                >
-                  {tag.name}
-                </Badge>
-              ))}
+          {isLoading ? (
+            <div className="flex flex-wrap gap-5">
+              <Skeleton className="h-[30px] w-[100px] rounded-full" />
+              <Skeleton className="h-[30px] w-[100px] rounded-full" />
+              <Skeleton className="h-[30px] w-[100px] rounded-full" />
+              <Skeleton className="h-[30px] w-[100px] rounded-full" />
+              <Skeleton className="h-[30px] w-[100px] rounded-full" />
+              <Skeleton className="h-[30px] w-[100px] rounded-full" />
+            </div>
+          ) : search === "" ? (
+            data.map((tag) => (
+              <Badge
+                className="px-4 py-1 text-md"
+                tagId={tag._id}
+                key={tag._id}
+              >
+                {tag.name}
+              </Badge>
+            ))
+          ) : (
+            filter.map((tag) => (
+              <Badge
+                className="px-5 py-2 text-md"
+                tagId={tag._id}
+                key={tag._id}
+              >
+                {tag.name}
+              </Badge>
+            ))
+          )}
         </div>
       </div>
     </div>

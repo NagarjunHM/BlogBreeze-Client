@@ -1,22 +1,22 @@
 import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const BloagDetailSkeleton = () => {
+const BlogDetailSkeleton = () => {
   return (
     <div className="flex justify-center mx-5 mt-10 md:mx-0">
-      <div className="max-w-[800px] w-full shadow p-5">
+      <div className="w-[1000px]  p-5">
         <Skeleton className="w-full h-12 mb-5" />
-        <Skeleton className="w-full h-5 mb-2" />
-        <Skeleton className="w-2/3 h-5 mb-5" />
+        <Skeleton className="w-full h-8 mb-5" />
 
         <div className="flex items-center mb-5 space-x-4">
           <Skeleton className="w-12 h-12 rounded-full" />
-          <div className="flex ">
-            <Skeleton className="h-6 w-44" />
+          <div className="flex flex-col">
+            <Skeleton className="w-full h-6 mb-2" />
+            <Skeleton className="w-2/3 h-4" />
           </div>
         </div>
 
-        <Skeleton className="h-[500px] w-full mb-5" />
+        <Skeleton className="w-full h-[300px] mb-5" />
 
         <Skeleton className="w-full h-5 mb-2" />
         <Skeleton className="w-full h-5 mb-2" />
@@ -32,4 +32,4 @@ const BloagDetailSkeleton = () => {
   );
 };
 
-export default BloagDetailSkeleton;
+export default BlogDetailSkeleton;

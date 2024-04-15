@@ -9,7 +9,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { userSlice } from "@/store/userSlice";
 import { useToast } from "@/components/ui/use-toast";
 import { queryClient } from "@/main";
+import BlogHorizontalCard from "@/components/ui/BlogHoriontalSkeleton";
 import UserList from "@/components/ui/UserList";
+import UserCardSkeleton from "@/components/ui/UserCardSkeleton";
 
 const TagDetailPage = () => {
   const instance = useAxios();
@@ -152,28 +154,18 @@ const TagDetailPage = () => {
   return (
     <div className="m-10">
       {/* on loading skeleton */}
-      {tagDetails.isLoading || userDetails.isLoading ? (
-        <div>
-          <Skeleton className="h-[40px] w-[200px] mb-5" />
-
-          <div className="flex gap-5 mb-10">
-            <div className="font-semibold text-green-600 cursor-pointer hover:underline">
-              <Skeleton className="h-[25px] w-[100px] " />
+      <div>
+        <div className="mb-10 text-5xl font-semibold">Tag</div>
+        <div className="flex flex-col lg:flex-row">
+          {tagDetails.isLoading || userDetails.isLoading ? (
+            <div className="w-[300px]">
+              <Skeleton className="h-[40px] w-[200px] mb-5" />
+              <div className="flex gap-5 mb-10">
+                <Skeleton className="h-[25px] w-[100px] " />
+                <Skeleton className="h-[25px] w-[100px]" />
+              </div>
             </div>
-            <div className="font-semibold cursor-pointer hover:underline text-muted-foreground">
-              <Skeleton className="h-[25px] w-[100px]" />
-            </div>
-          </div>
-          <div className="flex flex-wrap gap-5">
-            <BlogCardSkeleton />
-            <BlogCardSkeleton />
-            <BlogCardSkeleton />
-          </div>
-        </div>
-      ) : (
-        <div>
-          <div className="mb-10 text-5xl font-semibold">Tag</div>
-          <div className="flex flex-col lg:flex-row">
+          ) : (
             <div className="w-[300px] flex-0">
               <div className="flex items-baseline gap-3 mb-3 ">
                 <div className="text-3xl font-semibold">
@@ -210,36 +202,46 @@ const TagDetailPage = () => {
                 </div>
               </div>
             </div>
+          )}
 
-            {/* <BlogList data={tagDetails?.data.blog} /> */}
-            <div className="flex-1">
-              <Tabs defaultValue="stories" className="mb-10">
-                <TabsList>
-                  <TabsTrigger value="stories">Stories</TabsTrigger>
-                  <TabsTrigger value="followers">Followers</TabsTrigger>
-                </TabsList>
-                <TabsContent value="stories">
-                  <div className="mb-10 text-3xl font-semibold">Stories</div>
+          {/* <BlogList data={tagDetails?.data.blog} /> */}
+
+          <div className="flex-1">
+            <Tabs defaultValue="stories" className="mb-10">
+              <TabsList>
+                <TabsTrigger value="stories">Stories</TabsTrigger>
+                <TabsTrigger value="followers">Followers</TabsTrigger>
+              </TabsList>
+              <TabsContent value="stories">
+                <div className="mb-10 text-3xl font-semibold">Stories</div>
+                {tagDetails.isLoading || userDetails.isLoading ? (
+                  <div className="flex flex-col gap-5">
+                    <BlogHorizontalCard />
+                    <BlogHorizontalCard />
+                  </div>
+                ) : (
                   <BlogList data={tagDetails?.data.blog} />
-                </TabsContent>
-                <TabsContent value="followers">
-                  <div className="w-[400px]">
-                    <div className="mb-10 text-3xl font-semibold">
-                      Followers
-                    </div>
+                )}
+              </TabsContent>
+              <TabsContent value="followers">
+                <div className="w-[400px]">
+                  <div className="mb-10 text-3xl font-semibold">Followers</div>
+                  {tagDetails.isLoading || userDetails.isLoading ? (
+                    <UserCardSkeleton />
+                  ) : (
                     <UserList
                       profileUser={tagDetails?.data?.tag?.followers}
                       currentUser={
                         isAuthenticated ? userDetails?.data?.following : []
                       }
                     />
-                  </div>
-                </TabsContent>
-              </Tabs>
-            </div>
+                  )}
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

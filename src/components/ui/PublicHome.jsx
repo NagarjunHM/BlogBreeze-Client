@@ -21,6 +21,7 @@ const PublicHome = () => {
       <div className="flex flex-col gap-5">
         <BlogHorizontalCard />
         <BlogHorizontalCard />
+        <BlogHorizontalCard />
       </div>
     );
   }

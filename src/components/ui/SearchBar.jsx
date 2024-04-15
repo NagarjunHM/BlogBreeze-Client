@@ -66,7 +66,7 @@ const SearchBar = () => {
     <Dialog open={open} onOpenChange={setOpen} s>
       <DialogTrigger asChild>
         <div
-          className="border rounded-full text-sm w-[200px] px-2 py-1 text-muted-foreground flex justify-between items-center"
+          className="border border-foreground rounded-full text-sm w-[200px] px-2 py-1 text-muted-foreground flex justify-between items-center"
           onClick={() => {
             setOpen(true);
             setSearchInput("");

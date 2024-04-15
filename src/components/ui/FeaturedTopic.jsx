@@ -17,7 +17,7 @@ const FeaturedTopic = () => {
     },
   });
 
-  if (isLoading) return <Skeleton className="w-full h-1/2" />;
+  if (isLoading) return <Skeleton className="w-full h-[300px]" />;
 
   return (
     <div className="py-5">

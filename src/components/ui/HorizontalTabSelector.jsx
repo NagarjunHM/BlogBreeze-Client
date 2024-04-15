@@ -56,13 +56,13 @@ const HorizontalTabSelector = () => {
 
   if (user.isLoading)
     return (
-      <div>
+      <div className="mt-3">
         <Skeleton className="w-full h-[35px]" />
       </div>
     );
 
   return (
-    <div className="flex ">
+    <div className="flex py-1 ">
       {showButtons && (
         <button
           className="text-muted-foreground hover:text-black"
@@ -80,10 +80,10 @@ const HorizontalTabSelector = () => {
           {/* for you */}
           <Link
             to="/"
-            className={`min-w-28 px-3 py-1.5 text-sm text-center cursor-pointer font-medium ring-offset-background transition-all border-b focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50
+            className={`min-w-28  px-3 py-1.5 text-sm text-center cursor-pointer font-medium ring-offset-background transition-all border-b focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50
             ${
               location.pathname === "/" && location.search === ""
-                ? "bg-background text-foreground border-muted-foreground"
+                ? "  border-muted-foreground text-foreground"
                 : ""
             }`}
           >
@@ -93,10 +93,10 @@ const HorizontalTabSelector = () => {
           {/* following */}
           <Link
             to="/?feeds=following"
-            className={`min-w-28 px-3 py-1.5 text-sm text-center cursor-pointer font-medium ring-offset-background transition-all border-b focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50
+            className={`min-w-28  px-3 py-1.5 text-sm text-center cursor-pointer font-medium ring-offset-background transition-all border-b  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50
             ${
               location.pathname === "/" && location.search.includes("feeds")
-                ? "bg-background text-foreground border-muted-foreground"
+                ? "  border-muted-foreground text-foreground"
                 : ""
             }`}
           >
@@ -106,12 +106,12 @@ const HorizontalTabSelector = () => {
             <Link
               to={`/?tags=${tab._id}`}
               key={index}
-              className={`min-w-28 px-3 py-1.5 text-sm text-center cursor-pointer font-medium ring-offset-background transition-all border-b focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50
+              className={`min-w-28 px-3 py-1.5 text-sm  text-center cursor-pointer font-medium ring-offset-background transition-all border-b focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50
             ${
               location.pathname === "/" &&
               location.search.includes("tags") &&
               tagId == `${tab._id}`
-                ? "bg-background text-foreground border-muted-foreground"
+                ? " text-foreground border-muted-foreground"
                 : ""
             }`}
             >

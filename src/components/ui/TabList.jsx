@@ -33,7 +33,14 @@ const TabList = () => {
   return (
     <div>
       <div className="mb-10 text-3xl font-semibold">Stories</div>
-      {isLoading ? <BlogHorizontalCard /> : <BlogList data={data} />}
+      {isLoading ? (
+        <div className="flex flex-col gap-5">
+          <BlogHorizontalCard />
+          <BlogHorizontalCard />
+        </div>
+      ) : (
+        <BlogList data={data} />
+      )}
     </div>
   );
 };

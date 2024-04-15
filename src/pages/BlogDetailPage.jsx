@@ -260,13 +260,34 @@ const BlogDetailPage = () => {
       </div>
     );
 
+  const copyURLToClipboard = () => {
+    const urlToCopy = window.location.href;
+
+    // Using the Clipboard API to copy the URL
+    navigator.clipboard
+      .writeText(urlToCopy)
+      .then(() => {
+        toast({
+          title: "url copied",
+          description: urlToCopy,
+        });
+      })
+      .catch((err) => {
+        toast({
+          variant: "destructive",
+          title: "Failed to copy URL to clipboard",
+          description: err,
+        });
+      });
+  };
+
   const date = formatDate(data?.createdAt);
 
   return (
     <>
       {deleteBlog.isPending && <InfiniteProgressBar />}
-      <div className="flex justify-center mx-5 mt-10 mb-10lg:mx-0">
-        <div className="w-[800px] overflow-hidden">
+      <div className="z-10 flex justify-center pt-10 pb-10 mx-5 bg-background lg:px-0">
+        <div className="w-[1000px] overflow-hidden  p-5">
           {/* blog title */}
           <div className="mb-5 text-5xl font-semibold">{data.title}</div>
 
@@ -345,6 +366,7 @@ const BlogDetailPage = () => {
                 aria-label="Share this post"
                 type="button"
                 className="p-1 text-center"
+                onClick={copyURLToClipboard}
               >
                 <Share2 size="1.2em" />
               </button>

@@ -38,12 +38,15 @@ const Navbar = () => {
   return (
     <>
       {isAuthenticated ? (
-        <div className="h-[57px]  items-center flex  backdrop-blur-lg w-screen shadow justify-between px-10 sticky top-0 z-10">
+        <div className="h-[57px]  flex items-center  justify-between  px-10 sticky top-0 bg-black/10 backdrop-blur-sm z-20">
           <div className="flex items-center gap-5">
-            <Link className="text-3xl tracking-wide cursor-pointer" to="/">
+            <Link
+              className="text-3xl font-semibold tracking-wide cursor-pointer"
+              to="/"
+            >
               BlogBreeze
             </Link>
-            <div className="cursor-text">
+            <div className="hidden cursor-text sm:block">
               <SearchBar />
             </div>
           </div>
@@ -69,18 +72,18 @@ const Navbar = () => {
                     </DropdownMenuItem>
                   </Link>
 
-                  <DropdownMenuSeparator />
+                  {/* <DropdownMenuSeparator /> */}
                   <Link to={`/users/${id}`}>
                     <DropdownMenuItem className="flex items-center text-xl">
                       <CiUser className="mr-3 " />
                       Profile
                     </DropdownMenuItem>
                   </Link>
-                  <DropdownMenuItem className="flex items-baseline text-xl">
+                  {/* <DropdownMenuItem className="flex items-baseline text-xl">
                     <PiBooksThin className="mr-3" />
                     Library
-                  </DropdownMenuItem>
-                  <Link to="/stories">
+                  </DropdownMenuItem> */}
+                  {/* <Link to="/stories">
                     <DropdownMenuItem className="flex items-baseline text-xl">
                       <FileText className="w-4 h-4 mr-3" />
                       Stories
@@ -89,7 +92,7 @@ const Navbar = () => {
                   <DropdownMenuItem className="flex items-baseline text-xl">
                     <Settings className="w-4 h-4 mr-3" />
                     Settings
-                  </DropdownMenuItem>
+                  </DropdownMenuItem> */}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     className="flex items-baseline text-xl"
@@ -104,7 +107,7 @@ const Navbar = () => {
           </div>
         </div>
       ) : (
-        <div className="h-[57px]  flex items-center border-b justify-between px-10 sticky top-0 backdrop-blur-xl z-10">
+        <div className="h-[57px]  flex items-center  justify-between  px-10 sticky top-0 bg-black/10 backdrop-blur-sm z-20">
           <div className="text-3xl tracking-tight cursor-pointer">
             <Link to="/">BlogBreeze</Link>
           </div>
