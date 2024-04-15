@@ -54,59 +54,55 @@ const HorizontalTabSelector = () => {
 
   const tabs = [...(user?.data?.tagsFollowing || [])];
 
-  if (user.isLoading)
-    return (
-      <div className="mt-3">
-        <Skeleton className="w-full h-[35px]" />
-      </div>
-    );
-
   return (
-    <div className="flex py-1 ">
-      {showButtons && (
-        <button
-          className="text-muted-foreground hover:text-black"
-          onClick={scrollLeft}
-        >
-          <MdKeyboardArrowLeft size="1.5em" />
-        </button>
-      )}
-      <div
-        ref={containerRef}
-        className="overflow-x-auto scrollbar-hidden"
-        style={scrollbarStyle}
-      >
-        <div className="inline-flex items-center justify-center h-10 p-1 text-muted-foreground">
-          {/* for you */}
-          <Link
-            to="/"
-            className={`min-w-28  px-3 py-1.5 text-sm text-center cursor-pointer font-medium ring-offset-background transition-all border-b focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50
+    <>
+      {user.isLoading ? (
+        <Skeleton className="w-full h-[35px]" />
+      ) : (
+        <div className="flex py-1 ">
+          {showButtons && (
+            <button
+              className="text-muted-foreground hover:text-black"
+              onClick={scrollLeft}
+            >
+              <MdKeyboardArrowLeft size="1.5em" />
+            </button>
+          )}
+          <div
+            ref={containerRef}
+            className="overflow-x-auto scrollbar-hidden"
+            style={scrollbarStyle}
+          >
+            <div className="inline-flex items-center justify-center h-10 p-1 text-muted-foreground">
+              {/* for you */}
+              <Link
+                to="/"
+                className={`min-w-28  px-3 py-1.5 text-sm text-center cursor-pointer font-medium ring-offset-background transition-all border-b focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50
             ${
               location.pathname === "/" && location.search === ""
                 ? "  border-muted-foreground text-foreground"
                 : ""
             }`}
-          >
-            For You
-          </Link>
-
-          {/* following */}
-          <Link
-            to="/?feeds=following"
-            className={`min-w-28  px-3 py-1.5 text-sm text-center cursor-pointer font-medium ring-offset-background transition-all border-b  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50
+              >
+                For You
+              </Link>
+              {/* following */}
+              <Link
+                to="/?feeds=following"
+                className={`min-w-28  px-3 py-1.5 text-sm text-center cursor-pointer font-medium ring-offset-background transition-all border-b  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50
             ${
               location.pathname === "/" && location.search.includes("feeds")
                 ? "  border-muted-foreground text-foreground"
                 : ""
             }`}
-          >
-            Following
-          </Link>
-          {tabs.map((tab, index) => (
-            <Link
-              to={`/?tags=${tab._id}`}
-              key={index}
-              className={`min-w-28 px-3 py-1.5 text-sm  text-center cursor-pointer font-medium ring-offset-background transition-all border-b focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50
+              >
+                Following
+              </Link>
+              {tabs.map((tab, index) => (
+                <Link
+                  to={`/?tags=${tab._id}`}
+                  key={index}
+                  className={`min-w-28 px-3 py-1.5 text-sm  text-center cursor-pointer font-medium ring-offset-background transition-all border-b focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50
             ${
               location.pathname === "/" &&
               location.search.includes("tags") &&
@@ -114,21 +110,23 @@ const HorizontalTabSelector = () => {
                 ? " text-foreground border-muted-foreground"
                 : ""
             }`}
+                >
+                  {tab.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+          {showButtons && (
+            <button
+              className="text-muted-foreground hover:text-black"
+              onClick={scrollRight}
             >
-              {tab.name}
-            </Link>
-          ))}
+              <MdKeyboardArrowRight size="1.5em" />
+            </button>
+          )}
         </div>
-      </div>
-      {showButtons && (
-        <button
-          className="text-muted-foreground hover:text-black"
-          onClick={scrollRight}
-        >
-          <MdKeyboardArrowRight size="1.5em" />
-        </button>
       )}
-    </div>
+    </>
   );
 };
 
