@@ -12,6 +12,7 @@ import { queryClient } from "@/main";
 import BlogHorizontalCard from "@/components/ui/BlogHoriontalSkeleton";
 import UserList from "@/components/ui/UserList";
 import UserCardSkeleton from "@/components/ui/UserCardSkeleton";
+import Error from "@/components/ui/Error";
 
 const TagDetailPage = () => {
   const instance = useAxios();
@@ -150,6 +151,30 @@ const TagDetailPage = () => {
   const handleUnfollowTag = () => {
     if (isAuthenticated) unFollowTag.mutate();
   };
+
+  if (tagDetails.error) {
+    return (
+      <Error
+        message={
+          tagDetails.error?.response?.data ||
+          tagDetails.error?.message ||
+          "something went wrong"
+        }
+      />
+    );
+  }
+
+  if (userDetails.error) {
+    return (
+      <Error
+        message={
+          userDetails.error?.response?.data ||
+          userDetails.error?.message ||
+          "something went wrong"
+        }
+      />
+    );
+  }
 
   return (
     <div className="m-10">

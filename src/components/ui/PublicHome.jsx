@@ -31,7 +31,7 @@ const PublicHome = () => {
       <div className="flex gap-4 text-red-600 space-y-1.5 items-end m-5">
         <AlertCircle />
         <span className="underline">
-          {error.response?.data || error.message}
+          {error.response?.data || error?.message || "something went wrong"}
         </span>
       </div>
     );

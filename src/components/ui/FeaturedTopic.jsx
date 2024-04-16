@@ -4,6 +4,7 @@ import useAxios from "@/hooks/useAxios";
 import { Badge } from "./badge";
 import { Link } from "react-router-dom";
 import { Skeleton } from "./skeleton";
+import Error from "./Error";
 
 const FeaturedTopic = () => {
   const instance = useAxios();
@@ -18,6 +19,16 @@ const FeaturedTopic = () => {
   });
 
   if (isLoading) return <Skeleton className="w-full h-[300px]" />;
+
+  if (error) {
+    return (
+      <Error
+        message={
+          error?.response?.data || error?.message || "something went wrong"
+        }
+      />
+    );
+  }
 
   return (
     <div className="py-5">

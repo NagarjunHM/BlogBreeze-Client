@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { userSlice } from "@/store/userSlice";
 import UserList from "@/components/ui/UserList";
 import UserCardSkeleton from "@/components/ui/UserCardSkeleton";
+import Error from "@/components/ui/Error";
 
 const AllUsers = () => {
   const instance = useAxios();
@@ -31,7 +32,29 @@ const AllUsers = () => {
     enabled: isAuthenticated,
   });
 
-  if (allUsers.error || currentUserFollowing.error) return <div>{error}</div>;
+  if (allUsers.error) {
+    return (
+      <Error
+        message={
+          allUsers.error?.response?.data ||
+          allUsers.error?.message ||
+          "something went wrong"
+        }
+      />
+    );
+  }
+
+  if (currentUserFollowing.error) {
+    return (
+      <Error
+        message={
+          currentUserFollowing.error?.response?.data ||
+          currentUserFollowing.error?.message ||
+          "something went wrong"
+        }
+      />
+    );
+  }
 
   const filter = allUsers?.data?.filter((user) =>
     user.name.toLowerCase().includes(search.toLowerCase())

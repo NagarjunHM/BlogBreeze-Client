@@ -18,7 +18,6 @@ import PublicRoute from "../routes/PublicRoute";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Edit_Blog from "./pages/Edit_Blog";
 import Create_Tag from "./pages/Create_Tag";
-import TestPage from "./components/ui/HorizontalTabSelector";
 import AllTopics from "./pages/AllTopics";
 import AllUsers from "./pages/AllUsers";
 import AuthCheck from "../routes/AuthCheck";
@@ -87,10 +86,6 @@ const router = createBrowserRouter([
             <Create_Tag />
           </ProtectedRoute>
         ),
-      },
-      {
-        path: "/testpage",
-        element: <TestPage />,
       },
       {
         path: "/tags",

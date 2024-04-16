@@ -2,10 +2,9 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import useAxios from "@/hooks/useAxios";
 import BlogList from "./BlogList";
-import BlogCardSkeleton from "./BlogCardSkeleton";
-import { AlertCircle } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import BlogHorizontalCard from "./BlogHoriontalSkeleton";
+import Error from "./Error";
 
 const TabList = () => {
   const instance = useAxios();
@@ -20,15 +19,16 @@ const TabList = () => {
   });
 
   // error
-  if (error)
+
+  if (error) {
     return (
-      <div className="flex  gap-4 text-red-600 space-y-1.5 items-end m-5">
-        <AlertCircle />
-        <span className="underline">
-          {error.response?.data || error.message}
-        </span>
-      </div>
+      <Error
+        message={
+          error?.response?.data || error?.message || "something went wrong"
+        }
+      />
     );
+  }
 
   return (
     <div>

@@ -5,6 +5,7 @@ import useAxios from "@/hooks/useAxios";
 import { userSlice } from "@/store/userSlice";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { Skeleton } from "./skeleton";
+import Error from "./Error";
 
 const HorizontalTabSelector = () => {
   const containerRef = useRef(null);
@@ -53,6 +54,19 @@ const HorizontalTabSelector = () => {
   });
 
   const tabs = [...(user?.data?.tagsFollowing || [])];
+
+  if (user.error) {
+    console.log(user.error);
+    return (
+      <Error
+        message={
+          user?.error?.response?.data ||
+          user?.error?.message ||
+          "something went wrong"
+        }
+      />
+    );
+  }
 
   return (
     <>

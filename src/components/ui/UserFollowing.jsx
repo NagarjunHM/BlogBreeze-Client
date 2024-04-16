@@ -6,6 +6,7 @@ import UserList from "@/components/ui/UserList";
 import { AlertCircle } from "lucide-react";
 import UserCardSkeleton from "./UserCardSkeleton";
 import { userSlice } from "@/store/userSlice";
+import Error from "./Error";
 
 const UserFollowing = () => {
   const { usersId } = useParams();
@@ -32,12 +33,14 @@ const UserFollowing = () => {
   });
 
   // error
-  if (profileFollowing.error || currentUserFollowing.error)
+  const error = profileFollowing.error || currentUserFollowing.error;
+  if (error)
     return (
-      <div className="flex  gap-4 text-red-600 space-y-1.5 items-end m-5">
-        <AlertCircle />
-        <span className="underline">{error.response || error.message}</span>
-      </div>
+      <Error
+        message={
+          error?.response?.data || error?.message || "something went wrong"
+        }
+      />
     );
 
   const isLoading =

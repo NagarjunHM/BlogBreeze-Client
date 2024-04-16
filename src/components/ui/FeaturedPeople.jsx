@@ -4,6 +4,7 @@ import useAxios from "@/hooks/useAxios";
 import UserCard from "./UserCard";
 import { Link } from "react-router-dom";
 import { Skeleton } from "./skeleton";
+import Error from "./Error";
 
 const FeaturedPeople = () => {
   const instance = useAxios();
@@ -18,7 +19,15 @@ const FeaturedPeople = () => {
 
   if (isLoading) return <Skeleton className="w-full h-[300px]" />;
 
-  if (error) return <div>{error}</div>;
+  if (error) {
+    return (
+      <Error
+        message={
+          error?.response?.data || error?.message || "something went wrong"
+        }
+      />
+    );
+  }
 
   return (
     <div className="py-5">

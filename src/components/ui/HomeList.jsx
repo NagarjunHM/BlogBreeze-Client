@@ -5,6 +5,7 @@ import useAxios from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import BlogList from "./BlogList";
 import BlogHorizontalCard from "./BlogHoriontalSkeleton";
+import Error from "./Error";
 
 const HomeList = () => {
   const instance = useAxios();
@@ -50,6 +51,18 @@ const HomeList = () => {
         <BlogHorizontalCard />
         <BlogHorizontalCard />
       </div>
+    );
+  }
+
+  if (blogData.error) {
+    return (
+      <Error
+        message={
+          blogData?.error?.response?.data ||
+          blogData?.error?.message ||
+          "something went wrong"
+        }
+      />
     );
   }
 

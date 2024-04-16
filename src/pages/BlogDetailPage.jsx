@@ -23,6 +23,7 @@ import { useToast } from "@/components/ui/use-toast";
 import InfiniteProgressBar from "@/components/ui/InfiniteProgressBar";
 import { queryClient } from "../main";
 import Comment from "@/components/ui/Comment";
+import Error from "@/components/ui/Error";
 
 const BlogDetailPage = () => {
   useEffect(() => {
@@ -252,13 +253,15 @@ const BlogDetailPage = () => {
     );
 
   // error
-  if (error)
+  if (error) {
     return (
-      <div className="flex  gap-4 text-red-600 space-y-1.5 items-end m-5">
-        <AlertCircle />
-        <span className="underline">{error.response || error.message}</span>
-      </div>
+      <Error
+        message={
+          error?.response?.data || error?.message || "something went wrong"
+        }
+      />
     );
+  }
 
   const copyURLToClipboard = () => {
     const urlToCopy = window.location.href;

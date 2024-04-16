@@ -7,6 +7,7 @@ import UserProfileSkeleton from "./UserProfileSkeleton";
 import { userSlice } from "@/store/userSlice";
 import { queryClient } from "@/main";
 import { useToast } from "./use-toast";
+import Error from "./Error";
 // import EditUserDetails from "./EditUserDetails";
 
 const TabAbout = () => {
@@ -124,6 +125,18 @@ const TabAbout = () => {
   // loading
   if (user.isLoading || userFollowers.isLoading || userFollowing.isLoading)
     return <UserProfileSkeleton />;
+
+  const error = user.error || userFollowers.error || userFollowing.error;
+
+  if (error) {
+    return (
+      <Error
+        message={
+          error?.response?.data || error?.message || "something went wrong"
+        }
+      />
+    );
+  }
 
   return (
     <div className="flex flex-col ">

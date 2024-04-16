@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import Error from "@/components/ui/Error";
 
 const AllTopics = () => {
   const instance = useAxios();
@@ -18,7 +19,15 @@ const AllTopics = () => {
     },
   });
 
-  if (error) return <div>{error}</div>;
+  if (error) {
+    return (
+      <Error
+        message={
+          error?.response?.data || error?.message || "something went wrong"
+        }
+      />
+    );
+  }
 
   const filter = data?.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
