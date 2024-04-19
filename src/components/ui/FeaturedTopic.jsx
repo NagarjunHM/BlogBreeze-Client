@@ -1,4 +1,3 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "@/hooks/useAxios";
 import { Badge } from "./badge";
@@ -10,9 +9,9 @@ const FeaturedTopic = () => {
   const instance = useAxios();
 
   const { data, error, isLoading } = useQuery({
-    queryKey: ["topic"],
+    queryKey: ["topic", "featured"],
     queryFn: async () => {
-      const response = await instance.get("/tags");
+      const response = await instance.get("/tags?featured=true");
       console.log(response.data);
       return response.data;
     },

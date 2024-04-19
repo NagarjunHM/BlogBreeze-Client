@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import useAxios from "@/hooks/useAxios";
 import { useParams } from "react-router-dom";
@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import BloagDetailSkeleton from "@/components/ui/BloagDetailSkeleton";
 import { useNavigate } from "react-router-dom";
-import { AlertCircle } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import {
   DropdownMenu,
@@ -16,7 +16,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MessageCircleMore, Share2, Bookmark, Ellipsis } from "lucide-react";
+import { Ellipsis } from "lucide-react";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 import { userSlice } from "@/store/userSlice";
 import { useToast } from "@/components/ui/use-toast";
@@ -24,17 +24,20 @@ import InfiniteProgressBar from "@/components/ui/InfiniteProgressBar";
 import { queryClient } from "../main";
 import Comment from "@/components/ui/Comment";
 import Error from "@/components/ui/Error";
+import { Badge } from "@/components/ui/badge";
+import { FaShareAlt } from "react-icons/fa";
 
 const BlogDetailPage = () => {
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to the top when component mounts
   }, []);
 
+  const location = useLocation();
   const instance = useAxios();
   const { toast } = useToast();
   const { blogId } = useParams();
   const navigate = useNavigate();
-  const { id, token, isAuthenticated } = userSlice();
+  const { id, token, isAuthenticated, setPath } = userSlice();
 
   // fetching the blog details
   const { data, error, isLoading } = useQuery({
@@ -291,6 +294,12 @@ const BlogDetailPage = () => {
       {deleteBlog.isPending && <InfiniteProgressBar />}
       <div className="z-10 flex justify-center pt-10 pb-10 mx-5 bg-background lg:px-0">
         <div className="w-[1000px] overflow-hidden  p-5">
+          <div>
+            <Badge tagId={data.tag._id} className="mb-5">
+              {data.tag.name}
+            </Badge>
+          </div>
+
           {/* blog title */}
           <div className="mb-5 text-5xl font-semibold">{data.title}</div>
 
@@ -363,7 +372,7 @@ const BlogDetailPage = () => {
 
           <Separator />
 
-          <div className="flex flex-wrap justify-between ">
+          <div className="flex flex-wrap items-center justify-between">
             <div className="space-x-2">
               <button
                 aria-label="Share this post"
@@ -371,41 +380,77 @@ const BlogDetailPage = () => {
                 className="p-1 text-center"
                 onClick={copyURLToClipboard}
               >
-                <Share2 size="1.2em" />
+                <FaShareAlt className="w-5 h-5" />
               </button>
             </div>
 
             {/* thumbsup and comment */}
-            <div className="flex space-x-4 ">
-              <button
-                type="button"
-                className="flex items-center p-1 space-x-1.5"
-              >
-                {/* comment component */}
-                <Comment blogId />
-                <span>{data.comments.length}</span>
-              </button>
-
-              {data.likes.some((like) => like._id === id) ? (
+            {isAuthenticated ? (
+              <div className="flex space-x-4 ">
                 <button
                   type="button"
                   className="flex items-center p-1 space-x-1.5"
-                  onClick={handleUnlike}
                 >
-                  <IoMdHeart size="1.2em" />
-                  <span>{data.likes.length}</span>
+                  {/* comment component */}
+                  <Comment blogId />
+                  <span>{data.comments.length}</span>
                 </button>
-              ) : (
+
+                {data.likes.some((like) => like._id === id) ? (
+                  <button
+                    type="button"
+                    className="flex items-center p-1 space-x-1.5"
+                    onClick={handleUnlike}
+                  >
+                    <IoMdHeart size="1.2em" />
+                    <span>{data.likes.length}</span>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="flex items-center p-1 space-x-1.5 "
+                    onClick={handleLike}
+                  >
+                    <IoMdHeartEmpty size="1.2em" />
+                    <span>{data.likes.length}</span>
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="flex space-x-4 ">
                 <button
                   type="button"
-                  className="flex items-center p-1 space-x-1.5 "
-                  onClick={handleLike}
+                  className="flex items-center p-1 space-x-1.5"
                 >
-                  <IoMdHeartEmpty size="1.2em" />
-                  <span>{data.likes.length}</span>
+                  {/* comment component */}
+                  <Comment blogId />
+                  <span>{data.comments.length}</span>
                 </button>
-              )}
-            </div>
+
+                {data.likes.some((like) => like._id === id) ? (
+                  <button
+                    type="button"
+                    className="flex items-center p-1 space-x-1.5"
+                    onClick={handleUnlike}
+                  >
+                    <IoMdHeart size="1.2em" />
+                    <span>{data.likes.length}</span>
+                  </button>
+                ) : (
+                  <Link
+                    to="/login"
+                    type="button"
+                    className="flex items-center p-1 space-x-1.5 "
+                    onClick={() => {
+                      setPath(location.pathname);
+                    }}
+                  >
+                    <IoMdHeartEmpty size="1.2em" />
+                    <span>{data.likes.length}</span>
+                  </Link>
+                )}
+              </div>
+            )}
           </div>
           <Separator className="mb-5" />
           <img

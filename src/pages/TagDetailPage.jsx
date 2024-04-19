@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import useAxios from "@/hooks/useAxios";
 import BlogList from "@/components/ui/BlogList";
@@ -19,6 +19,10 @@ const TagDetailPage = () => {
   const { id, isAuthenticated, token, name } = userSlice();
   const { tagId } = useParams();
   const { toast } = useToast();
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top when component mounts
+  }, []);
 
   // query function to fetch tag details
   const tagDetails = useQuery({
@@ -198,25 +202,27 @@ const TagDetailPage = () => {
                     tagDetails.data?.tag.name.slice(1)}
                 </div>
 
-                <div>
-                  {userDetails?.data?.tagsFollowing?.find(
-                    (tag) => tag._id === tagId
-                  ) ? (
-                    <div
-                      onClick={handleUnfollowTag}
-                      className="font-semibold text-green-600 cursor-pointer hover:underline"
-                    >
-                      Following
-                    </div>
-                  ) : (
-                    <div
-                      onClick={handleFollowTag}
-                      className="font-semibold text-green-600 cursor-pointer hover:underline"
-                    >
-                      Follow
-                    </div>
-                  )}
-                </div>
+                {isAuthenticated && (
+                  <div>
+                    {userDetails?.data?.tagsFollowing?.find(
+                      (tag) => tag._id === tagId
+                    ) ? (
+                      <div
+                        onClick={handleUnfollowTag}
+                        className="font-semibold text-green-600 cursor-pointer hover:underline"
+                      >
+                        Following
+                      </div>
+                    ) : (
+                      <div
+                        onClick={handleFollowTag}
+                        className="font-semibold text-green-600 cursor-pointer hover:underline"
+                      >
+                        Follow
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
               <div className="flex gap-5 mb-10">
                 <div className="font-semibold text-muted-foreground">

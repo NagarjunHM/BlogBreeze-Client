@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import useAxios from "@/hooks/useAxios";
 import InfiniteProgressBar from "@/components/ui/InfiniteProgressBar";
@@ -24,7 +24,7 @@ const LoginPage = () => {
   const instance = useAxios();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { loginUser } = userSlice();
+  const { loginUser, path } = userSlice();
 
   // handle input change
   const handleInput = (e) => {
@@ -90,7 +90,11 @@ const LoginPage = () => {
         password: data.password,
       }),
     onSuccess: (res) => {
-      console.log(res);
+      if (path !== null) {
+        navigate(path);
+      } else {
+        navigate("/", { replace: true });
+      }
       loginUser(
         true,
         res.data.token,
@@ -99,7 +103,7 @@ const LoginPage = () => {
         res.data.id,
         res?.data?.profilePicture
       );
-      navigate("/", { replace: true });
+
       toast({
         title: "Login successful",
         description: "Welcome " + res.data.name,

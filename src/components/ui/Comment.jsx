@@ -1,17 +1,15 @@
 import {
   Sheet,
-  SheetClose,
   SheetContent,
-  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { MessageCircleMore } from "lucide-react";
 import CommentInput from "./CommentInput";
 import CommentList from "./CommentList";
 import { userSlice } from "@/store/userSlice";
+import { FaComments } from "react-icons/fa6";
 
 const Comment = () => {
   const { isAuthenticated } = userSlice();
@@ -19,7 +17,7 @@ const Comment = () => {
     <Sheet variant="bottom">
       <SheetTrigger asChild>
         <div>
-          <MessageCircleMore />
+          <FaComments className="w-5 h-5" />
         </div>
       </SheetTrigger>
       <SheetContent className="overflow-auto ">

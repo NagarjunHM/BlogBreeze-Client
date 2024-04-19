@@ -1,35 +1,30 @@
-import React from "react";
 import { Button } from "./button";
 import { Link } from "react-router-dom";
-import { Library, FileText, Settings, LogOut, SquarePen } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import SearchBar from "./SearchBar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useNavigate } from "react-router-dom";
 import { userSlice } from "@/store/userSlice";
 import useAxios from "@/hooks/useAxios";
-import { CiUser } from "react-icons/ci";
-import { PiBooksThin } from "react-icons/pi";
+import { FaUsers, FaUser, FaHashtag, FaEdit } from "react-icons/fa";
+import { IoLogOutSharp } from "react-icons/io5";
 
 const Navbar = () => {
   const instance = useAxios();
   const { isAuthenticated, resetValues, id, name, profilePicture } =
     userSlice();
-  const navigate = useNavigate();
 
   // function to logout the user
   const logoutUser = async () => {
     try {
       await instance.post("/users/logout");
       resetValues();
-      navigate("/login");
+      // navigate("/login");
     } catch (err) {
       console.log(err);
     }
@@ -67,7 +62,7 @@ const Navbar = () => {
                 <DropdownMenuContent className=" w-60">
                   <Link to="/create-blog">
                     <DropdownMenuItem className="flex items-baseline text-xl">
-                      <SquarePen className="w-4 h-4 mr-3" />
+                      <FaEdit className="w-4 h-4 mr-3" />
                       Write blog
                     </DropdownMenuItem>
                   </Link>
@@ -75,30 +70,28 @@ const Navbar = () => {
                   {/* <DropdownMenuSeparator /> */}
                   <Link to={`/users/${id}`}>
                     <DropdownMenuItem className="flex items-center text-xl">
-                      <CiUser className="mr-3 " />
+                      <FaUser className="w-4 h-4 mr-3" />
                       Profile
                     </DropdownMenuItem>
                   </Link>
-                  {/* <DropdownMenuItem className="flex items-baseline text-xl">
-                    <PiBooksThin className="mr-3" />
-                    Library
-                  </DropdownMenuItem> */}
-                  {/* <Link to="/stories">
+                  <Link to="/tags">
                     <DropdownMenuItem className="flex items-baseline text-xl">
-                      <FileText className="w-4 h-4 mr-3" />
-                      Stories
+                      <FaHashtag className="w-4 h-4 mr-3" />
+                      All topics
                     </DropdownMenuItem>
                   </Link>
-                  <DropdownMenuItem className="flex items-baseline text-xl">
-                    <Settings className="w-4 h-4 mr-3" />
-                    Settings
-                  </DropdownMenuItem> */}
+                  <Link to="/users">
+                    <DropdownMenuItem className="flex items-baseline text-xl ">
+                      <FaUsers className="w-5 h-5 mr-3" />
+                      All Users
+                    </DropdownMenuItem>
+                  </Link>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    className="flex items-baseline text-xl"
+                    className="flex items-center text-xl"
                     onClick={logoutUser}
                   >
-                    <LogOut className="w-4 h-4 mr-3" />
+                    <IoLogOutSharp className="w-5 h-5 mr-3" />
                     Logout
                   </DropdownMenuItem>
                 </DropdownMenuContent>

@@ -1,4 +1,3 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "@/hooks/useAxios";
 import UserCard from "./UserCard";
@@ -10,9 +9,9 @@ const FeaturedPeople = () => {
   const instance = useAxios();
 
   const { data, error, isLoading } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["users", "featured"],
     queryFn: async () => {
-      const response = await instance.get("/users");
+      const response = await instance.get("/users?featured=true");
       return response.data;
     },
   });

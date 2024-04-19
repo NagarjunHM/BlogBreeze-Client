@@ -29,7 +29,7 @@ const UserFollowers = () => {
       console.log(response.data);
       return response?.data;
     },
-    enabled: isAuthenticated,
+    enabled: isAuthenticated && id !== "",
   });
 
   // error

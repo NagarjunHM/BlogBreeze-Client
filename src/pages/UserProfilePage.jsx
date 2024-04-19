@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TabAbout from "@/components/ui/TabAbout";
 import TabList from "@/components/ui/TabList";
@@ -6,6 +6,10 @@ import UserFollowers from "../components/ui/UserFollowers";
 import UserFollowing from "../components/ui/UserFollowing";
 
 const UserProfilePage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top when component mounts
+  }, []);
+
   return (
     <div className="m-10">
       <div className="my-10 text-5xl font-semibold">Profile</div>

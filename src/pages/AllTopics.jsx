@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "@/hooks/useAxios";
 import { Badge } from "@/components/ui/badge";

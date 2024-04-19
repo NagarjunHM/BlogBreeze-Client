@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { userSlice } from "@/store/userSlice";
 import useAxios from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
@@ -30,6 +30,7 @@ const HomeList = () => {
       queryKey: ["following", "users", id],
       queryFn: async () => {
         const response = await instance.get(`/blogs/following/users/${id}`);
+        console.log(response.data);
         return response.data;
       },
     });
@@ -63,6 +64,49 @@ const HomeList = () => {
           "something went wrong"
         }
       />
+    );
+  }
+
+  if (
+    blogData.data?.length === 0 &&
+    location.pathname === "/" &&
+    location.search === ""
+  ) {
+    return (
+      <div className="flex flex-col text-center">
+        <div className="mb-5">
+          Stories from the topics you follow will appear here.
+        </div>
+        <div>
+          <Link
+            to="/tags"
+            className="px-3 py-2 text-white bg-green-600 rounded-full"
+          >
+            Explore topics
+          </Link>
+        </div>
+      </div>
+    );
+  }
+  if (
+    blogData.data?.length === 0 &&
+    location.pathname === "/" &&
+    location.search.includes("feeds")
+  ) {
+    return (
+      <div className="flex flex-col text-center">
+        <div className="mb-5">
+          Stories from the writers you follow will appear here.
+        </div>
+        <div>
+          <Link
+            to="/users"
+            className="px-3 py-2 text-white bg-green-600 rounded-full"
+          >
+            Explore writers
+          </Link>
+        </div>
+      </div>
     );
   }
 

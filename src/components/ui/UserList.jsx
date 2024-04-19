@@ -1,19 +1,16 @@
-import React from "react";
 import UserCard from "./UserCard";
 import { userSlice } from "@/store/userSlice";
 import { useMutation } from "@tanstack/react-query";
 import useAxios from "@/hooks/useAxios";
 import { useToast } from "./use-toast";
-import { useParams } from "react-router-dom";
 import { queryClient } from "@/main";
+import { useLocation, Link } from "react-router-dom";
 
 const UserList = ({ profileUser, currentUser }) => {
   const instance = useAxios();
   const { toast } = useToast();
-  // const { usersId } = useParams();
-  const { id, isAuthenticated, token, name } = userSlice();
-
-  console.log("currentUser", currentUser);
+  const location = useLocation();
+  const { id, isAuthenticated, token, setPath } = userSlice();
 
   // mutation function to follow user
   const followUser = useMutation({
@@ -140,13 +137,30 @@ const UserList = ({ profileUser, currentUser }) => {
         </div>
       );
     } else {
-      return (
+      return isAuthenticated ? (
         <div
           className="text-sm font-bold text-green-600 cursor-pointer hover:underline"
           onClick={() => handleUnfollow(user)}
         >
           Follow
         </div>
+      ) : (
+        // <NavLink
+        //   className="text-sm font-bold text-green-600 cursor-pointer hover:underline"
+        //   to="/login"
+        //   state={{ prev: location.pathname }}
+        // >
+        //   Follow
+        // </NavLink>
+        <Link
+          className="text-sm font-bold text-green-600 cursor-pointer hover:underline"
+          to="/login"
+          onClick={() => {
+            setPath(location.pathname);
+          }}
+        >
+          Follow
+        </Link>
       );
     }
   };

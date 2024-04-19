@@ -1,4 +1,3 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
 import FeaturedTopic from "@/components/ui/FeaturedTopic";
 import FeaturedPeople from "@/components/ui/FeaturedPeople";

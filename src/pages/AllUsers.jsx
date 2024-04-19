@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "@/hooks/useAxios";
 import { Input } from "@/components/ui/input";
@@ -18,7 +18,7 @@ const AllUsers = () => {
     queryKey: ["users"],
     queryFn: async () => {
       const response = await instance.get("/users");
-      return response.data;
+      return response?.data;
     },
   });
 
@@ -26,10 +26,15 @@ const AllUsers = () => {
   const currentUserFollowing = useQuery({
     queryKey: ["following", id],
     queryFn: async () => {
+      if (!isAuthenticated || !allUsers.isSuccess) {
+        // Return an empty array or handle the case appropriately
+        return [];
+      }
+
       const response = await instance.get(`users/${id}/following`);
       return response?.data;
     },
-    enabled: isAuthenticated,
+    enabled: isAuthenticated && allUsers.isSuccess,
   });
 
   if (allUsers.error) {

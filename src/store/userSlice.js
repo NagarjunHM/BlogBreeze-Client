@@ -9,6 +9,7 @@ export const userSlice = create(
       email: "",
       id: "",
       name: "",
+      path: "",
       profilePicture: "",
       newBlog: {
         title: "",
@@ -34,6 +35,11 @@ export const userSlice = create(
       // set token
       setToken: (token) => {
         set({ token });
+      },
+
+      // set pathname
+      setPath: (path) => {
+        set({ path });
       },
 
       // to reset newBlog
