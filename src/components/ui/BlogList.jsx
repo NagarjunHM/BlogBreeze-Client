@@ -1,10 +1,8 @@
-import React from "react";
-import BlogCard from "./BlogCard";
 import BlogCardHorizontal from "./BlogCardHorizontal";
 
 const BlogList = ({ data }) => {
   console.log(data);
-  if (data.length === 0)
+  if (data?.length === 0)
     return (
       <div className="flex gap-2 text-xl underline cursor-default">
         No blogs found
@@ -12,7 +10,7 @@ const BlogList = ({ data }) => {
     );
   return (
     <div className="flex flex-wrap items-stretch h-[400px]">
-      {data.map((data) => (
+      {data?.map((data) => (
         <div key={data._id} className="mb-5">
           {/* <BlogCard data={data} /> */}
           <BlogCardHorizontal data={data} />

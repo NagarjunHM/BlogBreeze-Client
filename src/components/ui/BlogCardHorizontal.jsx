@@ -29,7 +29,7 @@ const BlogCardHorizontal = ({ data }) => {
         <div className="mx-0 my-6 col-span-full lg:col-span-4 lg:order-1">
           {data?.picture && (
             <img
-              src={`http://localhost:5000/${picture}`}
+              src={`https://blogbreeze-server.onrender.com/${picture}`}
               alt="Description of the image"
               className="object-cover w-full h-full rounded"
             />

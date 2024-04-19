@@ -454,7 +454,7 @@ const BlogDetailPage = () => {
           </div>
           <Separator className="mb-5" />
           <img
-            src={`http://localhost:5000/${data.picture}`}
+            src={`https://blogbreeze-server.onrender.com/${data.picture}`}
             alt="cover image"
             className="object-cover w-full mb-5 rounded-lg "
           />
