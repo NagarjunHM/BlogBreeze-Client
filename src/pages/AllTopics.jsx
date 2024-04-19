@@ -12,7 +12,7 @@ const AllTopics = () => {
   const [search, setSearch] = useState("");
 
   const { data, error, isLoading } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["tags"],
     queryFn: async () => {
       const response = await instance.get("/tags");
       return response.data;
