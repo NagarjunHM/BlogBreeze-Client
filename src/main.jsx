@@ -1,26 +1,30 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LayoutPage from "./pages/LayoutPage";
-import HomePage from "./pages/HomePage";
-import BlogDetailPage from "./pages/BlogDetailPage";
-import TagDetailPage from "./pages/TagDetailPage";
-import UserProfilePage from "./pages/UserProfilePage";
+
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import PageNotFound from "./pages/PageNotFound";
-import Create_Blog from "./pages/Create_Blog";
 import ProtectedRoute from "../routes/ProtectedRoute";
 import PublicRoute from "../routes/PublicRoute";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import Edit_Blog from "./pages/Edit_Blog";
-import Create_Tag from "./pages/Create_Tag";
-import AllTopics from "./pages/AllTopics";
-import AllUsers from "./pages/AllUsers";
 import AuthCheck from "../routes/AuthCheck";
+import SuspensePage from "./pages/SuspensePage";
+import HomePage from "./pages/HomePage";
+import ErrorBoundary from "./pages/ErrorBoundary";
+
+const BlogDetailPage = React.lazy(() => import("./pages/BlogDetailPage"));
+const UserProfilePage = React.lazy(() => import("./pages/UserProfilePage"));
+const Create_Blog = React.lazy(() => import("./pages/Create_Blog"));
+const Edit_Blog = React.lazy(() => import("./pages/Edit_Blog"));
+const Create_Tag = React.lazy(() => import("./pages/Create_Tag"));
+const TagDetailPage = React.lazy(() => import("./pages/TagDetailPage"));
+const AllTopics = React.lazy(() => import("./pages/AllTopics"));
+const AllUsers = React.lazy(() => import("./pages/AllUsers"));
 
 export const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -30,22 +34,51 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <HomePage />,
+        element: (
+          <ErrorBoundary>
+            <HomePage />
+          </ErrorBoundary>
+        ),
         children: [
           {
             index: true,
-            element: <AuthCheck />,
+            element: (
+              <ErrorBoundary>
+                <AuthCheck />
+              </ErrorBoundary>
+            ),
           },
         ],
       },
       {
         path: "/blogs/:blogId",
-        element: <BlogDetailPage />,
+        element: (
+          <Suspense fallback={<SuspensePage />}>
+            <ErrorBoundary>
+              <BlogDetailPage />
+            </ErrorBoundary>
+          </Suspense>
+        ),
       },
-      { path: "/tags/:tagId", element: <TagDetailPage /> },
+      {
+        path: "/tags/:tagId",
+        element: (
+          <Suspense fallback={<SuspensePage />}>
+            <ErrorBoundary>
+              <TagDetailPage />
+            </ErrorBoundary>
+          </Suspense>
+        ),
+      },
       {
         path: "/users/:usersId",
-        element: <UserProfilePage />,
+        element: (
+          <Suspense fallback={<SuspensePage />}>
+            <ErrorBoundary>
+              <UserProfilePage />
+            </ErrorBoundary>
+          </Suspense>
+        ),
       },
       {
         path: "/login",
@@ -67,7 +100,11 @@ const router = createBrowserRouter([
         path: "/create-blog",
         element: (
           <ProtectedRoute>
-            <Create_Blog />
+            <Suspense fallback={<SuspensePage />}>
+              <ErrorBoundary>
+                <Create_Blog />
+              </ErrorBoundary>
+            </Suspense>
           </ProtectedRoute>
         ),
       },
@@ -75,7 +112,11 @@ const router = createBrowserRouter([
         path: "/edit-blog/:blogId",
         element: (
           <ProtectedRoute>
-            <Edit_Blog />
+            <Suspense fallback={<SuspensePage />}>
+              <ErrorBoundary>
+                <Edit_Blog />
+              </ErrorBoundary>
+            </Suspense>
           </ProtectedRoute>
         ),
       },
@@ -83,21 +124,43 @@ const router = createBrowserRouter([
         path: "/create-tag/",
         element: (
           <ProtectedRoute>
-            <Create_Tag />
+            <Suspense fallback={<SuspensePage />}>
+              <ErrorBoundary>
+                <Create_Tag />
+              </ErrorBoundary>
+            </Suspense>
           </ProtectedRoute>
         ),
       },
       {
         path: "/tags",
-        element: <AllTopics />,
+        element: (
+          <Suspense fallback={<SuspensePage />}>
+            <ErrorBoundary>
+              <AllTopics />
+            </ErrorBoundary>
+          </Suspense>
+        ),
       },
       {
         path: "/users",
-        element: <AllUsers />,
+        element: (
+          <Suspense fallback={<SuspensePage />}>
+            <ErrorBoundary>
+              <AllUsers />
+            </ErrorBoundary>
+          </Suspense>
+        ),
       },
       {
         path: "/tagdetail/:tagId",
-        element: <TagDetailPage />,
+        element: (
+          <Suspense fallback={<SuspensePage />}>
+            <ErrorBoundary>
+              <TagDetailPage />
+            </ErrorBoundary>
+          </Suspense>
+        ),
       },
     ],
   },
