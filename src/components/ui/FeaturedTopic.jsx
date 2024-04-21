@@ -33,7 +33,7 @@ const FeaturedTopic = () => {
     <div className="py-5">
       <div className="mb-4 text-3xl font-semibold">Explore topics</div>
       <div className="flex flex-wrap max-w-full gap-4 overflow-x-auto">
-        {data.map((tag) => (
+        {data?.map((tag) => (
           <div key={tag._id}>
             <Badge tagId={tag._id}>{tag.name}</Badge>
           </div>
