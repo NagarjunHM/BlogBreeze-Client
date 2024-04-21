@@ -1,4 +1,4 @@
-# BlogBreeze: 📚
+# BlogBreeze - Client 💻
 
 This is a complete end to end implemented blogging application.
 
