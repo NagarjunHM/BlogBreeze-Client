@@ -58,7 +58,7 @@ const Edit_Blog = () => {
         picture: data.picture || "",
         description: data.description || "",
         content: data.content || "",
-        tag: { value: data.tag._id, label: data.tag.name } || "",
+        tag: { value: data.tag?._id, label: data.tag?.name } || "",
       }));
     }
   }, [data, isSuccess]);
@@ -232,22 +232,18 @@ const Edit_Blog = () => {
             />
           </div>
 
-          {blogData.picture &&
-          typeof blogData.picture === "string" &&
-          blogData.picture.includes("uploads") ? (
+          {blogData.picture instanceof File && (
             <img
-              src={`http://localhost:5000/${blogData.picture}`}
-              alt="Cover "
+              src={URL.createObjectURL(blogData.picture)}
+              alt="Cover"
               className="w-44 aspect-auto"
             />
-          ) : (
+          )}
+
+          {blogData.picture && typeof blogData.picture === "string" && (
             <img
-              src={
-                blogData.picture instanceof Blob
-                  ? URL.createObjectURL(blogData.picture)
-                  : ""
-              }
-              alt="Cover"
+              src={`${blogData.picture}`}
+              alt="Cover "
               className="w-44 aspect-auto"
             />
           )}
@@ -280,7 +276,7 @@ const Edit_Blog = () => {
                 loadOptions={promiseOptions}
                 onCreateOption={handleCreateTag}
                 onChange={handleTagChange}
-                value={blogData.tag}
+                value={blogData?.tag || ""}
               />
             </div>
           </div>

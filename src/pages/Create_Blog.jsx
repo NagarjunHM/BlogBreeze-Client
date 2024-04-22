@@ -110,7 +110,7 @@ const Create_Blog = () => {
       toast({
         title: "Blog creation successful",
       });
-      navigate("/");
+      navigate(`/blogs/${res.data}`);
     },
     onError: (error) => {
       toast({

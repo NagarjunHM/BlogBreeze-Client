@@ -294,11 +294,13 @@ const BlogDetailPage = () => {
       {deleteBlog.isPending && <InfiniteProgressBar />}
       <div className="z-10 flex justify-center pt-10 pb-10 mx-5 bg-background lg:px-0">
         <div className="w-[1000px] overflow-hidden  p-5">
-          <div>
-            <Badge tagId={data.tag._id} className="mb-5">
-              {data.tag.name}
-            </Badge>
-          </div>
+          {data.tag && (
+            <div>
+              <Badge tagId={data.tag._id} className="mb-5">
+                {data.tag.name}
+              </Badge>
+            </div>
+          )}
 
           {/* blog title */}
           <div className="mb-5 text-5xl font-semibold">{data.title}</div>
@@ -454,7 +456,7 @@ const BlogDetailPage = () => {
           </div>
           <Separator className="mb-5" />
           <img
-            src={`https://blogbreeze-server.onrender.com/${data.picture}`}
+            src={`${data.picture}`}
             alt="cover image"
             className="object-cover w-full mb-5 rounded-lg "
           />

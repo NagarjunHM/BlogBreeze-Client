@@ -19,6 +19,8 @@ const BlogCardHorizontal = ({ data }) => {
     tag,
   } = data;
 
+  console.log(data);
+
   // function to format date
   const date = formatDate(createdAt);
 
@@ -29,7 +31,7 @@ const BlogCardHorizontal = ({ data }) => {
         <div className="mx-0 my-6 col-span-full lg:col-span-4 lg:order-1">
           {data?.picture && (
             <img
-              src={`https://blogbreeze-server.onrender.com/${picture}`}
+              src={`${picture}`}
               alt="Description of the image"
               className="object-cover w-full h-full rounded"
             />
@@ -39,11 +41,13 @@ const BlogCardHorizontal = ({ data }) => {
         {/* blog detail */}
         <div className="flex flex-col p-6 col-span-full lg:col-span-8 ">
           {/* badge */}
-          <div className="flex justify-start">
-            <span className="px-1 py-1 ">
-              <Badge tagId={tag._id}>{tag.name}</Badge>
-            </span>
-          </div>
+          {tag && (
+            <div className="flex justify-start">
+              <span className="px-1 py-1 ">
+                <Badge tagId={tag._id}>{tag.name}</Badge>
+              </span>
+            </div>
+          )}
 
           <h1 className="pt-1 text-3xl font-semibold">{title}</h1>
           <p className="pt-2 text-muted-foreground">{description}</p>
