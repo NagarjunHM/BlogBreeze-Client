@@ -6,13 +6,13 @@ const useAxios = () => {
   const { setToken, resetValues } = userSlice();
   const navigate = useNavigate();
 
-  const baseURL =
-    process.env.NODE_ENV === "production"
-      ? "https://blogbreeze-server.onrender.com/api/"
-      : "http://localhost:5000/api/";
+  // const baseURL =
+  //   process.env.NODE_ENV === "production"
+  //     ? "https://blogbreeze-server.onrender.com/api/"
+  //     : "http://localhost:5000/api/";
 
   const instance = axios.create({
-    baseURL,
+    baseURL: "https://blogbreeze-server.onrender.com/api/",
     headers: { "Content-Type": "application/json", timeout: 1000 },
     withCredentials: true,
   });
