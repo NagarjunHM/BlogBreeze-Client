@@ -37,4 +37,4 @@ Link to their website https://medium.com/
 
 ### Request 🐛
 
-- If You find any bug then please create issue i would love to solve that
+- If You find any bug then please create issue i would love to solve that. Also, feel free to contact me through [LinkedIn](https://www.linkedin.com/in/nagarjun-hm/) if you encounter any problems during project setup.
