@@ -130,98 +130,97 @@ const LoginPage = () => {
   return (
     <>
       {isPending && <InfiniteProgressBar />}
-      <div className="w-[100%] h-screen absolute top-0 grid">
-        <div className="flex flex-col items-center place-self-center justify-centers">
-          <p className="text-3xl font-medium text-center md:text-5xl">
-            Welcome Back
-          </p>
-          <Card className=" w-[400px] m-5 bg-black/10 backdrop-blur">
-            <CardHeader>
-              <CardTitle>Log In</CardTitle>
-            </CardHeader>
-            <form className="w-full" onSubmit={handleSubmit}>
-              <CardContent>
-                <div className="grid items-center w-full gap-4">
-                  {/* email */}
-                  <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      placeholder="Enter your email"
-                      onChange={handleInput}
-                      value={formData.email}
-                    />
-                  </div>
-                  {formErrors.email ? (
-                    <li className="text-sm text-red-600">{formErrors.email}</li>
-                  ) : (
-                    <></>
-                  )}
 
-                  {/* password */}
-                  <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="password">Password</Label>
-                    <Input
-                      id="password"
-                      type="password"
-                      name="password"
-                      placeholder="Enter your password"
-                      onChange={handleInput}
-                      value={formData.password}
-                    />
-                  </div>
-                  {formErrors.password?.length ? (
-                    <div className="text-sm text-red-600">
-                      {formErrors.password.map((password, index) => (
-                        <li key={index}>{password}</li>
-                      ))}
-                    </div>
-                  ) : (
-                    <></>
-                  )}
-
-                  {error && (
-                    <div className="flex  gap-4 text-red-600 space-y-1.5 items-end">
-                      <AlertCircle />
-                      <span className="underline">
-                        {error.response?.data || error.message}
-                      </span>
-                    </div>
-                  )}
+      <div className="flex flex-col items-center justify-center w-screen h-[100vh] top-0 absolute transition-all duration-200">
+        <p className="text-3xl font-medium text-center md:text-5xl">
+          Welcome Back
+        </p>
+        <Card className="w-[400px] m-5 bg-black/10 backdrop-blur">
+          <CardHeader>
+            <CardTitle>Log In</CardTitle>
+          </CardHeader>
+          <form className="w-full" onSubmit={handleSubmit}>
+            <CardContent>
+              <div className="grid items-center w-full gap-4">
+                {/* email */}
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    onChange={handleInput}
+                    value={formData.email}
+                  />
                 </div>
-              </CardContent>
+                {formErrors.email ? (
+                  <li className="text-sm text-red-600">{formErrors.email}</li>
+                ) : (
+                  <></>
+                )}
 
-              <CardFooter className="flex flex-col items-start gap-4">
-                <div>
-                  <Button type="submit" disabled={isPending}>
-                    {isPending && (
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    )}
-                    Sign in
+                {/* password */}
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    onChange={handleInput}
+                    value={formData.password}
+                  />
+                </div>
+                {formErrors.password?.length ? (
+                  <div className="text-sm text-red-600">
+                    {formErrors.password.map((password, index) => (
+                      <li key={index}>{password}</li>
+                    ))}
+                  </div>
+                ) : (
+                  <></>
+                )}
+
+                {error && (
+                  <div className="flex  gap-4 text-red-600 space-y-1.5 items-end">
+                    <AlertCircle />
+                    <span className="underline">
+                      {error.response?.data || error.message}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+
+            <CardFooter className="flex flex-col items-start gap-4">
+              <div>
+                <Button type="submit" disabled={isPending}>
+                  {isPending && (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  )}
+                  Sign in
+                </Button>
+              </div>
+
+              <div>
+                <span>No account?</span>
+
+                <Link to="/register" disabled={isPending}>
+                  <Button
+                    variant="link"
+                    className="text-xl text-green-600"
+                    disabled={isPending}
+                  >
+                    Sign up
                   </Button>
-                </div>
-
-                <div>
-                  <span>No account?</span>
-
-                  <Link to="/register" disabled={isPending}>
-                    <Button
-                      variant="link"
-                      className="text-xl text-green-600"
-                      disabled={isPending}
-                    >
-                      Sign up
-                    </Button>
-                  </Link>
-                </div>
-              </CardFooter>
-            </form>
-          </Card>
-          <div className="mx-5 text-center text-muted-foreground">
-            Click “Sign in” to agree to BlogBreeze’s Terms of Service and
-            acknowledge that BlogBreeze’s Privacy Policy applies to you.
-          </div>
+                </Link>
+              </div>
+            </CardFooter>
+          </form>
+        </Card>
+        <div className="mx-5 text-center text-muted-foreground">
+          Click “Sign in” to agree to BlogBreeze’s Terms of Service and
+          acknowledge that BlogBreeze’s Privacy Policy applies to you.
         </div>
       </div>
     </>
